@@ -104,8 +104,8 @@ class PengumumanResource extends Resource
                 ->label('Tanggal Publikasi (Opsional)')
                 ->helperText('Kosongkan agar dipublikasikan segera saat status "Dipublikasikan", atau pilih tanggal & waktu tertentu.')
                 ->native(false)
-                ->displayFormat('d/m/Y H:i') // Format tampilan di form
-                ->seconds(false), // Tidak menampilkan input detik
+                ->displayFormat('d/m/Y H:i') 
+                ->seconds(false), 
                         
                     ])
             ]);
@@ -152,7 +152,7 @@ class PengumumanResource extends Resource
                     Notification::make()->title('Status pengumuman diperbarui')->success()->send();
                 }),
             TextColumn::make('published_at')
-                ->dateTime('d M Y H:i') // <-- Format H:i (Jam:Menit), tanpa detik
+                ->dateTime('d M Y H:i') 
                 ->sortable()
                 ->label('Tgl Publikasi')
                 ->placeholder('Belum dipublikasikan'),
@@ -162,7 +162,7 @@ class PengumumanResource extends Resource
             ->formatStateUsing(fn ($state) => $state instanceof UserRole ? $state->getLabel() : $state)
             ->color(fn ($state) => $state instanceof UserRole ? $state->getColor() : 'gray')
             ->sortable(),
-            // ->toggleable(isToggledHiddenByDefault: true), // Opsional: sembunyikan default
+            
 
             TextColumn::make('created_at')
                 ->dateTime('d M Y')

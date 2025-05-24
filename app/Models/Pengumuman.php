@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class Pengumuman extends Model
 {
-    use HasFactory; // HasSlug
+    use HasFactory, HasSlug;
 
     protected $table = 'pengumuman';
     protected $fillable = [
@@ -41,6 +41,21 @@ class Pengumuman extends Model
     //         ->saveSlugsTo('slug');
     // }
 
+
+     /**
+     * Dapatkan opsi untuk membuat slug.
+     */
+    public function getSlugOptions() : SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('judul') 
+            ->saveSlugsTo('slug');
+            // ->doNotGenerateSlugsOnUpdate(); // <-- PENTING: Jika Anda TIDAK ingin slug berubah saat judul diupdate
+            // Jika Anda INGIN slug berubah saat judul diupdate, HAPUS baris ->doNotGenerateSlugsOnUpdate()
+            // atau set ->generateSlugsOnUpdate() jika ingin selalu generate ulang
+            // ->generateSlugsOnUpdate() // Ini akan membuat slug baru jika judul berubah, mungkin menyebabkan link lama rusak
+    }
+
     /**
      * Relasi ke User (pembuat/penanggung jawab pengumuman).
      */
@@ -49,13 +64,6 @@ class Pengumuman extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    // Anda juga bisa menambahkan scope untuk pengumuman yang sudah publish, dll.
-    // public function scopePublished($query)
-    // {
-    //     return $query->where('status', PengumumanStatus::PUBLISHED->value)
-    //                  ->whereNotNull('published_at')
-    //                  ->where('published_at', '<=', now());
-    // }
 
     public function scopePublished(Builder $query): Builder
 {

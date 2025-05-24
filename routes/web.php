@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\GaleriPublikController;
 use App\Http\Controllers\PengumumanPublikController;
 
 Route::get('/', function () {
@@ -13,6 +14,4 @@ Route::get('/pengumuman', [PengumumanPublikController::class, 'index'])->name('p
 Route::get('/pengumuman/{slug}', [PengumumanPublikController::class, 'show'])->name('pengumuman.show');
 
 
-Route::get('galeri', function () {
-    return view('galeri');
-})->name('galeri');
+Route::get('/galeri', [GaleriPublikController::class, 'index'])->name('galeri.index');

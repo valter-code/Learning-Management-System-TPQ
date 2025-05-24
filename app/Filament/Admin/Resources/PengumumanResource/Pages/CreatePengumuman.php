@@ -13,7 +13,6 @@ class CreatePengumuman extends CreateRecord
 {
     protected static string $resource = PengumumanResource::class;
 
-    // Di sinilah tempat yang tepat untuk mutateFormDataBeforeCreate jika pakai halaman terpisah
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         Log::info('CreatePengumuman - mutateFormDataBeforeCreate - Data Awal:', $data);

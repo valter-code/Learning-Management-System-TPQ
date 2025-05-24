@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pengumuman; // Import model Pengumuman Anda
-use App\Enums\PengumumanStatus; // Import Enum Status Pengumuman Anda
+use App\Models\Pengumuman;
+use App\Enums\PengumumanStatus;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Builder; // Untuk scope
 
 class PengumumanPublikController extends Controller
 {
-    public function index(Request $request) 
+    public function index(Request $request)
     {
-        $keyword = $request->input('keyword'); 
+        $keyword = $request->input('keyword');
+        $showAll = $request->input('show_all', false); // Ambil parameter show_all, default false
 
         $query = Pengumuman::where('status', PengumumanStatus::PUBLISHED)
                             ->whereNotNull('published_at')
@@ -24,14 +24,19 @@ class PengumumanPublikController extends Controller
             });
         }
 
-        $pengumumans = $query->orderBy('published_at', 'desc')
-                             ->paginate(9); // Misalnya 9 pengumuman per halaman untuk grid 3 kolom
+        $query->orderBy('published_at', 'desc');
 
-        
-        return view('pengumuman', compact('pengumumans', 'keyword'));
+        if ($showAll) {
+            // Jika show_all=true, ambil semua data tanpa paginasi
+            $pengumumans = $query->get();
+        } else {
+            // Jika tidak, gunakan paginasi seperti biasa
+            $pengumumans = $query->paginate(5); // Atau jumlah item per halaman Anda
+        }
+
+        return view('pengumuman', compact('pengumumans', 'keyword', 'showAll'));
     }
 
-    
     public function show(string $slug)
     {
         $pengumuman = Pengumuman::where('slug', $slug)

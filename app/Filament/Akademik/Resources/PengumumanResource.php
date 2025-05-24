@@ -64,13 +64,13 @@ class PengumumanResource extends Resource
 
 
 
-    protected static ?string $modelLabel = 'Pengumuman'; // Label tunggal
+    protected static ?string $modelLabel = 'Pengumuman'; 
 
-    protected static ?string $pluralModelLabel = 'Pengumuman'; // Label jamak → tetap gunakan bentuk tunggal
+    protected static ?string $pluralModelLabel = 'Pengumuman'; 
 
-    protected static ?string $navigationLabel = 'Pengumuman'; // Label di sidebar menu
+    protected static ?string $navigationLabel = 'Pengumuman'; 
 
-    protected static ?string $slug = 'pengumuman'; // Atau 'pengumumans' jika Anda lebih suka plural
+    protected static ?string $slug = 'pengumuman'; 
 
     protected static ?string $title = 'pengumuman'; 
 
@@ -78,9 +78,9 @@ class PengumumanResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-megaphone';
 
-    protected static ?string $navigationGroup = 'Konten Website'; // Contoh grup navigasi
+    protected static ?string $navigationGroup = 'Konten Website'; 
 
-    protected static ?string $recordTitleAttribute = 'judul'; // Untuk judul di breadcrumbs dll.
+    protected static ?string $recordTitleAttribute = 'judul'; 
 
 
 
@@ -104,27 +104,9 @@ class PengumumanResource extends Resource
 
                             ->maxLength(255)
 
-                            ->live(onBlur: true) // Untuk update slug otomatis jika pakai cara manual
-
-                            // ->afterStateUpdated(fn (Forms\Set $set, ?string $state) => $set('slug', Str::slug($state))) // Manual slug generation
+                            ->live(onBlur: true) 
 
                             ->columnSpanFull(),
-
-
-
-                        // Jika Anda menggunakan spatie/laravel-sluggable, field slug tidak perlu ditampilkan di form
-
-                        // karena akan di-generate otomatis. Jika manual, bisa seperti ini:
-
-                        // TextInput::make('slug')
-
-                        //     ->required()
-
-                        //     ->maxLength(255)
-
-                        //     ->unique(Pengumuman::class, 'slug', ignoreRecord: true)
-
-                        //     ->columnSpanFull(),
 
 
 
@@ -310,28 +292,6 @@ class PengumumanResource extends Resource
 
 
 
-     // Metode untuk mengisi user_id secara otomatis
-
-    //  public static function mutateFormDataBeforeCreate(array $data): array
-
-    //  {
-
-    //      $data['user_id'] = Auth::id();
-
-    //      // Jika menggunakan slug manual dan ingin di-generate dari judul saat create
-
-    //      if (empty($data['slug']) && !empty($data['judul']) && !config('packages.spatie.laravel-sluggable.enabled', false)) { // Cek jika spatie/sluggable tidak dipakai
-
-    //           $data['slug'] = Str::slug($data['judul']);
-
-    //      }
-
-    //      return $data;
-
-    //  }
-
-
-
        // Jika ingin user_id juga diupdate saat edit oleh user yang berbeda (opsional)
 
     // public static function mutateFormDataBeforeSave(array $data): array
@@ -343,10 +303,6 @@ class PengumumanResource extends Resource
     //     return $data;
 
     // }
-
-
-
-   
 
     public static function canViewAny(): bool
 
@@ -364,12 +320,6 @@ class PengumumanResource extends Resource
 
     }
 
-
-
-
-
-    
-
     public static function canCreate(): bool
 
     {
@@ -386,10 +336,6 @@ class PengumumanResource extends Resource
 
     }
 
-
-
-
-
     public static function canView(Model $record): bool 
 
     {
@@ -405,8 +351,6 @@ class PengumumanResource extends Resource
         return $user->role === UserRole::ADMIN || $user->role === UserRole::AKADEMIK;
 
     }
-
-
 
     public static function canEdit(Model $record): bool
 
@@ -425,8 +369,6 @@ class PengumumanResource extends Resource
         return $user->role === UserRole::ADMIN || $user->role === UserRole::AKADEMIK;
 
     }
-
-
 
     public static function canDelete(Model $record): bool
 

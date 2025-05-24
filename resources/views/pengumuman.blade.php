@@ -3,12 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LMS TPQ [Nama TPQ Anda] - Pendidikan Al-Qur'an Berkualitas</title>
-
+    <title>{{ config('app.name') }} [- Pendidikan Al-Qur'an Berkualitas</title>
     <link rel="icon" href="https://placehold.co/32x32/10B981/FFFFFF?text=TPQ" type="image/png">
-
     @vite('resources/css/app.css')
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -19,10 +16,10 @@
         }
         /* .section-divider {
             border-top: 2px solid #e5e7eb; /* Warna abu-abu muda, bisa diganti ke hitam jika preferensi */
-            margin-top: 2rem; /* Sesuaikan jarak atas */
+            /* margin-top: 2rem; 
             margin-bottom: 2rem; Sesuaikan jarak bawah
-        } */
-        /* Jika ingin pembatas hitam pekat */
+        } */ 
+        
         .section-divider-dark {
             border-top: 1px solid #000000;
             margin-top: 3rem;
@@ -36,7 +33,7 @@
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
     <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
         <img src="https://placehold.co/40x40/0D9488/FFFFFF?text=TPQ" class="h-8 rounded-md" alt="LMS TPQ Logo" />
-        <span class="self-center text-2xl font-semibold whitespace-nowrap text-teal-700">LMS TPQ</span>
+        <span class="self-center text-2xl font-semibold whitespace-nowrap text-teal-700">{{ config('app.name') }}</span>
     </a>
     <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
         <button type="button" class="text-white bg-teal-600 hover:bg-teal-700 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-4 py-2 text-center transition duration-150 ease-in-out">Daftar Sekarang!</button>
@@ -50,13 +47,13 @@
     <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-cta">
         <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white">
         <li>
-            <a href="#" class="block py-2 px-3 md:p-0 text-teal-600 rounded-sm md:bg-transparent" aria-current="page">Beranda</a>
+            <a href="{{ url('/') }}" class="block py-2 px-3 md:p-0 text-gray-700 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-teal-600">Beranda</a>
         </li>
         <li>
-            <a href="#pengumuman" class="block py-2 px-3 md:p-0 text-gray-700 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-teal-600">Pengumuman</a>
+            <a href="{{ route('pengumuman.index') }}" class="block py-2 px-3 md:p-0 text-teal-600 rounded-sm md:bg-transparent" aria-current="page">Pengumuman</a>
         </li>
         <li>
-            <a href="#galeri" class="block py-2 px-3 md:p-0 text-gray-700 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-teal-600">Galeri</a>
+            <a href="{{ url('galeri') }}" class="block py-2 px-3 md:p-0 text-gray-700 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-teal-600">Galeri</a>
         </li>
         <li>
             <a href="#tentang" class="block py-2 px-3 md:p-0 text-gray-700 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-teal-600">Tentang</a>
@@ -125,7 +122,7 @@
     <div class="max-w-screen-lg mx-auto">
         <div class="text-center mb-8">
             <h2 class="mb-4 text-3xl font-extrabold tracking-tight text-teal-800 lg:text-4xl">Pengumuman Terbaru</h2>
-            <p class="text-lg text-gray-600">Informasi dan berita terkini dari LMS TPQ.</p>
+            <p class="text-lg text-gray-600">Informasi dan berita terkini dari {{ config('app.name') }}.</p>
         </div>
 
         {{-- Search Bar Section --}}
@@ -205,19 +202,22 @@
                 @endforeach
             </div>
 
-            {{-- Paginasi Links --}}
+            @if(!$showAll && $pengumumans instanceof \Illuminate\Pagination\LengthAwarePaginator)
             <div class="mt-12">
-                {{-- Pastikan $keyword diteruskan ke paginasi --}}
-                {{ $pengumumans->appends(['keyword' => $keyword ?? ''])->links() }}
+                {{ $pengumumans->appends(request()->query())->links() }} {{-- request()->query() akan membawa semua parameter query string saat ini --}}
             </div>
+            @endif
         @endif
 
         {{-- Tombol Lihat Semua Pengumuman (Opsional) --}}
-        {{-- <div class="text-center mt-12">
-            <a href="{{ route('pengumuman.index') }}" class="text-white bg-teal-600 hover:bg-teal-700 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-6 py-3 transition duration-150 ease-in-out">
-                Lihat Semua Pengumuman
-            </a>
-        </div> --}}
+        @if(!$showAll && $pengumumans instanceof \Illuminate\Pagination\LengthAwarePaginator && $pengumumans->hasMorePages())
+            <div class="text-center mt-12">
+                {{-- Tambahkan parameter show_all=1 ke URL --}}
+                <a href="{{ route('pengumuman.index', array_merge(request()->query(), ['show_all' => 1])) }}" class="text-white bg-teal-600 hover:bg-teal-700 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-6 py-3 transition duration-150 ease-in-out">
+                    Lihat Semua Pengumuman
+                </a>
+            </div>
+            @endif
     </div>
 </section>
 
@@ -240,7 +240,7 @@
             <div class="mb-8 md:mb-0"> 
                 <a href="#" class="flex items-center">
                     <img src="https://placehold.co/40x40/FFFFFF/0D9488?text=TPQ" class="h-8 me-3 rounded-md" alt="LMS TPQ Logo" /> 
-                    <span class="self-center text-2xl font-semibold whitespace-nowrap">LMS TPQ</span>
+                    <span class="self-center text-2xl font-semibold whitespace-nowrap">{{ config('app.name') }}</span>
                 </a>
                  <p class="mt-4 text-sm text-white max-w-xs"> 
                     Jl. Pendidikan Al-Qur'an No. 123<br>
@@ -297,8 +297,8 @@
         </div>
         <hr class="my-6 border-teal-600 sm:mx-auto lg:my-8" /> 
         <div class="sm:flex sm:items-center sm:justify-between pb-8 px-4"> 
-            <span class="text-sm text-black sm:text-center">© {{ date('Y') }} <a href="#" class="hover:underline hover:text-black">LMS TPQ Lorem Ipsum™</a>. Hak Cipta Dilindungi.
-            </span>
+        <span class="text-sm text-gray-200 sm:text-center dark:text-gray-300">© {{ date('Y') }} <a href="#" class="hover:underline hover:text-white">{{-- config('app.name') --}}{{ config('app.name') }}™</a>. Hak Cipta Dilindungi
+        </span>
             <div class="flex mt-4 sm:justify-center sm:mt-0 space-x-5"> 
                  <a href="#" class="text-teal-200 hover:text-white">
                     <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 8 19">

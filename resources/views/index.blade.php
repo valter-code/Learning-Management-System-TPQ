@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LMS TPQ [Nama TPQ Anda] - Pendidikan Al-Qur'an Berkualitas</title>
+    <title>{{ config('app.name') }} - Pendidikan Al-Qur'an Berkualitas</title>
 
     <link rel="icon" href="https://placehold.co/32x32/10B981/FFFFFF?text=TPQ" type="image/png">
 
@@ -36,7 +36,7 @@
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
     <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
         <img src="https://placehold.co/40x40/0D9488/FFFFFF?text=TPQ" class="h-8 rounded-md" alt="LMS TPQ Logo" />
-        <span class="self-center text-2xl font-semibold whitespace-nowrap text-teal-700">LMS TPQ</span>
+        <span class="self-center text-2xl font-semibold whitespace-nowrap text-teal-700">{{ config('app.name') }}</span>
     </a>
     <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
         <button type="button" class="text-white bg-teal-600 hover:bg-teal-700 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-4 py-2 text-center transition duration-150 ease-in-out">Daftar Sekarang!</button>
@@ -73,10 +73,10 @@
         <section class="bg-gradient-to-br from-teal-50 via-emerald-50 to-white py-20 px-4 text-center">
             <div class="max-w-screen-md mx-auto">
                 <h1 class="mb-5 text-4xl font-extrabold leading-tight tracking-tight text-teal-800 md:text-5xl lg:text-6xl">
-                    Selamat Datang di LMS TPQ Lorem Ipsum
+                    Selamat Datang di {{ config('app.name') }}
                 </h1>
                 <p class="mb-10 text-lg font-normal text-gray-700 lg:text-xl">
-                    TPQ Lorem Ipsum Tempat terbaik untuk belajar karena dibimbing oleh Imam Dolor Sit Amet untuk membaca, memahami, dan mengamalkan Al-Qur'an dengan metode yang efektif dan menyenangkan.
+                    {{ config('app.name') }} Tempat terbaik untuk belajar karena dibimbing oleh Imam Dolor Sit Amet untuk membaca, memahami, dan mengamalkan Al-Qur'an dengan metode yang efektif dan menyenangkan.
                 </p>
                 <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
                     <a href="#tentang" class="inline-flex items-center justify-center px-6 py-3 text-base font-medium text-center
@@ -186,7 +186,7 @@
             <div class="mb-8 md:mb-0"> 
                 <a href="#" class="flex items-center">
                     <img src="https://placehold.co/40x40/FFFFFF/0D9488?text=TPQ" class="h-8 me-3 rounded-md" alt="LMS TPQ Logo" /> 
-                    <span class="self-center text-2xl font-semibold whitespace-nowrap">LMS TPQ</span>
+                    <span class="self-center text-2xl font-semibold whitespace-nowrap">{{ config('app.name') }}</span>
                 </a>
                  <p class="mt-4 text-sm text-white max-w-xs"> 
                     Jl. Pendidikan Al-Qur'an No. 123<br>
@@ -243,8 +243,8 @@
         </div>
         <hr class="my-6 border-teal-600 sm:mx-auto lg:my-8" /> 
         <div class="sm:flex sm:items-center sm:justify-between pb-8 px-4"> 
-            <span class="text-sm text-black sm:text-center">© {{ date('Y') }} <a href="#" class="hover:underline hover:text-black">LMS TPQ Lorem Ipsum™</a>. Hak Cipta Dilindungi.
-            </span>
+        <span class="text-sm text-gray-200 sm:text-center dark:text-gray-300">© {{ date('Y') }} <a href="#" class="hover:underline hover:text-white">{{-- config('app.name') --}}{{ config('app.name') }}™</a>. Hak Cipta Dilindungi
+        </span>
             <div class="flex mt-4 sm:justify-center sm:mt-0 space-x-5"> 
                  <a href="#" class="text-teal-200 hover:text-white">
                     <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 8 19">
