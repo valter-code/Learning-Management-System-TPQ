@@ -41,9 +41,7 @@
     <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
         <a href="{{ route('registrasi.santri.create') }}" class="inline-block text-white bg-teal-600 hover:bg-teal-700 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-4 py-2 text-center transition duration-150 ease-in-out">
         Daftar Sekarang!
-</a>
-
-</button>
+        </a>
 
         <button data-collapse-toggle="navbar-cta" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-600 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="navbar-cta" aria-expanded="false">
             <span class="sr-only">Open main menu</span>
@@ -55,7 +53,7 @@
     <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-cta">
         <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white">
         <li>
-            <a href="#" class="block py-2 px-3 md:p-0 text-teal-600 rounded-sm md:bg-transparent" aria-current="page">Beranda</a>
+            <a href="/" class="block py-2 px-3 md:p-0 text-gray-700 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-teal-600">Beranda</a>
         </li>
         <li>
             <a href="pengumuman" class="block py-2 px-3 md:p-0 text-gray-700 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-teal-600">Pengumuman</a>
@@ -64,7 +62,7 @@
             <a href="galeri" class="block py-2 px-3 md:p-0 text-gray-700 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-teal-600">Galeri</a>
         </li>
         <li>
-            <a href="tentang" class="block py-2 px-3 md:p-0 text-gray-700 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-teal-600">Tentang</a>
+            <a href="tentang" class="block py-2 px-3 md:p-0 text-teal-600 rounded-sm md:bg-transparent" aria-current="page">Tentang</a>
         </li>
         <li>
             <a href="kontak" class="block py-2 px-3 md:p-0 text-gray-700 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-teal-600">Hubungi Kami</a>
@@ -75,115 +73,74 @@
     </nav>
 
     <main>
-        <section class="bg-gradient-to-br from-teal-50 via-emerald-50 to-white py-20 px-4 text-center">
-            <div class="max-w-screen-md mx-auto">
-                <h1 class="mb-5 text-4xl font-extrabold leading-tight tracking-tight text-teal-800 md:text-5xl lg:text-6xl">
-                    Selamat Datang di {{ config('app.name') }}
-                </h1>
-                <p class="mb-10 text-lg font-normal text-gray-700 lg:text-xl">
-                    {{ config('app.name') }} Tempat terbaik untuk belajar karena dibimbing oleh Imam Dolor Sit Amet untuk membaca, memahami, dan mengamalkan Al-Qur'an dengan metode yang efektif dan menyenangkan.
-                </p>
-                <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
-                    <a href="#tentang" class="inline-flex items-center justify-center px-6 py-3 text-base font-medium text-center
-                        text-white bg-teal-600 rounded-lg border border-teal-600
-                        hover:bg-teal-700 focus:ring-4 focus:outline-none focus:ring-teal-300
-                        transition duration-150 ease-in-out">
-                        Pelajari Lebih Lanjut
-                    </a>
+
+{{-- SECTION HEADER TENTANG KAMI (Diperbaiki: Teks & Breadcrumb) --}}
+<section id="tentang-header" class="bg-teal-50 py-10 px-4"> {{-- ID diubah agar lebih spesifik --}}
+        <div class="max-w-screen-xl mx-auto">
+            <div class="md:flex md:items-center md:justify-between">
+                <div>
+                    {{-- Teks Judul & Subjudul Diperbaiki --}}
+                    <h2 class="text-3xl font-extrabold tracking-tight text-teal-800 sm:text-4xl">Tentang TPQ Kami</h2>
+                    <p class="mt-3 text-lg text-gray-700 max-w-3xl">
+                        Mengenal lebih dekat lembaga pendidikan Al-Qur'an kami, tempat generasi Qur'ani tumbuh dan berkembang.
+                    </p>
                 </div>
-                </div>
-        </section>
-
-        <div class="section-divider-black max-w-screen-xl mx-auto px-4"></div> 
-
-        <section id="tentang" class="py-16 bg-gray-50 px-4"> 
-            <div class="max-w-screen-xl mx-auto"> 
-                <h2 class="mb-4 text-3xl font-extrabold tracking-tight text-center text-teal-800 lg:text-4xl">Tentang Kami</h2>
-                <p class="mb-12 text-lg text-center text-gray-600">Membangun Generasi Qur'ani Berakhlak Mulia</p>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center"> 
-                    <div class="md:order-1"> 
-                        <img src="https://placehold.co/600x400/A7F3D0/065F46?text=Ilustrasi+Belajar+Mengaji" alt="Ilustrasi Belajar Mengaji" class="mx-auto rounded-lg shadow-xl w-full max-w-md">
-                    </div>
-                    <div class="md:order-2 space-y-8"> 
-                        <div class="p-6 bg-teal-50 rounded-lg border border-teal-200 shadow-lg flex flex-col"> 
-                             <div class="flex items-center mb-3">
-                                 <span class="inline-flex items-center justify-center p-2 rounded-md bg-teal-100 mr-3">
-                                     <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-                                </span>
-                                <h3 class="text-xl font-semibold text-teal-700">Visi</h3>
-                             </div>
-                            <p class="text-gray-700 flex-grow">Menjadi pusat pendidikan Al-Qur'an yang terpercaya dalam mencetak generasi yang fasih membaca, memahami kandungan, serta mengamalkan ajaran Al-Qur'an dalam kehidupan sehari-hari.</p>
-                        </div>
-                         <div class="p-6 bg-emerald-50 rounded-lg border border-emerald-200 shadow-lg flex flex-col">  
-                             <div class="flex items-center mb-3">
-                                <span class="inline-flex items-center justify-center p-2 rounded-md bg-emerald-100 mr-3">
-                                    <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
-                                </span>
-                                <h3 class="text-xl font-semibold text-emerald-700">Misi</h3>
-                             </div>
-                            <ul class="list-disc list-inside text-gray-700 space-y-1 flex-grow">
-                                <li>Menyediakan kurikulum Tahsin & Tahfidz yang terstruktur.</li>
-                                <li>Menerapkan metode pembelajaran yang interaktif dan efektif.</li>
-                                <li>Membina akhlak dan adab Islami para santri.</li>
-                                <li>Menjalin komunikasi aktif dengan wali santri.</li>
-                            </ul>
-                        </div>
-                    </div>
+                <div class="mt-4 md:mt-0">
+                    <nav aria-label="Breadcrumb">
+                        <ol class="flex items-center space-x-2 text-sm font-medium text-gray-600">
+                            <li><a href="/" class="hover:text-teal-600">Beranda</a></li>
+                            <li>
+                                <svg class="w-3 h-3 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                            </li>
+                            {{-- Teks Breadcrumb Diperbaiki --}}
+                            <li><span class="text-teal-700" aria-current="page">Tentang</span></li>
+                        </ol>
+                    </nav>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
+        
+    {{-- SECTION KONTEN TENTANG KAMI (Tetap sama) --}}
+    <section class="py-16 bg-white px-4">
+       {{-- Wrapper max-w-screen-xl ditambahkan agar konsisten --}}
+       <div class="max-w-screen-xl mx-auto">
+           <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+               {{-- Kolom Teks --}}
+               <div class="space-y-8">
+                   <div>
+                       <h3 class="text-xl font-bold text-teal-700 mb-2">Visi Kami</h3>
+                       <p class="text-base text-gray-600">
+                           Menjadi lembaga pendidikan Al-Qur'an terdepan dalam mencetak generasi yang cinta Al-Qur'an, berakhlak mulia, cerdas, dan bermanfaat bagi umat.
+                       </p>
+                   </div>
+                   <div>
+                       <h3 class="text-xl font-bold text-teal-700 mb-2">Misi Kami</h3>
+                       <ul class="list-disc list-inside text-base text-gray-600 space-y-2">
+                           <li>Menyelenggarakan pembelajaran Al-Qur'an yang efektif, inovatif, dan menyenangkan.</li>
+                           <li>Membina santri agar memiliki pemahaman Al-Qur'an yang baik dan mampu mengamalkannya.</li>
+                           <li>Mengembangkan potensi santri dalam bidang akademik, non-akademik, dan keagamaan.</li>
+                           <li>Menanamkan nilai-nilai Islam dan akhlakul karimah dalam setiap aspek pendidikan.</li>
+                           <li>Membangun kerjasama yang erat dengan orang tua dan masyarakat.</li>
+                       </ul>
+                   </div>
+                    <div>
+                       <h3 class="text-xl font-bold text-teal-700 mb-2">Sejarah Singkat</h3>
+                       <p class="text-base text-gray-600">
+                           Didirikan pada tahun [Tahun Berdiri], TPQ kami berawal dari keprihatinan akan pentingnya pendidikan Al-Qur'an sejak dini. Dengan semangat kebersamaan dan dedikasi, kami terus berkembang hingga saat ini, berkomitmen untuk memberikan pendidikan terbaik bagi para santri.
+                       </p>
+                   </div>
+               </div>
 
-        <div class="section-divider-black max-w-screen-xl mx-auto px-4"></div> 
+               {{-- Kolom Gambar --}}
+               <div class="rounded-lg overflow-hidden shadow-lg">
+                   <img src="https://placehold.co/800x600/10B981/FFFFFF?text=TPQ+Kami" alt="Suasana Belajar di TPQ" class="w-full h-full object-cover">
+               </div>
+           </div>
+       </div>
+    </section>
 
-        <section id="testimoni" class="py-16 bg-gray-100 px-4"> 
-            <div class="max-w-screen-lg mx-auto">
-                <h2 class="mb-4 text-3xl font-extrabold tracking-tight text-center text-teal-800 lg:text-4xl">Testimoni & Pengalaman</h2>
-                 <p class="mb-12 text-lg text-center text-gray-600">Dengarkan langsung dari mereka yang telah merasakan manfaat belajar di TPQ kami.</p>
-
-                <div class="grid gap-8 lg:grid-cols-3">
-                     <figure class="flex flex-col p-6 bg-white shadow-lg rounded-lg border border-gray-200 hover:shadow-xl transition-shadow duration-300">
-                        <figcaption class="flex items-center space-x-4 rtl:space-x-reverse mb-4">
-                            <img class="w-12 h-12 rounded-full object-cover" src="https://placehold.co/80x80/3B82F6/FFFFFF?text=AD" alt="Foto Bapak Adi">
-                            <div>
-                                <div class="font-semibold text-gray-900">Bapak Adi</div>
-                                <div class="text-sm text-gray-500">Wali Santri Rahman</div>
-                            </div>
-                        </figcaption>
-                        <blockquote class="flex-grow">
-                            <p class="text-base font-normal text-gray-700">"Perkembangan Rahman sangat pesat, terutama dalam hal kelancaran membaca Qur'an dan adabnya. Pengajarnya sangat telaten."</p>
-                        </blockquote>
-                    </figure>
-                    <figure class="flex flex-col p-6 bg-white shadow-lg rounded-lg border border-gray-200 hover:shadow-xl transition-shadow duration-300">
-                        <figcaption class="flex items-center space-x-4 rtl:space-x-reverse mb-4">
-                            <img class="w-12 h-12 rounded-full object-cover" src="https://placehold.co/80x80/10B981/FFFFFF?text=ST" alt="Foto Siti">
-                            <div>
-                                <div class="font-semibold text-gray-900">Siti Aminah</div>
-                                <div class="text-sm text-gray-500">Alumni TPQ 2022</div>
-                            </div>
-                        </figcaption>
-                        <blockquote class="flex-grow">
-                             <p class="text-base font-normal text-gray-700">"Belajar di sini bukan hanya soal mengaji, tapi juga membentuk karakter. Saya mendapatkan banyak ilmu dan teman baik."</p>
-                        </blockquote>
-                    </figure>
-                    <figure class="flex flex-col p-6 bg-white shadow-lg rounded-lg border border-gray-200 hover:shadow-xl transition-shadow duration-300">
-                        <figcaption class="flex items-center space-x-4 rtl:space-x-reverse mb-4">
-                            <img class="w-12 h-12 rounded-full object-cover" src="https://placehold.co/80x80/065F46/FFFFFF?text=DR" alt="Foto Ibu Dewi R.">
-                            <div>
-                                <div class="font-semibold text-gray-900">Ibu Dewi R.</div>
-                                <div class="text-sm text-gray-500">Wali Santri Kayla</div>
-                            </div>
-                        </figcaption>
-                         <blockquote class="flex-grow">
-                            <p class="text-base font-normal text-gray-700">"Fasilitas LMS online-nya sangat membantu kami memantau perkembangan Kayla. Komunikasinya juga sangat baik."</p>
-                        </blockquote>
-                    </figure>
-                </div>
-            </div>
-        </section>
-
-        <!-- <div class="section-divider max-w-screen-xl mx-auto px-4"></div>  -->
-    </main>
+</main>
 
     <footer id="kontak" class="bg-teal-700 text-white"> 
         <div class="mx-auto w-full max-w-screen-xl p-4 py-10 lg:py-12"> 

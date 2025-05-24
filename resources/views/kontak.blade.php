@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ config('app.name') }} [- Pendidikan Al-Qur'an Berkualitas</title>
+    <title>{{ config('app.name') }} - Pendidikan Al-Qur'an Berkualitas</title>
+
     <link rel="icon" href="https://placehold.co/32x32/10B981/FFFFFF?text=TPQ" type="image/png">
+
     @vite('resources/css/app.css')
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -16,10 +19,10 @@
         }
         /* .section-divider {
             border-top: 2px solid #e5e7eb; /* Warna abu-abu muda, bisa diganti ke hitam jika preferensi */
-            /* margin-top: 2rem; 
+            margin-top: 2rem; /* Sesuaikan jarak atas */
             margin-bottom: 2rem; Sesuaikan jarak bawah
-        } */ 
-        
+        } */
+        /* Jika ingin pembatas hitam pekat */
         .section-divider-dark {
             border-top: 1px solid #000000;
             margin-top: 3rem;
@@ -39,6 +42,7 @@
         <a href="{{ route('registrasi.santri.create') }}" class="inline-block text-white bg-teal-600 hover:bg-teal-700 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-4 py-2 text-center transition duration-150 ease-in-out">
         Daftar Sekarang!
         </a>
+
         <button data-collapse-toggle="navbar-cta" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-600 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="navbar-cta" aria-expanded="false">
             <span class="sr-only">Open main menu</span>
             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
@@ -49,10 +53,10 @@
     <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-cta">
         <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white">
         <li>
-            <a href="{{ url('/') }}" class="block py-2 px-3 md:p-0 text-gray-700 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-teal-600">Beranda</a>
+            <a href="/" class="block py-2 px-3 md:p-0 text-gray-700 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-teal-600">Beranda</a>
         </li>
         <li>
-            <a href="pengumuman" class="block py-2 px-3 md:p-0 text-teal-600 rounded-sm md:bg-transparent" aria-current="page">Pengumuman</a>
+            <a href="pengumuman" class="block py-2 px-3 md:p-0 text-gray-700 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-teal-600">Pengumuman</a>
         </li>
         <li>
             <a href="galeri" class="block py-2 px-3 md:p-0 text-gray-700 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-teal-600">Galeri</a>
@@ -61,53 +65,29 @@
             <a href="tentang" class="block py-2 px-3 md:p-0 text-gray-700 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-teal-600">Tentang</a>
         </li>
         <li>
-            <a href="kontak" class="block py-2 px-3 md:p-0 text-gray-700 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-teal-600">Hubungi Kami</a>
+            <a href="kontak" class="block py-2 px-3 md:p-0 text-teal-600 rounded-sm md:bg-transparent" aria-current="page">Hubungi Kami</a>
         </li>
         </ul>
     </div>
     </div>
     </nav>
 
-    <!-- <main>
-        <section class="bg-gradient-to-br from-teal-50 via-emerald-50 to-white py-20 px-4 text-center">
-            <div class="max-w-screen-md mx-auto">
-                <h1 class="mb-5 text-4xl font-extrabold leading-tight tracking-tight text-teal-800 md:text-5xl lg:text-6xl">
-                    Selamat Datang di LMS TPQ Lorem Ipsum
-                </h1>
-                <p class="mb-10 text-lg font-normal text-gray-700 lg:text-xl">
-                    TPQ Lorem Ipsum Tempat terbaik untuk belajar karena dibimbing oleh Imam Dolor Sit Amet untuk membaca, memahami, dan mengamalkan Al-Qur'an dengan metode yang efektif dan menyenangkan.
-                </p>
-                <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
-                    <a href="#tentang" class="inline-flex items-center justify-center px-6 py-3 text-base font-medium text-center
-                        text-white bg-teal-600 rounded-lg border border-teal-600
-                        hover:bg-teal-700 focus:ring-4 focus:outline-none focus:ring-teal-300
-                        transition duration-150 ease-in-out">
-                        Pelajari Lebih Lanjut
-                    </a>
-                </div>
-                </div>
-        </section>
+    <main>
 
-        <div class="section-divider-black max-w-screen-xl mx-auto px-4"></div> 
-
-        <main> -->
-    {{-- SECTION HERO --}}
-
-    {{-- SECTION HEADER GALERI BARU --}}
+   {{-- SECTION HEADER GALERI BARU --}}
 <section id="galeri-header" class="bg-teal-50 py-10 px-4"> 
     <div class="max-w-screen-xl mx-auto">
         <div class="md:flex md:items-center md:justify-between">
             <div>
-                <h2 class="text-3xl font-extrabold tracking-tight text-teal-800 sm:text-4xl">Pengumuman</h2>
+                <h2 class="text-3xl font-extrabold tracking-tight text-teal-800 sm:text-4xl">Hubungi Kami</h2>
                 <p class="mt-3 text-lg text-gray-700 max-w-3xl">
-                    Pengumuman terbaru yang diumumkan oleh Pengajar TPQ Lorem Ipsum
+                    Kami siap menjawab pertanyaan Anda. Jangan ragu untuk menghubungi kami melalui informasi di bawah ini atau kirim pesan melalui form.
                 </p>
             </div>
-            {{-- Breadcrumb atau navigasi singkat (opsional, seperti di contoh merah) --}}
             <div class="mt-4 md:mt-0">
                 <nav aria-label="Breadcrumb">
                     <ol class="flex items-center space-x-2 text-sm font-medium text-gray-600">
-                        <li><a href="/" class="hover:text-teal-600">Beranda</a></li>
+                        <li><a href="" class="hover:text-teal-600">Beranda</a></li>
                         <li>
                             <svg class="w-3 h-3 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
                         </li>
@@ -119,122 +99,88 @@
     </div>
 </section>
 
-    {{-- SECTION PENGUMUMAN BARU --}}
-    <section id="pengumuman-content" class="py-16 bg-white px-4">
-    <div class="max-w-screen-lg mx-auto">
-        <div class="text-center mb-8">
-            <h2 class="mb-4 text-3xl font-extrabold tracking-tight text-teal-800 lg:text-4xl">Pengumuman Terbaru</h2>
-            <p class="text-lg text-gray-600">Informasi dan berita terkini dari {{ config('app.name') }}.</p>
-        </div>
+             {{-- SECTION KONTEN HUBUNGI KAMI (BG Putih, tanpa header) --}}
+    <section class="py-16 bg-white px-4"> {{-- ID dihapus, padding atas dipertahankan --}}
+        <div class="max-w-screen-xl mx-auto">
+            {{-- Header lama sudah dihapus dari sini --}}
 
-        {{-- Search Bar Section --}}
-        <div class="mb-8 md:mb-10">
-            {{-- Pastikan action merujuk ke rute yang benar (pengumuman.index) --}}
-            <form action="{{ route('pengumuman.index') }}" method="GET" class="max-w-lg mx-auto md:max-w-xl">
-                {{-- @csrf --}} {{-- Tidak wajib untuk GET, tapi tidak masalah jika ada --}}
-                <label for="search-pengumuman" class="mb-2 text-sm font-medium text-gray-900 sr-only">Cari Pengumuman</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                        <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                        </svg>
-                    </div>
-                    {{-- Gunakan variabel $keyword yang dikirim dari controller --}}
-                    <input type="search" id="search-pengumuman" name="keyword" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-teal-500 focus:border-teal-500" placeholder="Ketik kata kunci pengumuman..." value="{{ $keyword ?? '' }}" />
-                    <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-teal-600 hover:bg-teal-700 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-4 py-2 transition duration-150 ease-in-out">
-                        Cari
-                    </button>
-                </div>
-            </form>
-        </div>
-        {{-- End Search Bar Section --}}
-
-        {{-- Kondisi jika tidak ada pengumuman --}}
-        @if($pengumumans->isEmpty())
-            <div class="text-center py-12">
-                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                    <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-                </svg>
-                <h3 class="mt-2 text-sm font-semibold text-gray-900 dark:text-gray-200">Belum ada pengumuman</h3>
-                @if(isset($keyword) && !empty($keyword))
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Tidak ada pengumuman yang cocok dengan kata kunci "<span class="font-semibold">{{ $keyword }}</span>". Coba kata kunci lain.</p>
-                @else
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Silakan cek kembali nanti.</p>
-                @endif
-            </div>
-        @else
-            <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                @foreach($pengumumans as $item) {{-- Variabel loop adalah $item --}}
-                <article class="p-6 bg-gray-50 rounded-lg border border-gray-200 shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
-                    <div class="mb-3">
-                    @if($item->foto) {{-- Gunakan $item->foto --}}
-                        {{-- Gunakan helper Storage::url() untuk path foto yang benar --}}
-                        <img src="{{ Storage::url($item->foto) }}" alt="Foto {{ $item->judul }}" class="rounded-md w-full h-48 object-cover">
-                    @else
-                        <div class="w-full h-48 bg-gray-200 dark:bg-gray-700 flex items-center justify-center rounded-md">
-                            <span class="text-gray-500">Tidak ada foto</span>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                {{-- Kolom Informasi Kontak & Peta --}}
+                <div class="space-y-8">
+                    <h3 class="text-2xl font-bold text-teal-700">Informasi Kontak</h3>
+                    <div class="space-y-4 text-gray-700">
+                        <div class="flex items-start space-x-3">
+                            <svg class="w-6 h-6 text-teal-600 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                            <span>
+                                Jl. Pendidikan Al-Qur'an No. 123<br>
+                                Kelurahan Mengaji, Kecamatan Iqra<br>
+                                Jakarta, 12345
+                            </span>
                         </div>
-                    @endif
+                        <div class="flex items-center space-x-3">
+                            <svg class="w-6 h-6 text-teal-600 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+                            <a href="tel:0211234567" class="hover:text-teal-600">(021) 123-4567</a>
+                        </div>
+                         <div class="flex items-center space-x-3">
+                           <svg class="w-6 h-6 text-teal-600 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                            <a href="mailto:info@tpqanda.sch.id" class="hover:text-teal-600">info@tpqanda.sch.id</a>
+                        </div>
                     </div>
-                    <h3 class="mb-2 text-xl font-semibold text-teal-700 hover:text-teal-800">
-                        {{-- Link ke halaman detail pengumuman --}}
-                        <a href="{{ route('pengumuman.show', $item->slug ?? $item->id) }}">{{ $item->judul }}</a> {{-- Gunakan $item->judul --}}
-                    </h3>
-                    <p class="text-sm text-gray-500 mb-3">
-                        {{-- Gunakan published_at dan format dengan Carbon, dari $item --}}
-                        <time datetime="{{ $item->published_at ? $item->published_at->toIso8601String() : '' }}">
-                            {{ $item->published_at ? $item->published_at->translatedFormat('d F Y, H:i') : ($item->created_at ? $item->created_at->translatedFormat('d F Y, H:i') : 'Tanggal tidak tersedia') }}
-                        </time>
-                        {{-- Akses user dari $item --}}
-                        @if($item->user)
-                         - {{ $item->user->name }}
-                        @endif
-                    </p>
-                    <div class="text-gray-700 mb-4 flex-grow prose prose-sm max-w-none line-clamp-4"> {{-- Tambahkan prose untuk styling konten HTML --}}
-                        {!! \Illuminate\Support\Str::limit(strip_tags($item->konten), 120) !!} {{-- Gunakan $item->konten --}}
+                    {{-- Peta (Placeholder) --}}
+                    <div class="mt-8 rounded-lg overflow-hidden shadow-md h-64 bg-gray-200 flex items-center justify-center">
+                         <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.666427382343!2d106.82496417475143!3d-6.175392393809053!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5d2e764b12d%3A0x3d2ad6e1e0e9bcc8!2sMonumen%20Nasional!5e0!3m2!1sid!2sid!4v1716550000000!5m2!1sid!2sid" 
+                            width="100%" 
+                            height="100%" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
                     </div>
-                    {{-- Link ke halaman detail pengumuman --}}
-                    <a href="{{ route('pengumuman.show', $item->slug ?? $item->id) }}" class="inline-flex items-center font-medium text-teal-600 hover:text-teal-700 hover:underline mt-auto">
-                        Baca Selengkapnya
-                        <svg class="w-4 h-4 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                        </svg>
-                    </a>
-                </article>
-                @endforeach
+                </div>
+
+                {{-- Kolom Form Kontak --}}
+                <div class="bg-gray-50 p-8 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-bold text-teal-700 mb-6">Kirim Pesan</h3>
+                    <form action="#" method="POST" class="space-y-6">
+                        @csrf {{-- Jika menggunakan Laravel --}}
+                        <div>
+                            <label for="nama" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
+                            <div class="mt-1">
+                                <input type="text" name="nama" id="nama" autocomplete="name" required class="block w-full shadow-sm sm:text-sm border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">Alamat Email</label>
+                            <div class="mt-1">
+                                <input id="email" name="email" type="email" autocomplete="email" required class="block w-full shadow-sm sm:text-sm border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500">
+                            </div>
+                        </div>
+                         <div>
+                            <label for="subjek" class="block text-sm font-medium text-gray-700">Subjek</label>
+                            <div class="mt-1">
+                                <input type="text" name="subjek" id="subjek" required class="block w-full shadow-sm sm:text-sm border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="pesan" class="block text-sm font-medium text-gray-700">Pesan Anda</label>
+                            <div class="mt-1">
+                                <textarea id="pesan" name="pesan" rows="4" required class="block w-full shadow-sm sm:text-sm border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500"></textarea>
+                            </div>
+                        </div>
+                        <div>
+                            <button type="submit" class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition duration-150 ease-in-out">
+                                Kirim Pesan
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-
-            @if(!$showAll && $pengumumans instanceof \Illuminate\Pagination\LengthAwarePaginator)
-            <div class="mt-12">
-                {{ $pengumumans->appends(request()->query())->links() }} {{-- request()->query() akan membawa semua parameter query string saat ini --}}
-            </div>
-            @endif
-        @endif
-
-        {{-- Tombol Lihat Semua Pengumuman (Opsional) --}}
-        @if(!$showAll && $pengumumans instanceof \Illuminate\Pagination\LengthAwarePaginator && $pengumumans->hasMorePages())
-            <div class="text-center mt-12">
-                {{-- Tambahkan parameter show_all=1 ke URL --}}
-                <a href="{{ route('pengumuman.index', array_merge(request()->query(), ['show_all' => 1])) }}" class="text-white bg-teal-600 hover:bg-teal-700 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-6 py-3 transition duration-150 ease-in-out">
-                    Lihat Semua Pengumuman
-                </a>
-            </div>
-            @endif
-    </div>
-</section>
-
-{{-- @endsection --}}
-
-    <div class="section-divider max-w-screen-xl mx-auto px-4"></div> 
+        </div>
+    </section>
 
 </main>
-        
-        <div class="section-divider-black max-w-screen-xl mx-auto px-4"></div> 
-
-       
-
-        <!-- <div class="section-divider max-w-screen-xl mx-auto px-4"></div>  -->
-    </main>
 
     <footer id="kontak" class="bg-teal-700 text-white"> 
         <div class="mx-auto w-full max-w-screen-xl p-4 py-10 lg:py-12"> 
@@ -257,7 +203,7 @@
                     <h2 class="mb-6 text-sm font-semibold uppercase text-white">Navigasi</h2>
                     <ul class="text-teal-100 font-medium">
                         <li class="mb-4">
-                            <a href="/" class="text-white hover:underline hover:text-white">Beranda</a>
+                            <a href="" class="text-white hover:underline hover:text-white">Beranda</a>
                         </li>
                         <li class="mb-4">
                             <a href="#tentang" class="text-white hover:underline hover:text-white">Tentang Kami</a>

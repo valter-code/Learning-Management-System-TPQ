@@ -38,7 +38,7 @@ class PengumumanResource extends Resource
     protected static ?string $navigationLabel = 'Pengumuman'; // Label di sidebar menu
     protected static ?string $slug = 'pengumuman'; // Atau 'pengumumans' jika Anda lebih suka plural
     protected static ?string $title = 'pengumuman'; 
-
+    protected static ?int $navigationSort = 3;
     protected static ?string $navigationIcon = 'heroicon-o-megaphone';
     protected static ?string $navigationGroup = 'Konten Website'; // Contoh grup navigasi
     protected static ?string $recordTitleAttribute = 'judul'; // Untuk judul di breadcrumbs dll.

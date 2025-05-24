@@ -2,31 +2,33 @@
 
 namespace App\Filament\Akademik\Resources;
 
-use App\Filament\Akademik\Resources\SantriResource\Pages;
+use Filament\Forms;
 // use App\Filament\Akademik\Resources\SantriResource\RelationManagers; // Bisa ditambahkan nanti
 use App\Models\User;
+use Filament\Tables;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use App\Models\Kelas; // Import model Kelas
 use App\Enums\UserRole; // Import UserRole Enum
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope; // Jika Anda menggunakan soft delete
-use Illuminate\Support\Facades\Hash; // Untuk hashing password
+use App\Filament\Akademik\Resources\SantriResource\Pages;
 use Filament\Forms\Components\Section; // Untuk grouping form
+use Illuminate\Support\Facades\Hash; // Untuk hashing password
+use Illuminate\Database\Eloquent\SoftDeletingScope; // Jika Anda menggunakan soft delete
 
 class SantriResource extends Resource
 {
-    protected static ?string $model = User::class; // Model tetap User
+    protected static ?string $model = User::class; 
 
-    protected static ?string $navigationLabel = 'Manajemen Santri'; // Label di navigasi
-    protected static ?string $pluralModelLabel = 'Santri'; // Label jamak
-    protected static ?string $modelLabel = 'Santri'; // Label tunggal
-
-    protected static ?string $navigationIcon = 'heroicon-o-users'; // Ganti ikon jika perlu
-    protected static ?string $navigationGroup = 'Manajemen Pengguna'; // Grup navigasi
+    protected static ?string $navigationLabel = 'Manajemen Santri'; 
+    protected static ?string $pluralModelLabel = 'Santri'; 
+    protected static ?string $modelLabel = 'Santri'; 
+    protected static ?string $navigationIcon = 'heroicon-o-users'; 
+    protected static ?string $navigationGroup = 'Manajemen Pengguna'; 
+    protected static ?int $navigationSort = 1; 
 
     // Filter query agar hanya menampilkan user dengan role 'santri'
     public static function getEloquentQuery(): Builder
@@ -169,4 +171,9 @@ class SantriResource extends Resource
             'edit' => Pages\EditSantri::route('/{record}/edit'),
         ];
     }
+
+    public static function canViewAny(): bool { $user = Auth::user(); return $user && ($user->role === UserRole::ADMIN || $user->role === UserRole::AKADEMIK); }
+    public static function canCreate(): bool { $user = Auth::user(); return $user && ($user->role === UserRole::ADMIN || $user->role === UserRole::AKADEMIK); }
+    public static function canEdit(Model $record): bool { $user = Auth::user(); return $user && ($user->role === UserRole::ADMIN || $user->role === UserRole::AKADEMIK); }
+    public static function canDelete(Model $record): bool { $user = Auth::user(); return $user && ($user->role === UserRole::ADMIN || $user->role === UserRole::AKADEMIK); }
 }

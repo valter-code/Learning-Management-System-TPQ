@@ -29,6 +29,7 @@ class KegiatanGaleriResource extends Resource
     protected static ?string $modelLabel = 'Kegiatan Galeri';
     protected static ?string $slug = 'kegiatan-galeri'; // Slug URL
     protected static ?string $recordTitleAttribute = 'nama_kegiatan';
+    protected static ?int $navigationSort = 4; // Paling atas di grupnya
 
 
     public static function form(Form $form): Form

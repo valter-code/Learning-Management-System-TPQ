@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Akademik\Resources\SantriResource;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
@@ -35,6 +36,9 @@ class PengajarPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Sky,
             ])
+            ->resources([
+                SantriResource::class,
+            ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -43,7 +47,7 @@ class PengajarPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
-                // PengajarWelcomeWidget::class,
+                //PengajarWelcomeWidget::class,
                 KelasAjarWidget::class,             // Widget baru Anda
                 AbsensiPengajarWidget::class, // Daftarkan widget di sini
             ])

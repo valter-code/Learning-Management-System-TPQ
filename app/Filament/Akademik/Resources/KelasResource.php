@@ -18,8 +18,10 @@ class KelasResource extends Resource
 {
     protected static ?string $model = Kelas::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-academic-cap'; // Ganti ikon jika perlu
-    protected static ?string $navigationGroup = 'Manajemen Akademik'; // Grup navigasi
+    protected static ?string $navigationIcon = 'heroicon-o-academic-cap'; 
+    protected static ?string $navigationGroup = 'Manajemen Akademik'; 
+    protected static ?int $navigationSort = 2; // Paling atas di grupnya
+
 
     public static function form(Form $form): Form
     {

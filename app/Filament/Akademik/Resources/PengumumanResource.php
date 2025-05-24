@@ -79,6 +79,8 @@ class PengumumanResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-megaphone';
 
     protected static ?string $navigationGroup = 'Konten Website'; 
+    protected static ?int $navigationSort = 3; // Paling atas di grupnya
+
 
     protected static ?string $recordTitleAttribute = 'judul'; 
 

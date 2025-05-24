@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\KegiatanGaleri;
-// Foto model tidak perlu di-import di sini jika kita hanya mengambilnya melalui relasi KegiatanGaleri
-// use App\Models\Foto; 
-use App\Enums\StatusPublikasiGaleri; // Pastikan Enum ini diimport dan namanya sesuai
+use App\Enums\StatusPublikasiGaleri; 
 use Illuminate\Http\Request;
 
 class GaleriPublikController extends Controller
@@ -22,24 +20,24 @@ class GaleriPublikController extends Controller
                                         ->orderBy('nama_kegiatan', 'asc')
                                         ->get();
 
-        // Query dasar untuk KegiatanGaleri yang akan ditampilkan di halaman
+        // Query untuk KegiatanGaleri yang akan ditampilkan di halaman
         $queryKegiatanGaleri = KegiatanGaleri::query()
                                 ->where('status_publikasi', StatusPublikasiGaleri::TERBIT->value)
                                 ->whereNotNull('tanggal_publikasi')
                                 ->where('tanggal_publikasi', '<=', now())
                                 ->with(['fotos' => function ($query) { 
                                     $query->orderBy('urutan_foto', 'asc');
-                                    // Jika Anda ingin membatasi jumlah foto yang ditampilkan per kegiatan di halaman ini:
+                                    // kalo ingin membatasi jumlah foto yang ditampilkan per kegiatan di halaman ini
                                     // $query->limit(6); 
                                 }])
                                 ->orderBy('tanggal_publikasi', 'desc');
 
-        // Jika ada kegiatan galeri yang dipilih dari filter, tampilkan hanya kegiatan itu
+        // Jika ada kegiatan galeri yang dipilih dari filter, tampilkan hanya kegiatan ini
         if ($selectedKegiatanId) {
             $queryKegiatanGaleri->where('id', $selectedKegiatanId);
         }
 
-        // Paginasi diterapkan pada daftar Kegiatan Galeri
+        // Paginasi 
         $daftarTampilKegiatanGaleri = $queryKegiatanGaleri->paginate(5);
 
         return view('galeri', [

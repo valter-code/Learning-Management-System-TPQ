@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $pengumuman->judul }} - {{ config('app.name') }}</title> {{-- Nama TPQ bisa dinamis nanti --}}
+    <title>{{ config('app.name') }}</title> {{-- Nama TPQ bisa dinamis nanti --}}
 
     <link rel="icon" href="https://placehold.co/32x32/10B981/FFFFFF?text=TPQ" type="image/png">
 
@@ -41,10 +41,7 @@
             <span class="self-center text-2xl font-semibold whitespace-nowrap text-teal-700">{{ config('app.name') }}</span>
         </a>
         <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-            <a href="{{ route('registrasi.santri.create') }}" class="inline-block text-white bg-teal-600 hover:bg-teal-700 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-4 py-2 text-center transition duration-150 ease-in-out">
-            Daftar Sekarang!
-            </a>
-
+            <button type="button" class="text-white bg-teal-600 hover:bg-teal-700 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-4 py-2 text-center transition duration-150 ease-in-out">Daftar Sekarang!</button>
             <button data-collapse-toggle="navbar-cta" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-600 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="navbar-cta" aria-expanded="false">
                 <span class="sr-only">Open main menu</span>
                 <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
@@ -74,67 +71,121 @@
         </div>
     </nav>
 
-    <main>
-        {{-- SECTION HEADER HALAMAN DETAIL PENGUMUMAN --}}
-        <section id="pengumuman-detail-header" class="bg-teal-50 py-10 px-4">
-            <div class="max-w-screen-xl mx-auto">
-                <div class="md:flex md:items-center md:justify-between">
-                    <div class="max-w-3xl">
-                        <h1 class="text-3xl font-extrabold tracking-tight text-teal-800 sm:text-4xl">{{ $pengumuman->judul }}</h1>
-                        <p class="mt-3 text-sm text-gray-600">
-                            Dipublikasikan pada: {{ $pengumuman->published_at ? $pengumuman->published_at->translatedFormat('d F Y, H:i') : ($pengumuman->created_at ? $pengumuman->created_at->translatedFormat('d F Y, H:i') : 'Tanggal tidak tersedia') }}
-                            @if($pengumuman->user)
-                                <span class="mx-1">&bull;</span> Oleh: {{ $pengumuman->user->name }}
-                            @endif
-                        </p>
-                    </div>
-                    <div class="mt-4 md:mt-0">
-                        <nav aria-label="Breadcrumb">
-                            <ol class="flex items-center space-x-2 text-sm font-medium text-gray-600">
-                                <li><a href="{{ url('/') }}" class="hover:text-teal-600">Beranda</a></li>
-                                <li>
-                                    <svg class="w-3 h-3 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                                </li>
-                                <li><a href="{{ route('pengumuman.index') }}" class="hover:text-teal-600">Pengumuman</a></li>
-                                <li>
-                                    <svg class="w-3 h-3 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                                </li>
-                                <li><span class="text-teal-700" aria-current="page">Detail</span></li>
-                            </ol>
-                        </nav>
-                    </div>
-                </div>
+    <main class="py-12 px-4">
+        <div class="max-w-3xl mx-auto bg-white p-6 md:p-10 rounded-xl shadow-2xl">
+            <div class="text-center mb-10">
+                <h1 class="text-3xl md:text-4xl font-extrabold text-teal-700">Formulir Pendaftaran Santri Baru</h1>
+                <p class="mt-3 text-gray-600">Silakan isi data dengan lengkap dan benar.</p>
             </div>
-        </section>
 
-        {{-- SECTION KONTEN DETAIL PENGUMUMAN --}}
-        <section id="pengumuman-detail-content" class="py-12 bg-white px-4"> {{-- Latar belakang putih untuk konten --}}
-            <div class="max-w-screen-lg mx-auto">
-                <article class="md:flex md:space-x-8">
+            @if ($errors->any())
+                <div class="mb-6 bg-red-50 border-l-4 border-red-400 p-4" role="alert">
+                    <p class="font-bold text-red-700">Oops! Ada beberapa kesalahan:</p>
+                    <ul class="mt-2 list-disc list-inside text-sm text-red-600">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            
+            {{-- Pesan sukses jika ada dari redirect --}}
+            @if(session('success'))
+                <div class="mb-6 bg-green-50 border-l-4 border-green-400 text-green-700 p-4" role="alert">
+                    <p class="font-bold">Sukses!</p>
+                    <p>{{ session('success') }}</p>
+                </div>
+            @endif
+
+
+            <form action="{{ route('registrasi.santri.store') }}" method="POST">
+                @csrf
+
+                {{-- DATA CALON SANTRI --}}
+                <fieldset class="mb-8">
+                    <legend class="text-xl font-semibold text-teal-600 mb-4 pb-2 border-b-2 border-teal-500">I. Data Calon Santri</legend>
                     
-                    @if($pengumuman->foto)
-                    <div class="md:w-1/3 lg:w-2/5 flex-shrink-0 mb-6 md:mb-0">
-                        <img src="{{ Storage::url($pengumuman->foto) }}" alt="Foto {{ $pengumuman->judul }}" class="rounded-lg w-full shadow-md object-cover aspect-video md:aspect-auto">
-                    </div>
-                    @endif
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                        <div class="md:col-span-2">
+                            <label for="nama_lengkap_calon_santri" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap <span class="text-red-500">*</span></label>
+                            <input type="text" name="nama_lengkap_calon_santri" id="nama_lengkap_calon_santri" value="{{ old('nama_lengkap_calon_santri') }}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm input-focus-teal sm:text-sm p-3" placeholder="Nama sesuai Akta Kelahiran">
+                        </div>
 
-                    <div class="{{ $pengumuman->foto ? 'md:w-2/3 lg:w-3/5' : 'w-full' }}">
-                        <div class="prose prose-lg max-w-none text-gray-800">
-                            {!! $pengumuman->konten !!}
+                        <div>
+                            <label for="tempat_lahir_calon_santri" class="block text-sm font-medium text-gray-700 mb-1">Tempat Lahir</label>
+                            <input type="text" name="tempat_lahir_calon_santri" id="tempat_lahir_calon_santri" value="{{ old('tempat_lahir_calon_santri') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm input-focus-teal sm:text-sm p-3">
+                        </div>
+
+                        <div>
+                            <label for="tanggal_lahir_calon_santri" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Lahir <span class="text-red-500">*</span></label>
+                            <input type="date" name="tanggal_lahir_calon_santri" id="tanggal_lahir_calon_santri" value="{{ old('tanggal_lahir_calon_santri') }}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm input-focus-teal sm:text-sm p-3">
+                        </div>
+
+                        <div>
+                            <label for="jenis_kelamin_calon_santri" class="block text-sm font-medium text-gray-700 mb-1">Jenis Kelamin <span class="text-red-500">*</span></label>
+                            <select name="jenis_kelamin_calon_santri" id="jenis_kelamin_calon_santri" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm input-focus-teal sm:text-sm p-3">
+                                <option value="">Pilih Jenis Kelamin</option>
+                                <option value="laki-laki" {{ old('jenis_kelamin_calon_santri') == 'laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                                <option value="perempuan" {{ old('jenis_kelamin_calon_santri') == 'perempuan' ? 'selected' : '' }}>Perempuan</option>
+                            </select>
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label for="alamat_calon_santri" class="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap Santri</label>
+                            <textarea name="alamat_calon_santri" id="alamat_calon_santri" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm input-focus-teal sm:text-sm p-3" placeholder="Jl, RT/RW, Kelurahan, Kecamatan, Kota/Kab, Provinsi, Kode Pos">{{ old('alamat_calon_santri') }}</textarea>
                         </div>
                     </div>
-                </article>
+                </fieldset>
 
+                {{-- DATA WALI SANTRI --}}
+                <fieldset class="mb-8">
+                    <legend class="text-xl font-semibold text-teal-600 mb-4 pb-2 border-b-2 border-teal-500">II. Data Wali Santri</legend>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                        <div>
+                            <label for="nama_wali" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap Wali <span class="text-red-500">*</span></label>
+                            <input type="text" name="nama_wali" id="nama_wali" value="{{ old('nama_wali') }}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm input-focus-teal sm:text-sm p-3" placeholder="Ayah/Ibu/Wali Lainnya">
+                        </div>
+                        <div>
+                            <label for="nomor_telepon_wali" class="block text-sm font-medium text-gray-700 mb-1">Nomor Telepon/HP Wali <span class="text-red-500">*</span></label>
+                            <input type="tel" name="nomor_telepon_wali" id="nomor_telepon_wali" value="{{ old('nomor_telepon_wali') }}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm input-focus-teal sm:text-sm p-3" placeholder="Contoh: 08123456789">
+                        </div>
+                        <div>
+                            <label for="email_wali" class="block text-sm font-medium text-gray-700 mb-1">Email Wali<span class="text-red-500">*</span></label>
+                            <input type="email" name="email_wali" id="email_wali" value="{{ old('email_wali') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm input-focus-teal sm:text-sm p-3" placeholder="contoh@gmail.com" required>
+                        </div>
+                        <div>
+                            <label for="pekerjaan_wali" class="block text-sm font-medium text-gray-700 mb-1">Pekerjaan Wali<span class="text-red-500">*</span></label>
+                            <input type="text" name="pekerjaan_wali" id="pekerjaan_wali" value="{{ old('pekerjaan_wali') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm input-focus-teal sm:text-sm p-3" required>
+                        </div>
+                    </div>
+                </fieldset>
+
+                {{-- INFORMASI TAMBAHAN --}}
+                <fieldset class="mb-8">
+                    <legend class="text-xl font-semibold text-teal-600 mb-4 pb-2 border-b-2 border-teal-500">III. Informasi Tambahan</legend>
+                    <div>
+                        <label for="catatan_tambahan" class="block text-sm font-medium text-gray-700 mb-1">Catatan (Riwayat penyakit, alergi, atau informasi lain yang relevan)</label>
+                        <textarea name="catatan_tambahan" id="catatan_tambahan" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm input-focus-teal sm:text-sm p-3">{{ old('catatan_tambahan') }}</textarea>
+                    </div>
+                </fieldset>
+
+                {{-- PERSETUJUAN DAN SUBMIT --}}
                 <div class="mt-10 pt-6 border-t border-gray-200">
-                    <a href="{{ route('pengumuman.index') }}" class="inline-flex items-center text-teal-600 hover:text-teal-700 font-medium">
-                        <svg class="w-5 h-5 mr-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0l4 4M1 5l4-4"/>
-                        </svg>
-                        Kembali ke Semua Pengumuman
-                    </a>
+                    <div class="flex items-start mb-6">
+                        <div class="flex items-center h-5">
+                            <input id="persetujuan" name="persetujuan" type="checkbox" value="1" required class="focus:ring-teal-500 h-4 w-4 text-teal-600 border-gray-300 rounded input-focus-teal">
+                        </div>
+                        <div class="ml-3 text-sm">
+                            <label for="persetujuan" class="font-medium text-gray-700">Saya menyatakan bahwa data yang saya isikan adalah benar dan saya menyetujui <a href="#" class="text-teal-600 hover:underline">syarat dan ketentuan</a> yang berlaku.</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full text-white bg-teal-600 hover:bg-teal-700 focus:ring-4 focus:outline-none focus:ring-teal-300 font-semibold rounded-lg text-lg px-4 py-3 text-center transition duration-150 ease-in-out shadow-md">
+                    Kirim Formulir Pendaftaran
+                    </button>
                 </div>
-            </div>
-        </section>
+            </form>
+        </div>
     </main>
 
     {{-- FOOTER --}}
