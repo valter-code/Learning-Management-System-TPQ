@@ -17,6 +17,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use App\Filament\Santri\Widgets\AbsensiSantriMandiriWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 
 class SantriPanelProvider extends PanelProvider
@@ -28,7 +29,7 @@ class SantriPanelProvider extends PanelProvider
             ->path('santri')
             ->login()
             ->colors([
-                'primary' => Color::Teal,
+                'primary' => Color::Green,
             ])
             ->discoverResources(in: app_path('Filament/Santri/Resources'), for: 'App\\Filament\\Santri\\Resources')
             ->discoverPages(in: app_path('Filament/Santri/Pages'), for: 'App\\Filament\\Santri\\Pages')
@@ -38,6 +39,7 @@ class SantriPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Santri/Widgets'), for: 'App\\Filament\\Santri\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
+                AbsensiSantriMandiriWidget::class,
                 KelasDiikutiWidget::class,
             ])
             ->middleware([

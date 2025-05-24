@@ -234,9 +234,9 @@ class PertemuanResource extends Resource
                 Components\Section::make('Detail Pertemuan')
                     ->columns(2)
                     ->schema([
-                        Components\TextEntry::make('judul_pertemuan')->columnSpanFull(),
-                        Components\TextEntry::make('kelas.nama_kelas')->label('Kelas'),
-                        Components\TextEntry::make('tanggal_pertemuan')->date('d M Y H:i'),
+                        Components\TextEntry::make('judul_pertemuan')->columnSpanFull()->size(Components\TextEntry\TextEntrySize::Large)->weight(FontWeight::Bold),
+                        Components\TextEntry::make('kelas.nama_kelas')->label('Kelas')->size(Components\TextEntry\TextEntrySize::Large)->weight(FontWeight::Bold),
+                        Components\TextEntry::make('tanggal_pertemuan')->date('d M Y H:i')->size(Components\TextEntry\TextEntrySize::Large)->weight(FontWeight::Bold),
                         Components\TextEntry::make('status_pengumpulan')
                         ->badge()
                         ->formatStateUsing(function ($state): string { // $state di sini adalah objek StatusPengumpulanTugasEnum atau null
@@ -267,7 +267,7 @@ class PertemuanResource extends Resource
                                 default => 'gray',
                             } : 'gray'),
                         Components\TextEntry::make('deskripsi_pertemuan')
-                            ->markdown()->placeholder('Tidak ada deskripsi.')->columnSpanFull(),
+                            ->markdown()->placeholder('Tidak ada deskripsi.')->columnSpanFull()->size(Components\TextEntry\TextEntrySize::Large)->weight(FontWeight::Bold),
                     ]),
 
                 Components\Section::make('Materi Pelajaran')
@@ -276,11 +276,11 @@ class PertemuanResource extends Resource
                         Components\RepeatableEntry::make('itemsMateri')
                             ->label(null)
                             ->schema([
-                                Components\TextEntry::make('judul_materi')->label('Judul')->weight('medium'),
+                                Components\TextEntry::make('judul_materi')->label('Judul')->size(Components\TextEntry\TextEntrySize::Large)->weight(FontWeight::Bold),
                                 Components\TextEntry::make('tipe_materi')->label('Tipe')->badge()
                                     ->formatStateUsing(fn (?string $state): string => ucfirst($state ?? '')),
-                                Components\TextEntry::make('deskripsi_materi')->label('Deskripsi')->markdown()->placeholder('N/A')->columnSpanFull(),
-                                Components\TextEntry::make('url_link_materi')->label('Link Materi')->url(fn (?string $state): ?string => $state)->openUrlInNewTab()->visible(fn (PertemuanMateri $record) => $record->tipe_materi === 'link' && filled($record->url_link_materi))->placeholder(null)->columnSpanFull(),
+                                Components\TextEntry::make('deskripsi_materi')->label('Deskripsi')->markdown()->placeholder('N/A')->columnSpanFull()->size(Components\TextEntry\TextEntrySize::Large)->weight(FontWeight::Bold),
+                                Components\TextEntry::make('url_link_materi')->label('Link Materi')->url(fn (?string $state): ?string => $state)->openUrlInNewTab()->visible(fn (PertemuanMateri $record) => $record->tipe_materi === 'link' && filled($record->url_link_materi))->placeholder(null)->columnSpanFull()->size(Components\TextEntry\TextEntrySize::Medium),
                                 Components\TextEntry::make('path_file_materi')->label('File Materi')->formatStateUsing(fn (?string $state): string => $state ? basename($state) : 'Tidak ada file')->url(fn (?string $state): ?string => $state ? Storage::disk('public')->url($state) : null, shouldOpenInNewTab: true)->visible(fn (PertemuanMateri $record) => $record->tipe_materi === 'file' && filled($record->path_file_materi))->placeholder(null)->icon('heroicon-o-document-arrow-down')->columnSpanFull(),
                                 Components\TextEntry::make('konten_text_materi')->label('Isi Materi')->markdown()->visible(fn (PertemuanMateri $record) => $record->tipe_materi === 'text' && filled($record->konten_text_materi))->placeholder(null)->columnSpanFull(),
                             ])->grid(1)->placeholder('Tidak ada materi untuk pertemuan ini.'),
@@ -293,14 +293,15 @@ class PertemuanResource extends Resource
                         Components\RepeatableEntry::make('itemsTugas')
                             ->label(null)
                             ->schema([
-                                Components\TextEntry::make('judul_tugas')->label('Judul Tugas')->weight('medium'),
-                                Components\TextEntry::make('deadline_tugas')->dateTime('d M Y H:i')->label('Deadline'),
+                                Components\TextEntry::make('judul_tugas')->label('Judul Tugas')->size(Components\TextEntry\TextEntrySize::Large)->weight(FontWeight::Bold),
+                                Components\TextEntry::make('deadline_tugas')->dateTime('d M Y H:i')->label('Deadline')->size(Components\TextEntry\TextEntrySize::Large)->weight(FontWeight::Bold),
                                 Components\TextEntry::make('deskripsi_tugas')
                                     ->label('Deskripsi')
-                                    ->markdown()->placeholder('N/A')->columnSpanFull(),
+                                    ->markdown()->placeholder('N/A')->columnSpanFull()->size(Components\TextEntry\TextEntrySize::Large)->weight(FontWeight::Bold),
                                 Components\TextEntry::make('file_lampiran_tugas')
                                     ->label('Lampiran Soal')
                                     ->formatStateUsing(fn (?string $state): string => $state ? basename($state) : 'Tidak ada lampiran')
+                                    
                                     ->url(fn (?string $state): ?string => $state ? Storage::disk('public')->url($state) : null, shouldOpenInNewTab: true)
                                     ->visible(fn (?string $state): bool => filled($state))
                                     ->icon('heroicon-o-document-arrow-down')

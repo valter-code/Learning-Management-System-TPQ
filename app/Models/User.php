@@ -106,10 +106,14 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return $this->hasMany(PengumpulanTugas::class, 'santri_id');
     }
 
-//     public function user(): BelongsTo
-// {
-//     return $this->belongsTo(User::class, 'user_id'); // 'user_id' adalah foreign key di tabel pertemuan
-// }
-// ...
+    public function riwayatAbsensiSantri(): HasMany // Sebagai santri
+    {
+        return $this->hasMany(AbsensiSantri::class, 'santri_id');
+    }
+
+    public function absensiYangDilakukanPengajar(): HasMany // Sebagai pengajar
+    {
+        return $this->hasMany(AbsensiSantri::class, 'pengajar_id');
+    }
     
 }

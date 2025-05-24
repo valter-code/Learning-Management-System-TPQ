@@ -35,17 +35,25 @@ class PendaftarSantriResource extends Resource
     protected static ?string $pluralModelLabel = 'Pendaftar Santri';
     protected static ?string $slug = 'pendaftar-santri';
 
-    protected static ?string $navigationGroup = 'Manajemen Pengguna'; // Atau grup lain
+    protected static ?string $navigationGroup = 'Manajemen Pengguna'; 
     protected static ?int $navigationSort = 3; // Sesuaikan urutan
 
-    protected static ?string $navigationBadgeTooltip = 'Santri Baru';
+    protected static ?string $navigationBadgeTooltip = 'Santri Baru Yang Belum Diproses';
     public static function getNavigationBadge(): ?string
-{
-    return static::getModel()::count();
-}
+    {
+        
+        $statusPending = StatusPendaftaranSantri::PENDING->value;
+        $statusDiproses = StatusPendaftaranSantri::DIPROSES->value;
+
+        // Hitung jumlah pendaftar dengan status 'pending' ATAU 'diproses'
+        $count = static::getModel()::whereIn('status_pendaftaran', [$statusPending, $statusDiproses])->count();
+
+        // Hanya tampilkan badge jika count lebih dari 0
+        return $count > 0 ? (string) $count : null;
+    }
 
 
-    public static function form(Form $form): Form // Form ini untuk edit catatan admin atau status
+    public static function form(Form $form): Form 
     {
         return $form
         ->schema([

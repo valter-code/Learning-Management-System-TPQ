@@ -258,7 +258,7 @@ class PertemuanResource extends Resource
                                                                         ->default(StatusPengumpulanTugasEnum::DINILAI->value)
                                                                         ->helperText('Pilih status akhir setelah dinilai.'),
                                                                 ])
-                                                                ->mountUsing(function (ComponentContainer $form, PengumpulanTugas $record) {
+                                                                ->mountUsing(function (Form $form, PengumpulanTugas $record) {
                                                                     $form->fill([
                                                                         'nilai' => $record->nilai,
                                                                         'komentar_pengajar' => $record->komentar_pengajar,
@@ -296,12 +296,12 @@ class PertemuanResource extends Resource
                             ->columnSpanFull(),
                     ])->columnSpanFull(),
             ])
-            ->columns(1); // Atur jumlah kolom untuk layout utama Infolist
+            ->columns(1); 
     }
 
     public static function table(Table $table): Table
     {
-        // Metode table tetap sama
+        
         return $table
             ->columns([
                 Stack::make([
@@ -317,7 +317,6 @@ class PertemuanResource extends Resource
                                 ->color('gray')
                                 ->size(TextColumn\TextColumnSize::Small)
                                 ->alignment(Alignment::End),
-                                // Menampilkan siapa yang membuat pertemuan
                     
                     TextColumn::make('user.name')
                     ->label(null)

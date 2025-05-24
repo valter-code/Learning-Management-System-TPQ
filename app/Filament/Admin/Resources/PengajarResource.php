@@ -25,6 +25,12 @@ class PengajarResource extends Resource
     protected static ?string $pluralModelLabel = 'Staff Pengajar';
     protected static ?string $slug = 'staff-pengajar';
 
+    protected static ?string $navigationBadgeTooltip = 'Jumlah Staff Pengajar';
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::where('role', UserRole::AKADEMIK)->count();
+    }
+
     protected static ?string $navigationGroup = 'Manajemen Pengguna';
     protected static ?int $navigationSort = 1; // Paling atas di grup "Manajemen Pengguna"
 

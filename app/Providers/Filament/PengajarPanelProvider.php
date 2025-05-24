@@ -2,7 +2,6 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Akademik\Resources\SantriResource;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
@@ -13,6 +12,7 @@ use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Filament\Http\Middleware\AuthenticateSession;
+use App\Filament\Akademik\Resources\SantriResource;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 // use App\Filament\Widgets\AbsensiHariIniWidget2;
 // use App\Filament\Pengajar\Widgets\AbsensiPengajarWidget;
@@ -22,6 +22,7 @@ use App\Filament\Pengajar\Widgets\PengajarWelcomeWidget;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use App\Filament\Pengajar\Resources\RiwayatAbsensiResource;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 
 class PengajarPanelProvider extends PanelProvider
@@ -38,6 +39,8 @@ class PengajarPanelProvider extends PanelProvider
             ])
             ->resources([
                 SantriResource::class,
+                
+                RiwayatAbsensiResource::class, // Pastikan Anda sudah membuat resource ini
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')

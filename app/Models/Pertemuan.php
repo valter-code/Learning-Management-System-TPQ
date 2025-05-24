@@ -75,8 +75,8 @@ class Pertemuan extends Model
         return $this->hasMany(PertemuanTugasItem::class, 'pertemuan_id');
     }
 
-//     public function user(): BelongsTo
-// {
-//     return $this->belongsTo(User::class, 'user_id'); // 'user_id' adalah foreign key di tabel pertemuan
-// }
+    public function absensiSantris(): HasMany
+    {
+        return $this->hasMany(AbsensiSantri::class, 'pertemuan_id');
+    }
 }

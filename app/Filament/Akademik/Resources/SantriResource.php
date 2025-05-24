@@ -30,7 +30,11 @@ class SantriResource extends Resource
     protected static ?string $navigationGroup = 'Manajemen Pengguna'; 
     protected static ?int $navigationSort = 1; 
 
-    // Filter query agar hanya menampilkan user dengan role 'santri'
+    protected static ?string $navigationBadgeTooltip = 'Jumlah Santri';
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::where('role', UserRole::SANTRI)->count();
+    }
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->where('role', UserRole::SANTRI);
@@ -66,7 +70,7 @@ class SantriResource extends Resource
                             ->directory('avatars/santri')
                             ->columnSpanFull(),
                         // Role diset otomatis, tidak perlu input manual dari user akademik
-                        // Forms\Components\Hidden::make('role')->default(UserRole::SANTRI->value),
+                        Forms\Components\Hidden::make('role')->default(UserRole::SANTRI->value),
                     ]),
 
                 Section::make('Profil Detail Santri')
