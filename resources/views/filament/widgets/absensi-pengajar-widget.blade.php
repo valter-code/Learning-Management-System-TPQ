@@ -25,8 +25,8 @@
                 ])>
                     Anda sudah melakukan absensi:
                     <span class="font-semibold">{{ ($this->statusAbsenTercatat instanceof \App\Enums\StatusAbsensi) ? $this->statusAbsenTercatat->getLabel() : $this->statusAbsenTercatat }}</span>
-                    @if($this->jamAbsenTercatat)
-                        pada pukul {{ $this->jamAbsenTercatat }}.
+                    @if($this->waktuMasukTercatat)
+                        pada pukul {{ $this->waktuMasukTercatat }}.
                     @else
                         hari ini.
                     @endif

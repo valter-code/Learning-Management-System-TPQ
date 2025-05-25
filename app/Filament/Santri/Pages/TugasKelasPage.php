@@ -14,8 +14,8 @@ class TugasKelasPage extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
     protected static string $view = 'filament.santri.pages.tugas-kelas-page';
-    protected static ?string $navigationLabel = 'Tugas Kelas';
-    protected static ?string $title = 'Tugas Kelas';
+    protected static ?string $navigationLabel = 'Tugas & Materi Kelas';
+    protected static ?string $title = 'Tugas & Materi Kelas';
     protected static ?string $slug = 'tugas-kelas';
     protected static ?int $navigationSort = 2;
 

@@ -1,14 +1,18 @@
 <x-filament-panels::page>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg"> {{-- Latar belakang seperti section pertemuan --}}
         <div>
-            <label for="kelasFilter" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Filter Berdasarkan Kelas:</label>
-            <x-filament::input.select wire:model.live="filterKelasId" id="kelasFilter" class="mt-1">
-                <option value="">Semua Kelas</option>
-                @foreach($this->kelas_filter_options as $kelas)
-                    <option value="{{ $kelas->id }}">{{ $kelas->nama_kelas }}</option>
-                @endforeach
-            </x-filament::input.select>
+            <label for="kelasFilterPage" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Filter Berdasarkan Kelas:</label>
+            <div class="flex rounded-lg shadow-sm mt-1">
+                <x-filament::input.select wire:model.live="selectedKelasId" id="kelasFilterPage" class="!rounded-r-none focus:!border-teal-500 focus:!ring-1 focus:!ring-teal-500 dark:focus:!border-teal-400 dark:focus:!ring-teal-400">
+                    <option value="">Semua Kelas</option>
+                    @foreach($this->kelas_filter_options as $kelas)
+                        <option value="{{ $kelas->id }}">{{ $kelas->nama_kelas }}</option>
+                    @endforeach
+                </x-filament::input.select>
+                </span>
+            </div>
         </div>
+
         <div>
             <label for="statusFilter" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Filter Status Tugas:</label>
             <x-filament::input.select wire:model.live="filterStatus" id="statusFilter" class="mt-1">
@@ -18,7 +22,7 @@
             </x-filament::input.select>
         </div>
     </div>
-
+    
     @if($this->semuaTugasDenganStatus->isEmpty())
         <div class="text-center py-12">
             <x-heroicon-o-document-magnifying-glass class="mx-auto h-12 w-12 text-gray-400"/>

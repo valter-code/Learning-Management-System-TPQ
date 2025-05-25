@@ -30,8 +30,7 @@ class AbsensiPengajarWidget extends Widget // Ganti nama kelas jika perlu
     public bool $sudahAbsenHariIni = false;
     public ?StatusAbsensi $statusAbsenTercatat = null; // Menggunakan Enum
     public ?string $keteranganAbsenTercatat = null;
-    // public ?string $waktuMasukTercatat = null;
-    public ?string $jamAbsenTercatat = null; 
+    public ?string $waktuMasukTercatat = null;
 
     // Untuk mengatur kolom grid di dashboard (opsional)
     // protected int | string | array $columnSpan = 'full'; // Atau sesuaikan, misal 1, 2, 'md' => 2
