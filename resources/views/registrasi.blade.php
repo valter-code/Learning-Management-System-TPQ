@@ -1,11 +1,9 @@
-{{-- resources/views/pengumuman-detail.blade.php --}}
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ config('app.name') }}</title> {{-- Nama TPQ bisa dinamis nanti --}}
+    <title>Pendaftaran Santri {{ config('app.name') }}</title> {{-- Nama TPQ bisa dinamis nanti --}}
 
     <link rel="icon" href="https://placehold.co/32x32/10B981/FFFFFF?text=TPQ" type="image/png">
 
@@ -19,7 +17,7 @@
         body {
             font-family: 'Inter', sans-serif;
         }
-        .prose img { /* Styling untuk gambar di dalam konten rich text */
+        .prose img { 
             max-width: 100%;
             height: auto;
             border-radius: 0.5rem; /* rounded-md */
@@ -27,11 +25,10 @@
             margin-bottom: 1em;
         }
         .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
-            /* color: inherit; */ /* Biarkan default prose atau sesuaikan jika perlu */
         }
     </style>
 </head>
-<body class="bg-gray-100 antialiased"> {{-- Latar belakang utama halaman (light mode) --}}
+<body class="bg-gray-100 antialiased"> 
 
     {{-- NAVIGASI --}}
     <nav class="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
@@ -55,7 +52,7 @@
                 <a href="{{ url('/') }}" class="block py-2 px-3 md:p-0 text-gray-700 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-teal-600">Beranda</a>
             </li>
             <li>
-                <a href="{{ route('pengumuman.index') }}" class="block py-2 px-3 md:p-0 text-teal-600 rounded-sm md:bg-transparent" aria-current="page">Pengumuman</a>
+                <a href="{{ route('pengumuman.index') }}" class="block py-2 px-3 md:p-0 text-gray-700 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-teal-600">Pengumuman</a>
             </li>
             <li>
                 <a href="#galeri" class="block py-2 px-3 md:p-0 text-gray-700 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-teal-600">Galeri</a>
@@ -112,8 +109,8 @@
                         </div>
 
                         <div>
-                            <label for="tempat_lahir_calon_santri" class="block text-sm font-medium text-gray-700 mb-1">Tempat Lahir</label>
-                            <input type="text" name="tempat_lahir_calon_santri" id="tempat_lahir_calon_santri" value="{{ old('tempat_lahir_calon_santri') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm input-focus-teal sm:text-sm p-3">
+                            <label for="tempat_lahir_calon_santri" class="block text-sm font-medium text-gray-700 mb-1">Tempat Lahir<span class="text-red-500">*</span></label>
+                            <input required type="text" name="tempat_lahir_calon_santri" id="tempat_lahir_calon_santri" value="{{ old('tempat_lahir_calon_santri') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm input-focus-teal sm:text-sm p-3">
                         </div>
 
                         <div>
@@ -131,8 +128,8 @@
                         </div>
 
                         <div class="md:col-span-2">
-                            <label for="alamat_calon_santri" class="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap Santri</label>
-                            <textarea name="alamat_calon_santri" id="alamat_calon_santri" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm input-focus-teal sm:text-sm p-3" placeholder="Jl, RT/RW, Kelurahan, Kecamatan, Kota/Kab, Provinsi, Kode Pos">{{ old('alamat_calon_santri') }}</textarea>
+                            <label for="alamat_calon_santri" class="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap Santri<span class="text-red-500">*</span></label>
+                            <textarea required name="alamat_calon_santri" id="alamat_calon_santri" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm input-focus-teal sm:text-sm p-3" placeholder="Jl, RT/RW, Kelurahan, Kecamatan, Kota/Kab, Provinsi, Kode Pos">{{ old('alamat_calon_santri') }}</textarea>
                         </div>
                     </div>
                 </fieldset>
@@ -179,6 +176,9 @@
                             <label for="persetujuan" class="font-medium text-gray-700">Saya menyatakan bahwa data yang saya isikan adalah benar dan saya menyetujui <a href="#" class="text-teal-600 hover:underline">syarat dan ketentuan</a> yang berlaku.</label>
                         </div>
                     </div>
+                        <div class="ml-3 text-sm">
+                        <label for="persetujuan" class="font-medium text-gray-700">Sudah punya akun?<a href="santri/login" class="text-teal-600 hover:underline"> Masuk Disini</a></label>
+                        </div>
 
                     <button type="submit" class="w-full text-white bg-teal-600 hover:bg-teal-700 focus:ring-4 focus:outline-none focus:ring-teal-300 font-semibold rounded-lg text-lg px-4 py-3 text-center transition duration-150 ease-in-out shadow-md">
                     Kirim Formulir Pendaftaran

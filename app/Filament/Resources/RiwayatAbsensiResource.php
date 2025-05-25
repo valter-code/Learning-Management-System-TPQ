@@ -81,7 +81,7 @@ class RiwayatAbsensiResource extends Resource
                     ->label('Dicatat Oleh')
                     ->sortable()
                     ->placeholder('Santri Mandiri/N/A')
-                    ->toggleable(isToggledHiddenByDefault: true), // <-- SEMBUNYIKAN SECARA DEFAULT
+                    ->toggleable(isToggledHiddenByDefault: true), 
                 Tables\Columns\TextColumn::make('keterangan')->limit(30)->tooltip(fn ($state) => $state)->placeholder('Tidak ada.'),
             ])
             ->filters([

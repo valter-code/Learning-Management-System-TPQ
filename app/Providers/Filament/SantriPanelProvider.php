@@ -35,6 +35,7 @@ class SantriPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Santri/Pages'), for: 'App\\Filament\\Santri\\Pages')
             ->pages([
                 Pages\Dashboard::class,
+                
             ])
             ->discoverWidgets(in: app_path('Filament/Santri/Widgets'), for: 'App\\Filament\\Santri\\Widgets')
             ->widgets([

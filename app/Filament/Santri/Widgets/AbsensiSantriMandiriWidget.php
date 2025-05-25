@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Log;
 class AbsensiSantriMandiriWidget extends Widget
 {
     protected static string $view = 'filament.santri.widgets.absensi-santri-mandiri-widget';
-    protected int | string | array $columnSpan = 'full';
+    protected int | string | array $columnSpan = 1;
     protected static ?int $sort = 1;
 
     public string $tanggalHariIni = '';

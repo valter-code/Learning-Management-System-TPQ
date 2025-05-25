@@ -28,7 +28,7 @@ class PengajarResource extends Resource
     protected static ?string $navigationBadgeTooltip = 'Jumlah Staff Pengajar';
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::where('role', UserRole::AKADEMIK)->count();
+        return static::getModel()::where('role', UserRole::PENGAJAR)->count();
     }
 
     protected static ?string $navigationGroup = 'Manajemen Pengguna';
