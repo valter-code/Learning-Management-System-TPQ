@@ -30,6 +30,7 @@ class SantriPanelProvider extends PanelProvider
             ->id('santri')
             ->path('santri')
             ->login()
+            ->sidebarFullyCollapsibleOnDesktop()
             ->colors([
                 'primary' => Color::Green,
             ])

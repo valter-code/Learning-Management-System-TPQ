@@ -36,6 +36,7 @@ class PengajarPanelProvider extends PanelProvider
             ->id('pengajar')
             ->path('pengajar')
             ->login()
+            ->sidebarFullyCollapsibleOnDesktop()
             ->colors([
                 'primary' => Color::Sky,
             ])

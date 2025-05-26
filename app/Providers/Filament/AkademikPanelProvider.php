@@ -19,6 +19,7 @@ use Filament\Http\Middleware\DisableBladeIconComponents;
 use App\Filament\Admin\Resources\PendaftarSantriResource;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 
 class AkademikPanelProvider extends PanelProvider
@@ -29,6 +30,7 @@ class AkademikPanelProvider extends PanelProvider
             ->id('akademik')
             ->path('akademik')
             ->login()
+            ->sidebarFullyCollapsibleOnDesktop()
             ->colors([
                 'primary' => Color::Amber,
             ])
