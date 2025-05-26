@@ -41,20 +41,28 @@ use App\Enums\StatusPengumpulanTugasEnum; // Import Enum
 use Filament\Forms\Components\RichEditor as FormRichEditor;
 use Coolsam\NestedComments\Filament\Infolists\CommentsEntry;
 use App\Filament\Resources\PertemuanResource\RelationManagers;
-use Filament\Infolists\Components; // <-- Import komponen Infolist umum
-use Filament\Forms\Components\ToggleButtons as FormToggleButtons; // Untuk tombol status
-use Filament\Forms\Components\TextInput as FormTextInput; // Alias untuk TextInput di Form Aksi
+use Filament\Infolists\Components; 
+use Filament\Forms\Components\ToggleButtons as FormToggleButtons; 
+use Filament\Forms\Components\TextInput as FormTextInput; 
+use HusamTariq\FilamentTimePicker\Forms\Components\TimePickerField;
 
 
 class PertemuanResource extends Resource
 {
     protected static ?string $model = Pertemuan::class;
 
+    // protected static ?string $slug = 'pertemuan';
+
+    // protected static ?string $title = 'pertemuan';
+
+    // protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
+    protected static ?string $navigationLabel = 'Pertemuan';
+    protected static ?string $modelLabel = 'Pertemuan';
+    protected static ?string $pluralModelLabel = 'Pertemuan';
     protected static ?string $slug = 'pertemuan';
-
-    protected static ?string $title = 'pertemuan';
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Kelas';
 
     public static function form(Form $form): Form
     {
@@ -83,7 +91,7 @@ class PertemuanResource extends Resource
                 ->maxLength(255),
             Forms\Components\DatePicker::make('tanggal_pertemuan')
                 ->required(),
-            Forms\Components\TimePicker::make('waktu_mulai'),
+            TimePickerField::make('waktu_mulai')->label('waktu mulai')->okLabel("Confirm")->cancelLabel("Cancel"),
             Forms\Components\Textarea::make('deskripsi_pertemuan')
                 ->columnSpanFull(),
             // Tambahkan field lain jika ada
@@ -156,9 +164,9 @@ class PertemuanResource extends Resource
                 Components\Section::make('Detail Pertemuan')
                     ->columns(2)
                     ->schema([
-                        Components\TextEntry::make('judul_pertemuan')->columnSpanFull(),
-                        Components\TextEntry::make('kelas.nama_kelas')->label('Kelas'),
-                        Components\TextEntry::make('tanggal_pertemuan')->date('d M Y H:i'),
+                        Components\TextEntry::make('judul_pertemuan')->columnSpanFull()->size('xl')->weight('bold'),
+                        Components\TextEntry::make('kelas.nama_kelas')->label('Kelas')->size('xl')->weight('bold'),
+                        Components\TextEntry::make('tanggal_pertemuan')->date('d M Y H:i')->size('xl')->weight('bold'),
                         Components\TextEntry::make('status_pertemuan')
                             ->badge()
                             ->formatStateUsing(fn ($state) => $state instanceof StatusPertemuanEnum ? $state->getLabel() : $state)
@@ -172,6 +180,7 @@ class PertemuanResource extends Resource
                         Components\TextEntry::make('deskripsi_pertemuan')
                             ->markdown()
                             ->placeholder('Tidak ada deskripsi.')
+                            
                             ->columnSpanFull(),
                     ]),
 
@@ -202,7 +211,7 @@ class PertemuanResource extends Resource
                             ->label(null)
                             ->schema([
                                 // Detail Tugas Item (Judul, Deadline, Deskripsi)
-                                Components\TextEntry::make('judul_tugas')->label('Judul Tugas')->weight('semibold')->columnSpanFull(),
+                                Components\TextEntry::make('judul_tugas')->label('Judul Tugas')->columnSpanFull(),
                                 Components\TextEntry::make('deadline_tugas')->dateTime('d M Y H:i')->label('Deadline')->columnSpanFull(),
                                 Components\TextEntry::make('deskripsi_tugas')->label('Deskripsi')->markdown()->placeholder('N/A')->columnSpanFull(),
                                 Components\TextEntry::make('file_lampiran_tugas')
@@ -219,10 +228,10 @@ class PertemuanResource extends Resource
                                     ->collapsed(false) // Default terbuka untuk melihat daftar santri
                                     ->schema([
                                         Components\RepeatableEntry::make('pengumpulanTugas') // Relasi HasMany di PertemuanTugasItem
-                                            ->label(null) // Tidak perlu label untuk repeater ini
+                                            ->label(null) 
                                             ->schema([
-                                                // GUNAKAN SECTION DI SINI UNTUK SETIAP PENGUMPULAN SANTRI
-                                                Components\Section::make() // Tidak perlu nama statis jika heading dinamis
+                                                
+                                                Components\Section::make() 
                                                     ->heading(fn (PengumpulanTugas $record): string => "Jawaban: " . $record->santri?->name . " (" . ($record->status_pengumpulan instanceof StatusPengumpulanTugasEnum ? $record->status_pengumpulan->getLabel() : ucfirst(str_replace('_', ' ', (string)$record->status_pengumpulan))) .")")
                                                     ->collapsible()
                                                     ->collapsed(true) // Setiap pengumpulan santri defaultnya terlipat
@@ -310,7 +319,7 @@ class PertemuanResource extends Resource
                             TextColumn::make('judul_pertemuan')
                                 ->weight(FontWeight::ExtraBold)
                                 ->size(TextColumn\TextColumnSize::Large)
-                                ->lineClamp(2)
+                                // ->lineClamp(lineClamp: 2)
                                 ->tooltip(fn (Pertemuan $record): string => $record->judul_pertemuan ?? ''),
                             TextColumn::make('tanggal_pertemuan')
                                 ->date('d M Y')
@@ -338,7 +347,7 @@ class PertemuanResource extends Resource
                         ->color('primary') // Warna untuk kelas
                         ->icon('heroicon-s-academic-cap')
                         ->default('N/A')
-                        ->sortable() // Tambahkan sortable
+                        // ->sortable() // Tambahkan sortable
                         // Untuk sortable pada relasi, Anda mungkin perlu query kustom
                         // ->query(function (Builder $query, string $direction): Builder {
                         //     return $query
@@ -381,15 +390,14 @@ class PertemuanResource extends Resource
                             ->icon('heroicon-s-clipboard-document-list')
                             ->label(null),
                     ])
-                    // ->space(3) // Dihapus, karena ini untuk spacing vertikal
-                    ->alignment(Alignment::Start) // Perataan item di dalam flex container
-                    // Pastikan kelas Tailwind untuk flex dan spacing horizontal ada di sini
-                    ->extraAttributes(['class' => 'flex flex-row items-center space-x-2 mt-3 mb-4']), // space-x-2 untuk jarak antar badge
+                    ->space(3) 
+                    ->alignment(Alignment::Start) 
+                    ->extraAttributes(['class' => 'flex flex-row items-center space-x-2 mt-3 mb-4']), 
 
                     TextColumn::make('status_pertemuan')
                         ->label(null)
                         ->badge()
-                        ->color(function ($state): string { // $state di sini adalah objek StatusPertemuanEnum
+                        ->color(function ($state): string { 
                             if ($state instanceof StatusPertemuanEnum) {
                                 return match ($state) {
                                     StatusPertemuanEnum::DIJADWALKAN => 'warning',
@@ -399,13 +407,13 @@ class PertemuanResource extends Resource
                                     default => 'gray',
                                 };
                             }
-                            return 'gray'; // Fallback jika bukan Enum
+                            return 'gray'; 
                         })
-                        ->formatStateUsing(function ($state): string { // $state di sini adalah objek StatusPertemuanEnum
+                        ->formatStateUsing(function ($state): string { 
                             if ($state instanceof StatusPertemuanEnum) {
-                                return $state->getLabel(); // Gunakan getLabel() dari Enum
+                                return $state->getLabel(); 
                             }
-                            return (string) $state; // Fallback jika bukan Enum
+                            return (string) $state; 
                         })
                         ->size(TextColumn\TextColumnSize::Small),
                 ])
@@ -428,11 +436,6 @@ class PertemuanResource extends Resource
                         return $pengajar->mengajarDiKelas()->pluck('nama_kelas', 'kelas.id')->toArray();
                     })
                     ->searchable(),
-                    SelectFilter::make('user_id') 
-                ->label('Pengajar Pertemuan')
-                ->relationship('user', 'name', modifyQueryUsing: fn (Builder $query) => $query->where('role', UserRole::PENGAJAR)) // Menggunakan relasi 'user'
-                ->searchable()
-                ->preload(),
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()

@@ -6,7 +6,9 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
 use Filament\PanelProvider;
+use Filament\Facades\Filament;
 use Filament\Support\Colors\Color;
+use Illuminate\Support\Facades\View;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -31,6 +33,17 @@ class SantriPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Green,
             ])
+            ->colors([ // Definisikan warna primer di sini
+                'primary' => Color::Teal, // Atau Color::Green jika lebih cocok, atau hex code
+                // Anda juga bisa mendefinisikan danger, gray, info, success, warning
+                // 'danger' => Color::Rose,
+                // 'gray' => Color::Gray,
+                // 'info' => Color::Blue,
+                // 'success' => Color::Emerald,
+                // 'warning' => Color::Amber,
+            ])
+            // ->viteTheme('resources/css/filament/santri/theme.css') // Path ke file sumber di resources/
+            // ->theme(asset('css/filament/santri/theme.css')) // Path ke file theme
             ->discoverResources(in: app_path('Filament/Santri/Resources'), for: 'App\\Filament\\Santri\\Resources')
             ->discoverPages(in: app_path('Filament/Santri/Pages'), for: 'App\\Filament\\Santri\\Pages')
             ->pages([
@@ -58,4 +71,34 @@ class SantriPanelProvider extends PanelProvider
                 Authenticate::class,
             ]);
     }
+
+    
+//     public function boot(): void
+// {
+//     Filament::serving(function () {
+//         // Pastikan Anda mengimport Filament facade jika belum: use Filament\Facades\Filament;
+//         // Dan juga View facade: use Illuminate\Support\Facades\View;
+
+//         Filament::registerRenderHook(
+//             // Hook yang lebih baik untuk CSS adalah 'panels::head.end' agar masuk di <head>
+//             // atau 'panels::styles.after'
+//             'panels::head.end', 
+//             fn (): string => View::make('filament.custom-styles')->render()
+//         );
+//     });
+// }
+
+public function boot(): void
+{
+    Filament::serving(function () {
+        Filament::registerRenderHook(
+            // Hook 'panels::styles.after' lebih baik untuk menyisipkan <style>
+            // atau 'panels::head.end'
+            'panels::styles.after', 
+            fn (): string => View::make('filament.custom-styles')->render()
+        );
+    });
+}
+
+    
 }

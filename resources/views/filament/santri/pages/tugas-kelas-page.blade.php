@@ -1,10 +1,10 @@
 <x-filament-panels::page>
-    {{-- Filter Dropdowns dengan styling baru --}}
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg"> {{-- Latar belakang seperti section pertemuan --}}
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 p-4 bg-white dark:bg-gray-900 rounded-lg shadow-lg"> 
         <div>
-            <label for="kelasFilterPage" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Filter Berdasarkan Kelas:</label>
+            <label for="kelasFilterPage" class="block text-sm font-medium text-gray-800 dark:text-gray-200 mb-1">Filter Berdasarkan Kelas:</label>
             <div class="flex rounded-lg shadow-sm mt-1">
-                <x-filament::input.select wire:model.live="selectedKelasId" id="kelasFilterPage" class="!rounded-r-none focus:!border-teal-500 focus:!ring-1 focus:!ring-teal-500 dark:focus:!border-teal-400 dark:focus:!ring-teal-400">
+                <x-filament::input.select wire:model.live="selectedKelasId" id="kelasFilterPage" class="">
                     <option value="">Semua Kelas</option>
                     @foreach($this->kelas_filter_options as $kelas)
                         <option value="{{ $kelas->id }}">{{ $kelas->nama_kelas }}</option>
@@ -15,7 +15,7 @@
         </div>
 
         <div>
-            <label for="pertemuanFilterPage" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Filter Berdasarkan Topik/Pertemuan:</label>
+            <label for="pertemuanFilterPage" class="block text-sm font-medium text-gray-900 dark:text-gray-200 mb-1">Filter Berdasarkan Topik/Pertemuan:</label>
              <div class="flex rounded-lg shadow-sm mt-1">
                 <x-filament::input.select wire:model.live="selectedPertemuanId" id="pertemuanFilterPage" class="!rounded-r-none focus:!border-teal-500 focus:!ring-1 focus:!ring-teal-500 dark:focus:!border-teal-400 dark:focus:!ring-teal-400">
                     <option value="">Semua Topik</option>
@@ -32,7 +32,7 @@
 
     @if($this->daftarPertemuanDenganTugas->isEmpty())
         <div class="text-center py-12">
-            <x-heroicon-o-clipboard-document-list class="mx-auto h-12 w-12 text-gray-400"/>
+            <x-heroicon-o-clipboard-document-list class="mx-auto h-12 w-12 text-gray-900"/>
             <h3 class="mt-2 text-sm font-semibold text-gray-900 dark:text-white">
                 @if(!empty($this->selectedPertemuanId) || !empty($this->selectedKelasId))
                     Tidak ada materi atau tugas yang cocok dengan filter yang dipilih.
@@ -55,7 +55,7 @@
                         <span class="text-lg font-semibold text-gray-800 dark:text-white">
                             {{ $pertemuan->judul_pertemuan }}
                         </span>
-                        <span class="text-xs text-gray-500 dark:text-gray-400 mt-1 sm:mt-0">
+                        <span class="text-xs text-black dark:text-white mt-1 sm:mt-0">
                             Kelas: {{ $pertemuan->kelas->nama_kelas }} | {{ $pertemuan->tanggal_pertemuan->translatedFormat('l, d F Y') }}
                             {{ $pertemuan->waktu_mulai ? ' - Pukul ' . \Carbon\Carbon::parse($pertemuan->waktu_mulai)->format('H:i') : '' }}
                         </span>
@@ -115,7 +115,7 @@
                                 <li class="px-1 py-3 sm:px-2">
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center min-w-0">
-                                            <x-heroicon-s-clipboard-document-list class="h-6 w-6 text-gray-400 dark:text-gray-500 mr-3 flex-shrink-0"/>
+                                            <x-heroicon-s-clipboard-document-list class="h-5 w-5 text-teal-500 dark:text-teal-400 mr-3 mt-1 flex-shrink-0"/>
                                             <div class="min-w-0 flex-1">
                                                 <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
                                                     {{ $tugas->judul_tugas }}

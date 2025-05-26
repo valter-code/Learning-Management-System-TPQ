@@ -76,7 +76,6 @@ class PertemuanResource extends Resource
                             TextColumn::make('judul_pertemuan')
                                 ->weight(FontWeight::ExtraBold)
                                 ->size(TextColumn\TextColumnSize::Large)
-                                ->lineClamp(2)
                                 ->tooltip(fn (Pertemuan $record): string => $record->judul_pertemuan ?? ''),
                             TextColumn::make('tanggal_pertemuan')
                                 ->date('d M Y')
@@ -267,7 +266,7 @@ class PertemuanResource extends Resource
                                 default => 'gray',
                             } : 'gray'),
                         Components\TextEntry::make('deskripsi_pertemuan')
-                            ->markdown()->placeholder('Tidak ada deskripsi.')->columnSpanFull()->size(Components\TextEntry\TextEntrySize::Large)->weight(FontWeight::Bold),
+                            ->markdown()->placeholder('Tidak ada deskripsi.')->columnSpanFull()->weight(FontWeight::SemiBold),
                     ]),
 
                 Components\Section::make('Materi Pelajaran')
@@ -276,10 +275,10 @@ class PertemuanResource extends Resource
                         Components\RepeatableEntry::make('itemsMateri')
                             ->label(null)
                             ->schema([
-                                Components\TextEntry::make('judul_materi')->label('Judul')->size(Components\TextEntry\TextEntrySize::Large)->weight(FontWeight::Bold),
+                                Components\TextEntry::make('judul_materi')->label('Judul')->weight(FontWeight::SemiBold),
                                 Components\TextEntry::make('tipe_materi')->label('Tipe')->badge()
                                     ->formatStateUsing(fn (?string $state): string => ucfirst($state ?? '')),
-                                Components\TextEntry::make('deskripsi_materi')->label('Deskripsi')->markdown()->placeholder('N/A')->columnSpanFull()->size(Components\TextEntry\TextEntrySize::Large)->weight(FontWeight::Bold),
+                                Components\TextEntry::make('deskripsi_materi')->label('Deskripsi')->markdown()->placeholder('N/A')->columnSpanFull()->weight(FontWeight::SemiBold),
                                 Components\TextEntry::make('url_link_materi')->label('Link Materi')->url(fn (?string $state): ?string => $state)->openUrlInNewTab()->visible(fn (PertemuanMateri $record) => $record->tipe_materi === 'link' && filled($record->url_link_materi))->placeholder(null)->columnSpanFull()->size(Components\TextEntry\TextEntrySize::Medium),
                                 Components\TextEntry::make('path_file_materi')->label('File Materi')->formatStateUsing(fn (?string $state): string => $state ? basename($state) : 'Tidak ada file')->url(fn (?string $state): ?string => $state ? Storage::disk('public')->url($state) : null, shouldOpenInNewTab: true)->visible(fn (PertemuanMateri $record) => $record->tipe_materi === 'file' && filled($record->path_file_materi))->placeholder(null)->icon('heroicon-o-document-arrow-down')->columnSpanFull(),
                                 Components\TextEntry::make('konten_text_materi')->label('Isi Materi')->markdown()->visible(fn (PertemuanMateri $record) => $record->tipe_materi === 'text' && filled($record->konten_text_materi))->placeholder(null)->columnSpanFull(),
@@ -293,11 +292,11 @@ class PertemuanResource extends Resource
                         Components\RepeatableEntry::make('itemsTugas')
                             ->label(null)
                             ->schema([
-                                Components\TextEntry::make('judul_tugas')->label('Judul Tugas')->size(Components\TextEntry\TextEntrySize::Large)->weight(FontWeight::Bold),
-                                Components\TextEntry::make('deadline_tugas')->dateTime('d M Y H:i')->label('Deadline')->size(Components\TextEntry\TextEntrySize::Large)->weight(FontWeight::Bold),
+                                Components\TextEntry::make('judul_tugas')->label('Judul Tugas')->weight(FontWeight::SemiBold),
+                                Components\TextEntry::make('deadline_tugas')->dateTime('d M Y H:i')->label('Deadline')->weight(FontWeight::SemiBold),
                                 Components\TextEntry::make('deskripsi_tugas')
                                     ->label('Deskripsi')
-                                    ->markdown()->placeholder('N/A')->columnSpanFull()->size(Components\TextEntry\TextEntrySize::Large)->weight(FontWeight::Bold),
+                                    ->markdown()->placeholder('N/A')->columnSpanFull()->weight(FontWeight::SemiBold),
                                 Components\TextEntry::make('file_lampiran_tugas')
                                     ->label('Lampiran Soal')
                                     ->formatStateUsing(fn (?string $state): string => $state ? basename($state) : 'Tidak ada lampiran')

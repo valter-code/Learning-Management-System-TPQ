@@ -15,11 +15,14 @@
                 @foreach ($daftarKelasProperty as $kelas)
                     <div class="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm hover:shadow-lg p-6 flex flex-col justify-between transition-shadow duration-300">
                         <div>
-                            <div class="flex items-center gap-3 text-xl font-semibold text-gray-800 dark:text-gray-100">
+                            <div class="flex items-center gap-3 text-xl font-semibold text-gray-800 dark:text-white">
                                 {{-- Menampilkan ikon dari data $kelas --}}
-                                <div class="text-2xl"> {{-- Atur ukuran ikon jika perlu --}}
-                                    <i class="{{ $kelas['icon'] }}"></i> {{-- Kelas ikon sudah termasuk warna dari helper PHP --}}
+                                <div class="text-2xl"> 
+                                    <i class="{{ $kelas['icon'] }}"></i> {{-- Kelas ikon sudah termasuk warna dari helper PHP $kelas['icon'] --}}
                                 </div>
+                                <x-dynamic-component 
+                                        :component="$kelas['icon']" 
+                                        class="w-7 h-7 text-teal-600 dark:text-teal-400" /> 
                                 <span>{{ $kelas['name'] }}</span>
                             </div>
                             <p class="text-gray-600 dark:text-gray-300 mt-2 text-sm line-clamp-3 min-h-[3.75rem]">{{ $kelas['description'] }}</p>

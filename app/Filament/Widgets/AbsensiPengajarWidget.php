@@ -11,18 +11,18 @@ use Illuminate\Support\Facades\Auth;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Log;
 
-class AbsensiPengajarWidget extends Widget // Ganti nama kelas jika perlu
+class AbsensiPengajarWidget extends Widget 
 {
-    // Path ke file Blade view
+    
     protected static string $view = 'filament.widgets.absensi-pengajar-widget';
     // Jika ingin widget tidak reload saat navigasi (Livewire v3 default)
     // protected bool $shouldPersist = true;
 
-    // Atur agar widget ini juga mengambil 1 kolom
+    
     protected int | string | array $columnSpan = 1; 
-    // ... sisa kode widget Anda
+    
 
-    // Properti publik untuk view
+    
     public string $tanggalHariIni = '';
     public ?StatusAbsensi $statusPilihan = null; // Menggunakan Enum
     public string $keterangan = '';
@@ -62,7 +62,7 @@ class AbsensiPengajarWidget extends Widget // Ganti nama kelas jika perlu
             $this->sudahAbsenHariIni = true;
             $this->statusAbsenTercatat = $absen->status; // Ini sudah objek Enum
             $this->keteranganAbsenTercatat = $absen->keterangan;
-            $this->waktuMasukTercatat = $absen->waktu_masuk ? $absen->waktu_masuk->format('H:i') : null;
+            $this->waktuMasukTercatat = Carbon::parse($absen->created_at)->format('H:i');
             Log::info('AbsensiPengajarWidget: Status ditemukan.', ['status' => $this->statusAbsenTercatat?->value, 'keterangan' => $this->keteranganAbsenTercatat]);
         } else {
             $this->resetAbsensiState();

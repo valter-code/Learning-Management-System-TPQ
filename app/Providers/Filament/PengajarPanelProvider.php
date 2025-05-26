@@ -6,6 +6,7 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
 use Filament\PanelProvider;
+use Filament\Facades\Filament;
 use Filament\Support\Colors\Color;
 use App\Filament\Widgets\KelasAjarWidget;
 use Filament\Http\Middleware\Authenticate;
@@ -13,9 +14,9 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Filament\Http\Middleware\AuthenticateSession;
 use App\Filament\Akademik\Resources\SantriResource;
-use Illuminate\Routing\Middleware\SubstituteBindings;
 // use App\Filament\Widgets\AbsensiHariIniWidget2;
 // use App\Filament\Pengajar\Widgets\AbsensiPengajarWidget;
+use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use App\Filament\Pengajar\Widgets\AbsensiPengajarWidget;
 use App\Filament\Pengajar\Widgets\PengajarWelcomeWidget;
@@ -24,6 +25,7 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use App\Filament\Pengajar\Resources\RiwayatAbsensiResource;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Illuminate\Support\Facades\View;
 
 class PengajarPanelProvider extends PanelProvider
 {
@@ -37,6 +39,7 @@ class PengajarPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Sky,
             ])
+            // ->css('resources/css/filament/pengajar/theme.css') // Sesuaikan path
             ->resources([
                 SantriResource::class,
                 
@@ -69,4 +72,16 @@ class PengajarPanelProvider extends PanelProvider
                 Authenticate::class,
             ]);
     }
+
+//     public function boot(): void
+// {
+//     Filament::serving(function () {
+//         Filament::registerRenderHook(
+//             // Hook 'panels::styles.after' lebih baik untuk menyisipkan <style>
+//             // atau 'panels::head.end'
+//             'panels::styles.after', 
+//             fn (): string => View::make('filament.custom-styles-pengajar')->render()
+//         );
+//     });
+// }
 }

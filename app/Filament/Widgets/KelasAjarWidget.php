@@ -118,21 +118,36 @@ class KelasAjarWidget extends Widget
         return 'Belum dijadwalkan';
     }
 
-    protected function getIconUntukKelas(string $namaKelasAngka): string
+    // Copy-paste atau refactor metode ini dari KelasAjarWidget jika sama
+    protected function getIconUntukKelas(string $namaKelas): string
     {
-        $angkaKelas = (int) $namaKelasAngka;
-        if ($angkaKelas >= 7 && $angkaKelas <= 9) return 'fas fa-pencil-alt text-green-500';
-        if ($angkaKelas >= 10 && $angkaKelas <= 12) return 'fas fa-book-open text-blue-500';
-        if ($angkaKelas < 7) return 'fas fa-child text-yellow-500';
-        return 'fas fa-chalkboard-teacher text-gray-500';
+        // Logika untuk ikon berdasarkan nama kelas, contoh:
+        if (str_contains(strtolower($namaKelas), 'a')) return 'heroicon-o-academic-cap';
+        return 'heroicon-o-book-open';
     }
 
-    protected function getColorUntukKelas(string $namaKelasAngka): string
+    protected function getColorUntukKelas(string $namaKelas): string
     {
-        $angkaKelas = (int) $namaKelasAngka;
-        if ($angkaKelas >= 7 && $angkaKelas <= 9) return 'bg-green-500';
-        if ($angkaKelas >= 10 && $angkaKelas <= 12) return 'bg-blue-500';
-        if ($angkaKelas < 7) return 'bg-yellow-600';
-        return 'bg-gray-500';
+        // Logika untuk warna berdasarkan nama kelas
+        if (str_contains(strtolower($namaKelas), 'a')) return 'bg-blue-500';
+        return 'bg-green-500';
     }
+
+    // protected function getIconUntukKelas(string $namaKelasAngka): string
+    // {
+    //     $angkaKelas = (int) $namaKelasAngka;
+    //     if ($angkaKelas >= 7 && $angkaKelas <= 9) return 'fas fa-pencil-alt text-green-500';
+    //     if ($angkaKelas >= 10 && $angkaKelas <= 12) return 'fas fa-book-open text-blue-500';
+    //     if ($angkaKelas < 7) return 'fas fa-child text-yellow-500';
+    //     return 'fas fa-chalkboard-teacher text-gray-500';
+    // }
+
+    // protected function getColorUntukKelas(string $namaKelasAngka): string
+    // {
+    //     $angkaKelas = (int) $namaKelasAngka;
+    //     if ($angkaKelas >= 7 && $angkaKelas <= 9) return 'bg-green-500';
+    //     if ($angkaKelas >= 10 && $angkaKelas <= 12) return 'bg-blue-500';
+    //     if ($angkaKelas < 7) return 'bg-yellow-600';
+    //     return 'bg-gray-500';
+    // }
 }

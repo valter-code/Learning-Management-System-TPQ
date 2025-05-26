@@ -14,7 +14,7 @@
             {{-- Kondisi jika santri sudah melakukan absensi hari ini --}}
             @elseif($this->sudahAbsenHariIni)
                 <div @class([
-                    'p-4 rounded-lg text-sm mb-4 shadow',
+                    'p-4 rounded-lg text-sm mb-4 shadow bg-white dark:bg-gray-900',
                     match (strtolower( ($this->statusAbsenTercatat instanceof \App\Enums\StatusAbsensi) ? $this->statusAbsenTercatat->value : str_replace(' ', '_', $this->statusAbsenTercatat ?? '') ) ) {
                         \App\Enums\StatusAbsensi::MASUK->value => 'bg-green-100 dark:bg-green-700/30 text-green-700 dark:text-green-300 border border-green-300 dark:border-green-600',
                         \App\Enums\StatusAbsensi::IZIN->value => 'bg-yellow-100 dark:bg-yellow-700/30 text-yellow-700 dark:text-yellow-300 border border-yellow-300 dark:border-yellow-600',
