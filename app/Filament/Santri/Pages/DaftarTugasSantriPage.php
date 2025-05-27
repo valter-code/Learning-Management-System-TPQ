@@ -21,6 +21,8 @@ class DaftarTugasSantriPage extends Page
     protected static ?string $title = 'Daftar Tugas Anda';
     protected static ?string $slug = 'daftar-tugas-anda';
     protected static ?int $navigationSort = 3;
+    protected static ?string $navigationGroup = 'Kelas';
+
 
     public string $filterStatus = '';
     public ?string $filterKelasId = ''; // Properti baru untuk filter kelas

@@ -6,7 +6,7 @@ Assalamu'alaikum Wr. Wb. Bapak/Ibu {{ $namaWali }},
 Alhamdulillah, kami informasikan bahwa pendaftaran putra/putri Anda:
 Nama Santri: {{ $namaSantri }}
 
-Telah diterima di LMS TPQ kami.
+Telah diterima di LMS {{ config('app.name') }} kami.
 
 Berikut adalah detail akun untuk Ananda agar dapat mengakses sistem pembelajaran kami:
 

@@ -18,6 +18,7 @@ class TugasKelasPage extends Page
     protected static ?string $title = 'Tugas & Materi Kelas';
     protected static ?string $slug = 'tugas-kelas';
     protected static ?int $navigationSort = 2;
+    protected static ?string $navigationGroup = 'Kelas';
 
     public ?string $selectedKelasId = ''; // Filter untuk kelas
     public ?string $selectedPertemuanId = ''; // Filter untuk pertemuan

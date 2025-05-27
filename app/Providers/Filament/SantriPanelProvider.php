@@ -7,6 +7,8 @@ use Filament\Panel;
 use Filament\Widgets;
 use Filament\PanelProvider;
 use Filament\Facades\Filament;
+use App\Livewire\SantriKelasInfo;
+use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
 use Illuminate\Support\Facades\View;
 use Filament\Http\Middleware\Authenticate;
@@ -19,8 +21,11 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use App\Filament\Pengajar\Resources\RiwayatAbsensiResource;
 use App\Filament\Santri\Widgets\AbsensiSantriMandiriWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Joaopaulolndev\FilamentEditProfile\Pages\EditProfilePage;
+use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
 
 class SantriPanelProvider extends PanelProvider
 {
@@ -34,6 +39,26 @@ class SantriPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Green,
             ])
+            ->plugins([
+                FilamentEditProfilePlugin::make()
+                    ->slug('profil-saya')
+                    ->setTitle('Profil Saya')
+                    ->setNavigationLabel('Profil Saya')
+                    ->canAccess(fn () => auth()->check())
+                    ->shouldRegisterNavigation(false) 
+                    ->shouldShowEmailForm() // Santri bisa ubah email (opsional)
+                    ->shouldShowDeleteAccountForm(false) // Jangan tampilkan form hapus akun
+                    ->shouldShowSanctumTokens(false) // Jangan tampilkan token Sanctum
+                    ->shouldShowBrowserSessionsForm(true) // Tampilkan sesi browser (opsional)
+                    ->shouldShowAvatarForm() 
+            ])
+            ->userMenuItems([
+                'profile' => MenuItem::make()
+                    ->label(fn() => 'Profil Saya')
+                    ->url(fn (): string => EditProfilePage::getUrl())
+                    ->icon('heroicon-m-user-circle')
+                    ->visible(fn (): bool => auth()->check()),
+            ])
             ->colors([ // Definisikan warna primer di sini
                 'primary' => Color::Teal, // Atau Color::Green jika lebih cocok, atau hex code
                 // Anda juga bisa mendefinisikan danger, gray, info, success, warning
@@ -43,8 +68,10 @@ class SantriPanelProvider extends PanelProvider
                 // 'success' => Color::Emerald,
                 // 'warning' => Color::Amber,
             ])
-            // ->viteTheme('resources/css/filament/santri/theme.css') // Path ke file sumber di resources/
-            // ->theme(asset('css/filament/santri/theme.css')) // Path ke file theme
+            ->resources([
+                // RiwayatAbsensiResource::class, // Pastikan Anda sudah membuat resource ini
+
+            ])
             ->discoverResources(in: app_path('Filament/Santri/Resources'), for: 'App\\Filament\\Santri\\Resources')
             ->discoverPages(in: app_path('Filament/Santri/Pages'), for: 'App\\Filament\\Santri\\Pages')
             ->pages([

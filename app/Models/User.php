@@ -4,17 +4,34 @@ namespace App\Models;
 
 use Filament\Panel;
 use App\Enums\UserRole;
+use Filament\Facades\Filament;
+use Illuminate\Database\Eloquent\Model;
 use Filament\Models\Contracts\HasAvatar;
 use Illuminate\Notifications\Notifiable;
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Filament\AvatarProviders\Contracts\AvatarProvider;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Storage; // Untuk avatar default atau dari storage
 
+
+class BoringAvatarsProvider implements AvatarProvider
+{
+    public function get(Model | Authenticatable $record): string
+    {
+        $name = str(Filament::getNameForDefaultAvatar($record))
+            ->trim()
+            ->explode(' ')
+            ->map(fn (string $segment): string => filled($segment) ? mb_substr($segment, 0, 1) : '')
+            ->join(' ');
+
+        return 'https://source.boringavatars.com/beam/120/' . urlencode($name);
+    }
+}
 class User extends Authenticatable implements FilamentUser, HasAvatar
 {
     use HasFactory, Notifiable;
@@ -90,17 +107,28 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         };
     }
 
+    // public function getFilamentAvatarUrl(): ?string
+    // {
+    //     if ($this->avatar_url) {
+    //         // Jika avatar_url adalah path relatif di storage public
+    //         // return Storage::disk('public')->url($this->avatar_url);
+    //         // Jika avatar_url adalah URL absolut
+    //         return $this->avatar_url;
+    //     }
+    //     // Avatar default jika tidak ada
+    //     return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
+    // }
+
     public function getFilamentAvatarUrl(): ?string
     {
-        if ($this->avatar_url) {
-            // Jika avatar_url adalah path relatif di storage public
-            // return Storage::disk('public')->url($this->avatar_url);
-            // Jika avatar_url adalah URL absolut
-            return $this->avatar_url;
+        if ($this->avatar_url && Storage::disk('public')->exists($this->avatar_url)) {
+            return Storage::disk('public')->url($this->avatar_url);
         }
-        // Avatar default jika tidak ada
+        // Fallback ke UI Avatars atau placeholder lain
         return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
     }
+
+    
 
     public function pengumpulanTugasSantri(): HasMany { // Nama relasi yang berbeda
         return $this->hasMany(PengumpulanTugas::class, 'santri_id');
@@ -114,6 +142,13 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     public function absensiYangDilakukanPengajar(): HasMany // Sebagai pengajar
     {
         return $this->hasMany(AbsensiSantri::class, 'pengajar_id');
+    }
+
+    // app/Models/User.php
+// ...
+    public function riwayatSpp(): HasMany
+    {
+        return $this->hasMany(Spp::class, 'santri_id');
     }
     
 }

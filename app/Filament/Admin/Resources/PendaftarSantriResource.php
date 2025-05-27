@@ -7,8 +7,10 @@ use App\Models\User;
 use Filament\Tables;
 use App\Enums\UserRole;
 use Filament\Infolists;
+use App\Enums\StatusSpp;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Mail\TagihanSppMail;
 use App\Models\SantriProfile;
 use App\Models\PendaftarSantri;
 use Filament\Infolists\Infolist;
@@ -179,7 +181,62 @@ class PendaftarSantriResource extends Resource
                     })
                     ->visible(fn (PendaftarSantri $record) => $record->status_pendaftaran === StatusPendaftaranSantri::PENDING || $record->status_pendaftaran === StatusPendaftaranSantri::DIPROSES), // Tampil jika pending atau diproses
             ])
-            ->bulkActions([ /* ... */ ]);
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\BulkAction::make('tagihSppMassal')
+                        ->label('Tagih SPP Terpilih')
+                        ->icon('heroicon-o-paper-airplane')
+                        ->color('warning')
+                        ->requiresConfirmation()
+                        ->modalHeading('Kirim Tagihan SPP Massal?')
+                        ->modalDescription('Ini akan mengirim email tagihan untuk semua SPP yang dipilih dan statusnya "Belum Bayar" atau "Terlambat". Lanjutkan?')
+                        ->action(function (Collection $records) {
+                            $berhasilKirim = 0;
+                            $gagalKirim = 0;
+                            $tidakAdaEmail = 0;
+
+                            foreach ($records as $record) {
+                                if ($record->status_pembayaran === StatusSpp::BELUM_BAYAR || $record->status_pembayaran === StatusSpp::TERLAMBAT) {
+                                    $emailWali = $record->santri?->santriProfile?->email_wali ?? $record->santri?->email;
+                                    if (empty($emailWali)) {
+                                        $tidakAdaEmail++;
+                                        Log::warning("Tagihan SPP Massal: Email wali tidak ditemukan untuk SPP ID {$record->id}, Santri: {$record->santri->name}");
+                                        continue;
+                                    }
+                                    try {
+                                        Mail::to($emailWali)->send(new TagihanSppMail($record));
+                                        $berhasilKirim++;
+                                        Log::info("Tagihan SPP Massal: Email berhasil dikirim ke {$emailWali} untuk SPP ID: {$record->id}");
+                                    } catch (\Exception $e) {
+                                        $gagalKirim++;
+                                        Log::error("Tagihan SPP Massal: Gagal kirim email ke {$emailWali} untuk SPP ID: {$record->id}. Error: " . $e->getMessage());
+                                    }
+                                }
+                            }
+
+                            if ($berhasilKirim > 0) {
+                                Notification::make()->success()->title('Tagihan Massal Terkirim')
+                                    ->body("Berhasil mengirim {$berhasilKirim} email tagihan." . 
+                                           ($gagalKirim > 0 ? " Gagal mengirim {$gagalKirim} email." : "") .
+                                           ($tidakAdaEmail > 0 ? " {$tidakAdaEmail} santri tidak memiliki email wali." : "") )
+                                    ->send();
+                            } elseif ($gagalKirim > 0 || $tidakAdaEmail > 0) {
+                                Notification::make()->danger()->title('Sebagian Tagihan Gagal Terkirim')
+                                    ->body(($gagalKirim > 0 ? "Gagal mengirim {$gagalKirim} email. " : "") .
+                                           ($tidakAdaEmail > 0 ? "{$tidakAdaEmail} santri tidak memiliki email wali. " : "") .
+                                           "Periksa log untuk detail.")
+                                    ->send();
+                            } else {
+                                 Notification::make()->info()->title('Tidak Ada Tagihan Dikirim')
+                                    ->body("Tidak ada SPP terpilih yang memenuhi kriteria untuk ditagih.")
+                                    ->send();
+                            }
+                        })
+                        // Hanya aktifkan jika ada record yang dipilih
+                        ->deselectRecordsAfterCompletion(),
+                ]),
+            ]);
     }
 
     public static function infolist(Infolist $infolist): Infolist

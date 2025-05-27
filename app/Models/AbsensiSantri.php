@@ -15,14 +15,16 @@ class AbsensiSantri extends Model
 
     protected $fillable = [
         'santri_id',
-        'pengajar_id',
+        // 'pengajar_id',
         'tanggal_absensi',
         'status_kehadiran',
         'keterangan',
+        'waktu_masuk', 
     ];
 
     protected $casts = [
         'tanggal_absensi' => 'date',
+        'waktu_masuk' => 'datetime:H:i:s', // Casting ke format jam, menit, detik
         'status_kehadiran' => StatusAbsensi::class,
     ];
 
@@ -37,8 +39,8 @@ class AbsensiSantri extends Model
         return $this->belongsTo(User::class, 'santri_id');
     }
 
-    public function pengajar(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'pengajar_id');
-    }
+    // public function pengajar(): BelongsTo
+    // {
+    //     return $this->belongsTo(User::class, 'pengajar_id');
+    // }
 }

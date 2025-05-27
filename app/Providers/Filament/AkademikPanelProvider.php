@@ -46,7 +46,7 @@ class AkademikPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Akademik/Widgets'), for: 'App\\Filament\\Akademik\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
+                
             ])
             ->middleware([
                 EncryptCookies::class,

@@ -21,7 +21,7 @@ class RiwayatAbsensiResource extends Resource
 {
     protected static ?string $model = AbsensiSantri::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
+    protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
     protected static ?string $navigationLabel = 'Riwayat Absensi Santri';
     protected static ?string $modelLabel = 'Riwayat Absensi';
     protected static ?string $pluralModelLabel = 'Riwayat Absensi';
@@ -74,15 +74,16 @@ class RiwayatAbsensiResource extends Resource
                 Tables\Columns\TextColumn::make('santri.name')->label('Nama Santri')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('status_kehadiran')
                     ->badge()
+                    ->label('Status Kehadiran')
                     ->formatStateUsing(fn ($state) => $state instanceof StatusAbsensi ? $state->getLabel() : $state)
                     ->color(fn ($state) => $state instanceof StatusAbsensi ? $state->getColor() : 'gray')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('pengajar.name')
-                    ->label('Dicatat Oleh')
-                    ->sortable()
-                    ->placeholder('Santri Mandiri/N/A')
-                    ->toggleable(isToggledHiddenByDefault: true), 
                 Tables\Columns\TextColumn::make('keterangan')->limit(30)->tooltip(fn ($state) => $state)->placeholder('Tidak ada.'),
+                Tables\Columns\TextColumn::make('created_at')
+                ->label('Waktu Dicatat')
+                ->dateTime('H:i:s') // Hanya waktu
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault: false),
             ])
             ->filters([
                 Filter::make('tanggal_absensi_rentang')

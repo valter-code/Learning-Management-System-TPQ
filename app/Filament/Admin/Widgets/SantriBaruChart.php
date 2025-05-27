@@ -11,6 +11,8 @@ class SantriBaruChart extends ChartWidget
 {
     protected static ?string $heading = 'Pendaftaran Santri Baru';
     protected static string $color = 'info';
+    protected static ?string $maxHeight = '300px';
+    protected static ?string $pollingInterval = null;
 
     protected function getData(): array
     {

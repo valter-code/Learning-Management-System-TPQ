@@ -147,7 +147,7 @@
                             <input type="tel" name="nomor_telepon_wali" id="nomor_telepon_wali" value="{{ old('nomor_telepon_wali') }}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm input-focus-teal sm:text-sm p-3" placeholder="Contoh: 08123456789">
                         </div>
                         <div>
-                            <label for="email_wali" class="block text-sm font-medium text-gray-700 mb-1">Email Wali<span class="text-red-500">*</span></label>
+                            <label for="email_wali" class="block text-sm font-medium text-gray-700 mb-1">Email Wali(Untuk Konfirmasi Email)<span class="text-red-500">*</span></label>
                             <input type="email" name="email_wali" id="email_wali" value="{{ old('email_wali') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm input-focus-teal sm:text-sm p-3" placeholder="contoh@gmail.com" required>
                         </div>
                         <div>

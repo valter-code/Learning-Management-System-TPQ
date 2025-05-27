@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Enums\StatusAbsensi; // Gunakan Enum yang sudah ada atau yang baru
+use App\Enums\StatusAbsensi;
 
 return new class extends Migration
 {
@@ -11,15 +11,18 @@ return new class extends Migration
     {
         Schema::create('absensi_santri', function (Blueprint $table) { 
             $table->id();
-            $table->foreignId('pertemuan_id')->constrained('pertemuan')->onDelete('cascade'); 
+            // foreignId('pertemuan_id') DIHAPUS SEPENUHNYA
             $table->foreignId('santri_id')->constrained('users')->onDelete('cascade'); 
-            $table->foreignId('pengajar_id')->nullable()->constrained('users')->onDelete('set null');
+            // $table->foreignId('pengajar_id')->nullable()->constrained('users')->onDelete('set null'); // Dicatat oleh pengajar (bisa null jika mandiri)
             $table->date('tanggal_absensi'); 
             $table->string('status_kehadiran')->default(StatusAbsensi::MASUK->value);
             $table->text('keterangan')->nullable();
+            $table->time('waktu_masuk')->nullable(); // Pastikan ini ada dan tipe TIME
+
             $table->timestamps();
 
-            $table->unique(['pertemuan_id', 'santri_id']); 
+            // Unique constraint yang benar untuk absensi Harian Mandiri
+            $table->unique(['santri_id', 'tanggal_absensi'], 'unique_santri_daily_absensi'); 
         });
     }
 
