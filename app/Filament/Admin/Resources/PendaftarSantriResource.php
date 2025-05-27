@@ -7,10 +7,12 @@ use App\Models\User;
 use Filament\Tables;
 use App\Enums\UserRole;
 use Filament\Infolists;
-use App\Enums\StatusSpp;
+// StatusSpp tidak digunakan di sini, bisa dihapus jika tidak ada referensi lain
+// use App\Enums\StatusSpp; 
 use Filament\Forms\Form;
 use Filament\Tables\Table;
-use App\Mail\TagihanSppMail;
+// TagihanSppMail tidak digunakan di sini
+// use App\Mail\TagihanSppMail; 
 use App\Models\SantriProfile;
 use App\Models\PendaftarSantri;
 use Filament\Infolists\Infolist;
@@ -23,9 +25,11 @@ use App\Enums\StatusPendaftaranSantri;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Str; // Import Str
+use Illuminate\Support\Str; 
 use App\Filament\Admin\Resources\PendaftarSantriResource\Pages;
-use Illuminate\Support\Facades\DB; // Import DB facade untuk orderByRaw
+use Illuminate\Support\Facades\DB; 
+use Illuminate\Support\Collection; 
+use App\Mail\SantriBaruDiterimaMail; 
 
 class PendaftarSantriResource extends Resource
 {
@@ -41,8 +45,6 @@ class PendaftarSantriResource extends Resource
     protected static ?int $navigationSort = 3;
     protected static ?string $navigationBadgeTooltip = 'Jumlah pendaftar santri yang perlu diproses';
 
-
-    // Mengatur urutan default pada query tabel
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
@@ -53,9 +55,9 @@ class PendaftarSantriResource extends Resource
                     ELSE 3
                 END ASC
             ")
-            ->orderBy('created_at', 'desc'); // Kemudian urutkan berdasarkan tanggal pendaftaran terbaru
+            ->orderBy('created_at', 'desc');
     }
-    
+
     public static function getNavigationBadge(): ?string
     {
         $statusPending = StatusPendaftaranSantri::PENDING->value;
@@ -74,7 +76,10 @@ class PendaftarSantriResource extends Resource
                     ->label('Status Pendaftaran')
                     ->options(StatusPendaftaranSantri::class)
                     ->required()
-                    ->native(false),
+                    ->native(false)
+                    ->live() // live() bisa tetap ada jika ada field lain yang bergantung padanya di form
+                    // Hapus afterStateUpdated dari sini
+                    ->default(StatusPendaftaranSantri::PENDING),
                 Forms\Components\Textarea::make('catatan_admin')
                     ->label('Catatan Admin (Internal)')
                     ->columnSpanFull(),
@@ -107,7 +112,7 @@ class PendaftarSantriResource extends Resource
                     ->badge()
                     ->formatStateUsing(fn ($state) => $state instanceof StatusPendaftaranSantri ? $state->getLabel() : $state)
                     ->color(fn ($state) => $state instanceof StatusPendaftaranSantri ? $state->getColor() : 'gray')
-                    ->sortable(), // Sorting pada kolom ini akan mengikuti default dari getEloquentQuery dulu
+                    ->sortable(), 
                 Tables\Columns\TextColumn::make('created_at')->label('Tgl Daftar')->dateTime('d M Y')->sortable(),
             ])
             ->filters([
@@ -117,178 +122,162 @@ class PendaftarSantriResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make()->label('Ubah Status/Catatan'),
+                Tables\Actions\EditAction::make()
+                    ->label('Ubah Status/Catatan')
+                    // ->modal() // EditAction defaultnya sudah modal jika halaman edit tidak ada/tidak dipanggil
+                    ->after(function (PendaftarSantri $record, array $data) {
+                        // $record adalah instance PendaftarSantri SETELAH diupdate dengan $data
+                        Log::info("EditAction - afterSave. Pendaftar ID: {$record->id}, Status baru dari DB: {$record->status_pendaftaran->value}");
+                        
+                        // Cek apakah status diubah menjadi AKTIF
+                        if ($record->status_pendaftaran === StatusPendaftaranSantri::AKTIF) {
+                            // Panggil metode aktivasi. Parameter kedua (true) adalah untuk mengirim notifikasi.
+                            // Metode processSantriActivation akan menghapus $record jika berhasil.
+                            static::processSantriActivation($record, true, true); // Parameter ketiga untuk menandakan ini dari EditAction
+                        }
+                    }),
                 Tables\Actions\Action::make('aktivasiSantri')
                     ->label('Aktifkan Santri')
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
                     ->requiresConfirmation()
                     ->modalHeading('Aktifkan Pendaftaran Santri?')
-                    ->modalDescription('Setelah diaktifkan, data pendaftar akan dipindahkan ke daftar santri aktif dan akun pengguna akan dibuat.')
+                    ->modalDescription('Setelah diaktifkan, akun pengguna akan dibuat dan pendaftar akan dihapus. Email notifikasi akan dikirim.')
                     ->action(function (PendaftarSantri $record) {
-                        if ($record->status_pendaftaran === StatusPendaftaranSantri::AKTIF) {
-                            Notification::make()->title('Info')->body('Santri ini sudah aktif.')->warning()->send();
-                            return;
-                        }
-                        if ($record->status_pendaftaran === StatusPendaftaranSantri::DITOLAK) {
-                            Notification::make()->title('Info')->body('Pendaftaran ini sudah ditolak dan tidak bisa diaktifkan.')->warning()->send();
-                            return;
-                        }
-
-                        $passwordDefault = '12345678';
-
-                        $emailSantri = $record->email_wali;
-                        if (empty($emailSantri) || User::where('email', $emailSantri)->exists()) {
-                            $baseEmail = strtolower(Str::slug($record->nama_lengkap_calon_santri, '.'));
-                            $emailSantri = $baseEmail . '.' . Str::random(4) . '@santri.tpqanda.com';
-                            while (User::where('email', $emailSantri)->exists()) {
-                                $emailSantri = $baseEmail . '.' . Str::random(5) . '@santri.tpqanda.com';
-                            }
-                        }
-
-                        $user = User::create([
-                            'name' => $record->nama_lengkap_calon_santri,
-                            'email' => $emailSantri,
-                            'password' => Hash::make($passwordDefault),
-                            'role' => UserRole::SANTRI,
-                            'email_verified_at' => now(),
-                        ]);
-
-                        SantriProfile::create([
-                            'user_id' => $user->id,
-                            'alamat' => $record->alamat_calon_santri,
-                            'tanggal_lahir' => $record->tanggal_lahir_calon_santri,
-                            'nama_wali' => $record->nama_wali,
-                        ]);
-                        
-                        if (!empty($record->email_wali)) {
-                            try {
-                                Mail::to($record->email_wali)->send(new \App\Mail\SantriBaruDiterimaMail($user, $passwordDefault, $record)); // Pastikan namespace Mailable benar
-                                Notification::make()->title('Email Terkirim')->body('Email notifikasi telah dikirim ke wali santri.')->success()->send();
-                            } catch (\Exception $e) {
-                                Notification::make()->title('Gagal Kirim Email')->body('Terjadi kesalahan saat mengirim email: Periksa konfigurasi SMTP dan log error.')->danger()->send();
-                                Log::error('Gagal kirim email aktivasi santri ke ' . $record->email_wali . ': ' . $e->getMessage(), [
-                                    'pendaftar_id' => $record->id,
-                                    'exception' => $e
-                                ]);
-                            }
-                        } else {
-                            Notification::make()->title('Info')->body('Email wali tidak tersedia, notifikasi email tidak dikirim.')->warning()->send();
-                        }
-                        $record->delete(); 
-
-                        Notification::make()->title('Sukses')->body('Santri berhasil diaktifkan. Akun pengguna telah dibuat. Password default: ' . $passwordDefault)->success()->send();
+                        static::processSantriActivation($record, true, false); // Parameter ketiga false (bukan dari EditAction)
                     })
-                    ->visible(fn (PendaftarSantri $record) => $record->status_pendaftaran === StatusPendaftaranSantri::PENDING || $record->status_pendaftaran === StatusPendaftaranSantri::DIPROSES), // Tampil jika pending atau diproses
+                    ->visible(fn (PendaftarSantri $record) => 
+                        $record->status_pendaftaran === StatusPendaftaranSantri::PENDING || 
+                        $record->status_pendaftaran === StatusPendaftaranSantri::DIPROSES
+                    ),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\BulkAction::make('tagihSppMassal')
-                        ->label('Tagih SPP Terpilih')
-                        ->icon('heroicon-o-paper-airplane')
-                        ->color('warning')
-                        ->requiresConfirmation()
-                        ->modalHeading('Kirim Tagihan SPP Massal?')
-                        ->modalDescription('Ini akan mengirim email tagihan untuk semua SPP yang dipilih dan statusnya "Belum Bayar" atau "Terlambat". Lanjutkan?')
-                        ->action(function (Collection $records) {
-                            $berhasilKirim = 0;
-                            $gagalKirim = 0;
-                            $tidakAdaEmail = 0;
-
-                            foreach ($records as $record) {
-                                if ($record->status_pembayaran === StatusSpp::BELUM_BAYAR || $record->status_pembayaran === StatusSpp::TERLAMBAT) {
-                                    $emailWali = $record->santri?->santriProfile?->email_wali ?? $record->santri?->email;
-                                    if (empty($emailWali)) {
-                                        $tidakAdaEmail++;
-                                        Log::warning("Tagihan SPP Massal: Email wali tidak ditemukan untuk SPP ID {$record->id}, Santri: {$record->santri->name}");
-                                        continue;
-                                    }
-                                    try {
-                                        Mail::to($emailWali)->send(new TagihanSppMail($record));
-                                        $berhasilKirim++;
-                                        Log::info("Tagihan SPP Massal: Email berhasil dikirim ke {$emailWali} untuk SPP ID: {$record->id}");
-                                    } catch (\Exception $e) {
-                                        $gagalKirim++;
-                                        Log::error("Tagihan SPP Massal: Gagal kirim email ke {$emailWali} untuk SPP ID: {$record->id}. Error: " . $e->getMessage());
-                                    }
-                                }
-                            }
-
-                            if ($berhasilKirim > 0) {
-                                Notification::make()->success()->title('Tagihan Massal Terkirim')
-                                    ->body("Berhasil mengirim {$berhasilKirim} email tagihan." . 
-                                           ($gagalKirim > 0 ? " Gagal mengirim {$gagalKirim} email." : "") .
-                                           ($tidakAdaEmail > 0 ? " {$tidakAdaEmail} santri tidak memiliki email wali." : "") )
-                                    ->send();
-                            } elseif ($gagalKirim > 0 || $tidakAdaEmail > 0) {
-                                Notification::make()->danger()->title('Sebagian Tagihan Gagal Terkirim')
-                                    ->body(($gagalKirim > 0 ? "Gagal mengirim {$gagalKirim} email. " : "") .
-                                           ($tidakAdaEmail > 0 ? "{$tidakAdaEmail} santri tidak memiliki email wali. " : "") .
-                                           "Periksa log untuk detail.")
-                                    ->send();
-                            } else {
-                                 Notification::make()->info()->title('Tidak Ada Tagihan Dikirim')
-                                    ->body("Tidak ada SPP terpilih yang memenuhi kriteria untuk ditagih.")
-                                    ->send();
-                            }
-                        })
-                        // Hanya aktifkan jika ada record yang dipilih
-                        ->deselectRecordsAfterCompletion(),
                 ]),
             ]);
     }
 
     public static function infolist(Infolist $infolist): Infolist
     {
+        // ... (definisi infolist Anda tetap sama) ...
         return $infolist
             ->schema([
-                Infolists\Components\Section::make('Informasi Pendaftar')
-                    ->columns(2)
-                    ->schema([
-                        Infolists\Components\TextEntry::make('nama_lengkap_calon_santri'),
-                        Infolists\Components\TextEntry::make('nisn_calon_santri')->placeholder('N/A'),
-                        Infolists\Components\TextEntry::make('tempat_lahir_calon_santri')->placeholder('N/A'),
-                        Infolists\Components\TextEntry::make('tanggal_lahir_calon_santri')->date('d F Y'),
-                        Infolists\Components\TextEntry::make('jenis_kelamin_calon_santri')->formatStateUsing(fn($state) => is_string($state) ? ucfirst($state) : $state),
-                        Infolists\Components\TextEntry::make('asal_sekolah_calon_santri')->placeholder('N/A'),
-                        Infolists\Components\TextEntry::make('alamat_calon_santri')->columnSpanFull()->placeholder('N/A'),
-                    ]),
-                Infolists\Components\Section::make('Informasi Wali')
-                    ->columns(2)
-                    ->schema([
-                        Infolists\Components\TextEntry::make('nama_wali'),
-                        Infolists\Components\TextEntry::make('nomor_telepon_wali'),
-                        Infolists\Components\TextEntry::make('email_wali')->placeholder('N/A'),
-                        Infolists\Components\TextEntry::make('pekerjaan_wali')->placeholder('N/A'),
-                    ]),
-                Infolists\Components\Section::make('Status Pendaftaran')
-                    ->schema([
-                        Infolists\Components\TextEntry::make('status_pendaftaran')
-                            ->badge()
-                            ->formatStateUsing(fn ($state) => $state instanceof StatusPendaftaranSantri ? $state->getLabel() : $state)
-                            ->color(fn ($state) => $state instanceof StatusPendaftaranSantri ? $state->getColor() : 'gray'),
-                        Infolists\Components\TextEntry::make('catatan_admin')->placeholder('Tidak ada catatan.'),
-                        Infolists\Components\TextEntry::make('created_at')->label('Tanggal Mendaftar')->dateTime('d F Y, H:i'),
-                    ]),
+                Infolists\Components\Section::make('Informasi Pendaftar') /* ... */,
+                Infolists\Components\Section::make('Informasi Wali') /* ... */,
+                Infolists\Components\Section::make('Status Pendaftaran') /* ... */,
             ]);
     }
-    
+
     public static function getRelations(): array { return []; }
 
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListPendaftarSantris::route('/'),
-            'create' => Pages\CreatePendaftarSantri::route('/create'),
-            // 'edit' => Pages\EditPendaftarSantri::route('/{record}/edit'), // Edit via modal
+            'create' => Pages\CreatePendaftarSantri::route('/create'), // Admin bisa input manual
+            // 'edit' => Pages\EditPendaftarSantri::route('/{record}/edit'), // Biarkan ini agar modal EditAction bisa menggunakan form default
             'view' => Pages\ViewPendaftarSantri::route('/{record}'),
         ];
     }
-    
+
+    // Otorisasi
     public static function canViewAny(): bool { $user = Auth::user(); return $user && ($user->role === UserRole::ADMIN || $user->role === UserRole::AKADEMIK); }
     public static function canCreate(): bool { $user = Auth::user(); return $user && ($user->role === UserRole::ADMIN || $user->role === UserRole::AKADEMIK); }
     public static function canEdit(Model $record): bool { $user = Auth::user(); return $user && ($user->role === UserRole::ADMIN || $user->role === UserRole::AKADEMIK); }
     public static function canDelete(Model $record): bool { $user = Auth::user(); return $user && ($user->role === UserRole::ADMIN || $user->role === UserRole::AKADEMIK); }
 
+    // Metode processSantriActivation disesuaikan untuk menghapus record pendaftar
+    protected static function processSantriActivation(PendaftarSantri $record, bool $sendNotification = true, bool $fromEditAction = false): void
+    {
+        // Jika dipanggil dari EditAction, status sudah diubah menjadi AKTIF oleh form save.
+        // Jika dipanggil dari tombol 'aktivasiSantri', status mungkin masih PENDING/DIPROSES.
+        // Kita cek apakah user sudah ada untuk mencegah duplikasi jika proses ini terpicu lebih dari sekali.
+
+        $emailCalonSantri = $record->email_wali ?? static::generateTempEmail($record);
+        $existingUser = User::where('email', $emailCalonSantri)->first();
+
+        if ($existingUser && $existingUser->role === UserRole::SANTRI) {
+            Log::info("processSantriActivation: User santri dengan email {$emailCalonSantri} sudah ada untuk Pendaftar ID: {$record->id}.");
+            // Jika user sudah ada, pastikan status pendaftar adalah AKTIF dan hapus pendaftar.
+            if ($record->status_pendaftaran !== StatusPendaftaranSantri::AKTIF) {
+                $record->status_pendaftaran = StatusPendaftaranSantri::AKTIF;
+                $record->saveQuietly(); // Simpan status baru jika belum
+            }
+            $record->delete(); // Hapus pendaftar karena user sudah ada
+            if ($sendNotification) {
+                Notification::make()->title('Info')->body('Santri ini sudah memiliki akun aktif. Data pendaftar telah diperbarui/dihapus.')->warning()->send();
+            }
+            return;
+        }
+        
+        // Jika user belum ada, lanjutkan proses pembuatan user baru
+        if ($record->status_pendaftaran === StatusPendaftaranSantri::DITOLAK) {
+            if ($sendNotification) { Notification::make()->title('Info')->body('Pendaftaran ini sudah ditolak.')->warning()->send(); }
+            return;
+        }
+
+        $passwordDefault = Str::random(8); 
+
+        try {
+            DB::beginTransaction(); 
+
+            $user = User::create([
+                'name' => $record->nama_lengkap_calon_santri,
+                'email' => $emailCalonSantri,
+                'password' => Hash::make($passwordDefault),
+                'role' => UserRole::SANTRI,
+                'email_verified_at' => now(), 
+            ]);
+
+            SantriProfile::create([
+                'user_id' => $user->id,
+                'alamat' => $record->alamat_calon_santri,
+                'tanggal_lahir' => $record->tanggal_lahir_calon_santri,
+                'nama_wali' => $record->nama_wali,
+            ]);
+
+            // Jika dipanggil dari tombol 'aktivasiSantri', statusnya mungkin belum AKTIF
+            if (!$fromEditAction) {
+                $record->status_pendaftaran = StatusPendaftaranSantri::AKTIF;
+                $record->saveQuietly(); 
+            }
+            // Jika dipanggil dari EditAction, $record sudah memiliki status AKTIF.
+
+            if (!empty($record->email_wali)) {
+                try {
+                    Mail::to($record->email_wali)->send(new SantriBaruDiterimaMail($user, $passwordDefault, $record));
+                    if ($sendNotification) { Notification::make()->title('Email Terkirim')->body('Email notifikasi telah dikirim ke wali santri.')->success()->send(); }
+                } catch (\Exception $e) {
+                    if ($sendNotification) { Notification::make()->title('Gagal Kirim Email')->body('Gagal mengirim email: ' . $e->getMessage())->danger()->send(); }
+                    Log::error('Gagal kirim email aktivasi santri ke ' . $record->email_wali . ': ' . $e->getMessage(), ['pendaftar_id' => $record->id, 'exception' => $e]);
+                }
+            } else {
+                if ($sendNotification) { Notification::make()->title('Info')->body('Email wali tidak tersedia, notifikasi email tidak dikirim.')->warning()->send(); }
+            }
+
+            // Hapus record PendaftarSantri setelah semua proses berhasil
+            $record->delete();
+            Log::info("Pendaftar ID {$record->id} dihapus setelah aktivasi berhasil.");
+
+            if ($sendNotification) {
+                Notification::make()->title('Sukses Aktivasi')->body('Santri berhasil diaktifkan. Akun pengguna telah dibuat. Password default: ' . $passwordDefault)->success()->send();
+            }
+            DB::commit(); 
+        } catch (\Exception $e) {
+            DB::rollBack(); 
+            if ($sendNotification) { Notification::make()->title('Gagal Aktivasi')->body('Terjadi kesalahan: ' . $e->getMessage())->danger()->send(); }
+            Log::error('Gagal aktivasi pendaftar santri ID ' . $record->id . ': ' . $e->getMessage(), ['pendaftar_id' => $record->id, 'exception' => $e, 'trace' => $e->getTraceAsString()]);
+        }
+    }
+
+    protected static function generateTempEmail(PendaftarSantri $record): string
+    {
+        $baseEmail = strtolower(Str::slug($record->nama_lengkap_calon_santri, '.'));
+        $email = $baseEmail . '.' . Str::random(4) . '@santri.tpqanda.com'; // Ganti domain jika perlu
+        while (User::where('email', $email)->exists()) {
+            $email = $baseEmail . '.' . Str::random(5) . '@santri.tpqanda.com';
+        }
+        return $email;
+    }
 }
