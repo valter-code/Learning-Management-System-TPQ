@@ -24,14 +24,14 @@ class AkademikResource extends Resource
     protected static ?string $modelLabel = 'Staff Akademik';
     protected static ?string $pluralModelLabel = 'Staff Akademik';
     protected static ?string $slug = 'staff-akademik';
-    public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::where('role', UserRole::PENGAJAR)->count();
-    }
     protected static ?string $navigationGroup = 'Manajemen Pengguna';
     protected static ?int $navigationSort = 2; // Di bawah Pengajar (atau sesuaikan)
 
     protected static ?string $navigationBadgeTooltip = 'Jumlah Staff Akademik';
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::where('role', UserRole::PENGAJAR)->count();
+    }
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->where('role', UserRole::AKADEMIK);
