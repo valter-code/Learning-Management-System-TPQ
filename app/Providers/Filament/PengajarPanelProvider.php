@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Admin\Resources\SppResource;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
@@ -47,7 +48,6 @@ class PengajarPanelProvider extends PanelProvider
             // ->css('resources/css/filament/pengajar/theme.css') // Sesuaikan path
             ->resources([
                 SantriResource::class,
-                RiwayatAbsensiResource::class, // Pastikan Anda sudah membuat resource ini
             ])
            ->plugins([
                 FilamentEditProfilePlugin::make()

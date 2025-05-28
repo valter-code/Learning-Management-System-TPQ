@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pendaftaran Santri {{ config('app.name') }}</title> {{-- Nama TPQ bisa dinamis nanti --}}
+    <title>Pendaftaran Santri {{ config('app.name') }}</title>
 
     <link rel="icon" href="https://placehold.co/32x32/10B981/FFFFFF?text=TPQ" type="image/png">
 
@@ -26,6 +26,11 @@
         }
         .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
         }
+        /* Styling untuk input focus */
+        .input-focus-teal:focus {
+            border-color: #0D9488; /* Tailwind teal-600 */
+            box-shadow: 0 0 0 1px #0D9488;
+        }
     </style>
 </head>
 <body class="bg-gray-100 antialiased"> 
@@ -38,8 +43,8 @@
             <span class="self-center text-2xl font-semibold whitespace-nowrap text-teal-700">{{ config('app.name') }}</span>
         </a>
         <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-            <button type="button" class="text-white bg-teal-600 hover:bg-teal-700 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-4 py-2 text-center transition duration-150 ease-in-out">Daftar Sekarang!</button>
-            <button data-collapse-toggle="navbar-cta" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-600 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="navbar-cta" aria-expanded="false">
+            <a href="{{ route('registrasi.santri.create') }}" class="text-white bg-teal-600 hover:bg-teal-700 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-4 py-2 text-center transition duration-150 ease-in-out">Daftar Sekarang!</a>
+            <button data-collapse-toggle="navbar-cta" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-600 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-200" aria-controls="navbar-cta" aria-expanded="false">
                 <span class="sr-only">Open main menu</span>
                 <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
@@ -134,29 +139,29 @@
                     </div>
                 </fieldset>
 
-                {{-- DATA WALI SANTRI --}}
-                <fieldset class="mb-8">
-                    <legend class="text-xl font-semibold text-teal-600 mb-4 pb-2 border-b-2 border-teal-500">II. Data Wali Santri</legend>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                        <div>
-                            <label for="nama_wali" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap Wali <span class="text-red-500">*</span></label>
-                            <input type="text" name="nama_wali" id="nama_wali" value="{{ old('nama_wali') }}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm input-focus-teal sm:text-sm p-3" placeholder="Ayah/Ibu/Wali Lainnya">
-                        </div>
-                        <div>
-                            <label for="nomor_telepon_wali" class="block text-sm font-medium text-gray-700 mb-1">Nomor Telepon/HP Wali <span class="text-red-500">*</span></label>
-                            <input type="tel" name="nomor_telepon_wali" id="nomor_telepon_wali" value="{{ old('nomor_telepon_wali') }}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm input-focus-teal sm:text-sm p-3" placeholder="Contoh: 08123456789">
-                        </div>
-                        <div>
-                            <label for="email_wali" class="block text-sm font-medium text-gray-700 mb-1">Email Wali(Untuk Konfirmasi Email)<span class="text-red-500">*</span></label>
-                            <input type="email" name="email_wali" id="email_wali" value="{{ old('email_wali') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm input-focus-teal sm:text-sm p-3" placeholder="contoh@gmail.com" required>
-                        </div>
-                        <div>
-                            <label for="pekerjaan_wali" class="block text-sm font-medium text-gray-700 mb-1">Pekerjaan Wali<span class="text-red-500">*</span></label>
-                            <input type="text" name="pekerjaan_wali" id="pekerjaan_wali" value="{{ old('pekerjaan_wali') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm input-focus-teal sm:text-sm p-3" required>
-                        </div>
+                {{-- ... FIELDSET DATA WALI SANTRI ... --}}
+            <fieldset class="mb-8">
+                <legend class="text-xl font-semibold text-teal-600 mb-4 pb-2 border-b-2 border-teal-500">II. Data Wali Santri</legend>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                    <div>
+                        <label for="nama_wali" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap Wali <span class="text-red-500">*</span></label>
+                        <input type="text" name="nama_wali" id="nama_wali" value="{{ old('nama_wali') }}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm input-focus-teal sm:text-sm p-3" placeholder="Ayah/Ibu/Wali Lainnya">
                     </div>
-                </fieldset>
-
+                    <div>
+                        <label for="nomor_telepon_wali" class="block text-sm font-medium text-gray-700 mb-1">Nomor Telepon/HP Wali <span class="text-red-500">*</span></label>
+                        <input type="tel" name="nomor_telepon_wali" id="nomor_telepon_wali" value="{{ old('nomor_telepon_wali') }}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm input-focus-teal sm:text-sm p-3" placeholder="Contoh: 08123456789">
+                    </div>
+                    <div>
+                        <label for="email_wali" class="block text-sm font-medium text-gray-700 mb-1">Email Wali (Untuk Konfirmasi Email)<span class="text-red-500">*</span></label>
+                        <input type="email" name="email_wali" id="email_wali" value="{{ old('email_wali') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm input-focus-teal sm:text-sm p-3" placeholder="contoh@gmail.com" required>
+                    </div>
+                    <div>
+                        <label for="pekerjaan_wali" class="block text-sm font-medium text-gray-700 mb-1">Pekerjaan Wali<span class="text-red-500">*</span></label>
+                        <input type="text" placeholder="contoh: buruh" name="pekerjaan_wali" id="pekerjaan_wali" value="{{ old('pekerjaan_wali') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm input-focus-teal sm:text-sm p-3" required>
+                    </div>
+                </div>
+            </fieldset>
+            {{-- ... sisa form ... --}}
                 {{-- INFORMASI TAMBAHAN --}}
                 <fieldset class="mb-8">
                     <legend class="text-xl font-semibold text-teal-600 mb-4 pb-2 border-b-2 border-teal-500">III. Informasi Tambahan</legend>
@@ -281,3 +286,4 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 </body>
 </html>
+

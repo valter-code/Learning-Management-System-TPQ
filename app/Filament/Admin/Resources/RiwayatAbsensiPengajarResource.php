@@ -139,11 +139,12 @@ class RiwayatAbsensiPengajarResource extends Resource
     public static function canViewAny(): bool
     {
         $user = Auth::user();
-        return $user && $user->role === UserRole::ADMIN;
+        return $user && $user->role === UserRole::ADMIN || $user->role === UserRole::AKADEMIK;
     }
     // Admin tidak create/edit/delete dari sini, hanya view
-    public static function canCreate(): bool { return false; }
-    public static function canEdit(Model $record): bool { return false; } // Sesuaikan jika Admin boleh edit
-    public static function canDelete(Model $record): bool { return false; } // Sesuaikan jika Admin boleh delete
-    public static function canDeleteAny(): bool { return false; } // Sesuaikan jika Admin boleh bulk delete
+
+    // public static function canViewAny(): bool { $user = Auth::user(); return $user && ($user->role === UserRole::ADMIN || $user->role === UserRole::AKADEMIK); }
+//     public static function canCreate(): bool { return false; } // Diubah ke false
+//     public static function canEdit(Model $record): bool { $user = Auth::user(); return $user && ($user->role === UserRole::ADMIN || $user->role === UserRole::AKADEMIK); }
+//     public static function canDelete(Model $record): bool { $user = Auth::user(); return $user && ($user->role === UserRole::ADMIN || $user->role === UserRole::AKADEMIK); }
 }

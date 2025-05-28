@@ -5,6 +5,7 @@ namespace App\Models;
 use Filament\Panel;
 use App\Enums\UserRole;
 use Filament\Facades\Filament;
+use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Models\Contracts\HasAvatar;
 use Illuminate\Notifications\Notifiable;
@@ -34,7 +35,7 @@ class BoringAvatarsProvider implements AvatarProvider
 }
 class User extends Authenticatable implements FilamentUser, HasAvatar
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, MustVerifyEmail;
 
     protected $fillable = [
         'name',

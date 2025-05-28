@@ -8,6 +8,7 @@ use Filament\Widgets;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Http\Middleware\Authenticate;
+use App\Filament\Admin\Resources\SppResource;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -19,8 +20,10 @@ use Filament\Http\Middleware\DisableBladeIconComponents;
 use App\Filament\Admin\Resources\PendaftarSantriResource;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use App\Filament\Pengajar\Resources\RiwayatAbsensiResource;
 use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use App\Filament\Admin\Resources\RiwayatAbsensiPengajarResource;
 
 class AkademikPanelProvider extends PanelProvider
 {
@@ -38,6 +41,8 @@ class AkademikPanelProvider extends PanelProvider
                 KegiatanGaleriResource::class,
                 PengajarResource::class,
                 PendaftarSantriResource::class,
+                RiwayatAbsensiPengajarResource::class, 
+                SppResource::class, // Tambahkan resource SPP
             ])
             ->discoverResources(in: app_path('Filament/Akademik/Resources'), for: 'App\\Filament\\Akademik\\Resources')
             ->discoverPages(in: app_path('Filament/Akademik/Pages'), for: 'App\\Filament\\Akademik\\Pages')

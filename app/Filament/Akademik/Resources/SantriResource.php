@@ -25,6 +25,7 @@ class SantriResource extends Resource
 
     protected static ?string $navigationLabel = 'Manajemen Santri'; 
     protected static ?string $pluralModelLabel = 'Santri'; 
+    protected static ?string $slug = 'Santri'; 
     protected static ?string $modelLabel = 'Santri'; 
     protected static ?string $navigationIcon = 'heroicon-o-users'; 
     protected static ?string $navigationGroup = 'Manajemen Pengguna'; 

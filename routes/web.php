@@ -27,3 +27,8 @@ Route::get('kontak', function () {
 
 Route::get('/registrasi-santri', [RegistrasiSantriController::class, 'create'])->name('registrasi.santri.create');
 Route::post('/registrasi-santri', [RegistrasiSantriController::class, 'store'])->name('registrasi.santri.store');
+
+Auth::routes(['verify' => true]);
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

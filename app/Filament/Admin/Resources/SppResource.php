@@ -31,6 +31,8 @@ class SppResource extends Resource
     protected static ?string $model = Spp::class;
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
     protected static ?string $navigationLabel = 'Manajemen SPP Santri';
+    protected static ?string $slug = 'spp';
+
     protected static ?string $modelLabel = 'Data SPP';
     protected static ?string $pluralModelLabel = 'Data SPP Santri';
     // protected static ?string $slug = 'spp-santri'; // Dihapus agar menggunakan default Filament

@@ -204,7 +204,7 @@ class PendaftarSantriResource extends Resource
                 $record->status_pendaftaran = StatusPendaftaranSantri::AKTIF;
                 $record->saveQuietly(); // Simpan status baru jika belum
             }
-            $record->delete(); // Hapus pendaftar karena user sudah ada
+            // $record->delete(); // Hapus pendaftar karena user sudah ada
             if ($sendNotification) {
                 Notification::make()->title('Info')->body('Santri ini sudah memiliki akun aktif. Data pendaftar telah diperbarui/dihapus.')->warning()->send();
             }
@@ -257,7 +257,7 @@ class PendaftarSantriResource extends Resource
             }
 
             // Hapus record PendaftarSantri setelah semua proses berhasil
-            $record->delete();
+            // $record->delete();
             Log::info("Pendaftar ID {$record->id} dihapus setelah aktivasi berhasil.");
 
             if ($sendNotification) {
