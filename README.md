@@ -5,42 +5,81 @@ Dokumen ini ditujukan bagi tim implementasi dan pengguna internal yang akan meng
 
 ---
 
+
 ## 📑 Daftar Isi
 
 - [Fitur Utama](#fitur-utama)
 - [Peran Pengguna & Fungsinya](#peran-pengguna--fungsinya)
+  - [Guest (Pengunjung/Wali Calon Santri)](#guest-pengunjungwali-calon-santri)
+  - [Admin](#admin)
+  - [Akademik (Staf Akademik)](#akademik-staf-akademik)
+  - [Pengajar (Ustadz/Ustadzah)](#pengajar-ustadzustadzah)
+  - [Santri](#santri)
 - [Prasyarat Instalasi](#prasyarat-instalasi)
 - [Langkah-Langkah Instalasi](#langkah-langkah-instalasi)
 - [Konfigurasi Awal](#konfigurasi-awal)
 - [Struktur Panel Filament](#struktur-panel-filament)
-- [Lisensi dan Pemakaian](#lisensi-dan-pemakaian)
+- [Kontribusi](#kontribusi)
+- [Lisensi](#lisensi)
 
 ---
 
 ## 🎯 Fitur Utama
 
-- Manajemen pengguna multi-peran: Admin, Akademik, Pengajar, Santri
-- Formulir pendaftaran santri online
-- Manajemen kelas, pertemuan, materi & tugas
-- Absensi harian santri dan pengajar
-- Pengumuman & galeri kegiatan publik
-- Tagihan & pelaporan pembayaran SPP
-- Notifikasi email (aktivasi, verifikasi, tagihan)
-- Panel admin berbasis Filament PHP
-- Halaman publik untuk informasi TPQ
+- **Manajemen Pengguna Multi-Peran**: Admin, Akademik, Pengajar, Santri
+- **Pendaftaran Santri Baru**: Formulir online dengan proses aktivasi
+- **Manajemen Akademik**: Kelas, Pertemuan, Materi, Tugas
+- **Absensi Harian**: Santri & Pengajar
+- **Manajemen Konten Publik**: Pengumuman, Galeri
+- **Manajemen Keuangan**: SPP, Tagihan
+- **Notifikasi Email**: Aktivasi akun, verifikasi, tagihan
+- **Panel Admin Filament**: Antarmuka modern
+- **Halaman Publik**: Informasi TPQ, pengumuman, galeri
 
 ---
 
 ## 👥 Peran Pengguna & Fungsinya
 
-Silakan lihat penjelasan per peran:
-- [Guest (Pengunjung/Wali)](#guest-pengunjungwali-calon-santri)
-- [Admin](#admin)
-- [Akademik](#akademik-staf-akademik)
-- [Pengajar](#pengajar-ustadzustadzah)
-- [Santri](#santri)
+### Guest (Pengunjung/Wali Calon Santri)
 
-<!-- Detail peran seperti sebelumnya tetap digunakan di sini -->
+- Melihat informasi publik (Beranda, Pengumuman, Galeri, dll.)
+- Mendaftar santri baru via formulir online
+- Menerima notifikasi email pendaftaran
+
+### Admin
+
+- Akses penuh ke seluruh sistem
+- Statistik dashboard
+- CRUD semua pengguna
+- Manajemen pendaftar & aktivasi santri
+- CRUD kelas, pertemuan, materi, tugas
+- Manajemen pengumuman & galeri
+- Tagihan SPP & laporan pembayaran
+- Riwayat absensi pengajar & santri
+
+### Akademik (Staf Akademik)
+
+- Akses terbatas untuk manajemen akademik & pengguna
+- Manajemen pendaftaran santri baru
+- CRUD kelas, pertemuan, materi, tugas
+- Manajemen pengumuman & galeri
+- Riwayat absensi santri
+
+### Pengajar (Ustadz/Ustadzah)
+
+- Fokus pada kelas yang diajar
+- Absensi pribadi & absensi santri
+- CRUD pertemuan, materi, tugas kelas sendiri
+- Riwayat absensi santri dari kelasnya
+
+### Santri
+
+- Absensi mandiri
+- Akses materi & tugas kelas
+- Pengerjaan & pengumpulan tugas
+- Daftar tugas pribadi
+- Rekap absensi pribadi
+- Edit profil pribadi
 
 ---
 
@@ -49,9 +88,9 @@ Silakan lihat penjelasan per peran:
 - PHP >= 8.1
 - Composer
 - Node.js & NPM (atau Yarn)
-- MySQL (direkomendasikan)
-- Web Server: Nginx atau Apache
-- Ekstensi PHP Laravel: `mbstring`, `xml`, `curl`, `gd`, dll.
+- MySQL (disarankan)
+- Web server: Nginx atau Apache
+- PHP extensions: `mbstring`, `xml`, `curl`, `gd`, dll.
 
 ---
 
@@ -65,24 +104,24 @@ cd lms-tpq
 # 2. Install dependency PHP
 composer install
 
-# 3. Salin file .env
+# 3. Salin .env.example menjadi .env
 cp .env.example .env
 
-# 4. Generate key Laravel
+# 4. Generate key aplikasi
 php artisan key:generate
 
-# 5. Edit konfigurasi database di .env
-# Ubah DB_DATABASE, DB_USERNAME, DB_PASSWORD sesuai kebutuhan
+# 5. Konfigurasi database di file .env
+# Ubah DB_DATABASE, DB_USERNAME, DB_PASSWORD, dll.
 
-# 6. Jalankan migrasi database
+# 6. Jalankan migrasi
 php artisan migrate
 
-# 7. Install dependency frontend
+# 7. Install dependency JavaScript
 npm install
 
 # 8. Compile aset frontend
-npm run dev   # untuk pengembangan
+npm run dev   # untuk development
 npm run build # untuk produksi
 
-# 9. Buat symbolic link ke folder storage publik
+# 9. Buat symbolic link storage
 php artisan storage:link
