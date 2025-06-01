@@ -18,9 +18,6 @@ Dokumen ini ditujukan bagi tim implementasi dan pengguna internal yang akan meng
 - [Prasyarat Instalasi](#prasyarat-instalasi)
 - [Langkah-Langkah Instalasi](#langkah-langkah-instalasi)
 - [Konfigurasi Awal](#konfigurasi-awal)
-- [Struktur Panel Filament](#struktur-panel-filament)
-- [Kontribusi](#kontribusi)
-- [Lisensi](#lisensi)
 
 ---
 
@@ -137,3 +134,26 @@ php artisan storage:link
 
 # 10. Isi database dengan beberapa table default 
 php artisan db:seed
+
+```
+
+## Konfigurasi Awal
+```bash
+
+ubah bagian
+APP_NAME="ISI NAMA LMS TPQ ANDA"
+APP_URL=http://localhost (biasanya diubah ke http://127.0.0.1 jika foto profile user tidak muncul) 
+
+DB_DATABASE=lms_tpq (pastikan sesuai)
+DB_USERNAME=root
+DB_PASSWORD=root (pastikan sesuai db anda)
+
+(ubah dengan kredensial email anda)
+MAIL_MAILER=smtp
+MAIL_SCHEME=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=
+MAIL_PASSWORD=
+MAIL_FROM_ADDRESS="emailanda@gmail.com"
+MAIL_FROM_NAME="${APP_NAME}"
