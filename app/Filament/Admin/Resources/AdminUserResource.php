@@ -66,7 +66,7 @@ class AdminUserResource extends Resource
                     ->image()
                     ->disk('public')->directory('avatars/admins'),
                 // Role diset otomatis, tidak perlu input manual
-                Forms\Components\Hidden::make('role')->default(UserRole::ADMIN->value),
+                Forms\Components\Hidden::make(name: 'role')->default(UserRole::ADMIN->value),
             ]);
     }
 

@@ -48,6 +48,7 @@ class PengajarPanelProvider extends PanelProvider
             // ->css('resources/css/filament/pengajar/theme.css') // Sesuaikan path
             ->resources([
                 SantriResource::class,
+                RiwayatAbsensiResource::class,
             ])
            ->plugins([
                 FilamentEditProfilePlugin::make()

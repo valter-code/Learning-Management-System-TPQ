@@ -134,7 +134,7 @@ class RiwayatAbsensiResource extends Resource
     }
 
     // Otorisasi
-    public static function canViewAny(): bool { $user = Auth::user(); return $user && in_array($user->role, [UserRole::PENGAJAR, UserRole::AKADEMIK, UserRole::ADMIN]); }
+    public static function canViewAny(): bool { $user = Auth::user(); return $user && ($user->role === UserRole::ADMIN || $user->role === UserRole::AKADEMIK) || $user->role === UserRole::PENGAJAR; }
     public static function canCreate(): bool { return false; }
     public static function canEdit(Model $record): bool { return false; }
     public static function canDelete(Model $record): bool { return false; }

@@ -62,6 +62,7 @@ class PengajarResource extends Resource
                     ->label('Foto Profil')
                     ->image()
                     ->disk('public')->directory('avatars/pengajar'),
+                    Forms\Components\Hidden::make(name: 'role')->default(UserRole::PENGAJAR->value),
                     Forms\Components\Section::make('Kelas yang Diajar')
                     ->schema([
                         Forms\Components\Select::make('mengajarDiKelas') // Nama relasi di model User

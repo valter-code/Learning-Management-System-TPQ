@@ -92,8 +92,7 @@ class PertemuanResource extends Resource
             Forms\Components\DatePicker::make('tanggal_pertemuan')
                 ->required(),
             TimePickerField::make('waktu_mulai')->label('waktu mulai')->okLabel("Confirm")->cancelLabel("Cancel"),
-            Forms\Components\Textarea::make('deskripsi_pertemuan')
-                ->columnSpanFull(),
+            Forms\Components\RichEditor::make('deskripsi_pertemuan')->columnSpanFull(),
             // Tambahkan field lain jika ada
 
             Repeater::make('itemsMateri') // Nama relasi HasMany di model Pertemuan
@@ -134,6 +133,7 @@ class PertemuanResource extends Resource
                 ->schema([
                     Forms\Components\TextInput::make('judul_tugas')->required()->columnSpanFull(),
                     Forms\Components\RichEditor::make('deskripsi_tugas')->columnSpanFull(),
+
                     FileUpload::make('file_lampiran_tugas')
                         ->label('File Lampiran Tugas (Opsional)')
                         ->disk('public')

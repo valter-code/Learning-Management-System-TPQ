@@ -41,7 +41,7 @@ class AkademikPanelProvider extends PanelProvider
                 KegiatanGaleriResource::class,
                 PengajarResource::class,
                 PendaftarSantriResource::class,
-                RiwayatAbsensiPengajarResource::class, 
+                RiwayatAbsensiPengajarResource::class,
                 SppResource::class, // Tambahkan resource SPP
             ])
             ->discoverResources(in: app_path('Filament/Akademik/Resources'), for: 'App\\Filament\\Akademik\\Resources')
