@@ -86,8 +86,8 @@ Aplikasi ini dirancang untuk membantu pengelolaan kegiatan belajar mengajar, adm
 
 - PHP >= 8.1
 - Composer
-- Node.js & NPM (atau Yarn)
-- MySQL (disarankan)
+- Node.js & NPM
+- MySQL
 - Web server: Nginx atau Apache
 - PHP extensions: `mbstring`, `xml`, `curl`, `gd`, dll.
 
@@ -97,7 +97,7 @@ Aplikasi ini dirancang untuk membantu pengelolaan kegiatan belajar mengajar, adm
 
 ```bash
 # 1. Clone repository
-git clone [URL_REPOSITORY_ANDA] lms-tpq
+git clone https://github.com/valter-code/Learning-Management-System-TPQ
 cd lms-tpq
 
 # 2. Install dependency PHP
