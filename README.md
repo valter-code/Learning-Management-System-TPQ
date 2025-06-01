@@ -1,61 +1,278 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+LMS TPQ - Sistem Manajemen Pembelajaran TPQ
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Selamat datang di dokumentasi LMS TPQ! Aplikasi ini dirancang untuk membantu pengelolaan kegiatan belajar mengajar, administrasi, dan komunikasi di Taman Pendidikan Al-Qur'an (TPQ).
+Daftar Isi
 
-## About Laravel
+    Fitur Utama
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+    Peran Pengguna & Fungsinya
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+        Guest (Pengunjung/Wali Calon Santri)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+        Admin
 
-## Learning Laravel
+        Akademik (Staf Akademik)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+        Pengajar (Ustadz/Ustadzah)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+        Santri
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+    Prasyarat Instalasi
 
-## Laravel Sponsors
+    Langkah-Langkah Instalasi
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+    Konfigurasi Awal
 
-### Premium Partners
+        File .env
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+        Migrasi dan Seeder Database
 
-## Contributing
+        Symbolic Link untuk Storage
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+        Konfigurasi Email (SMTP)
 
-## Code of Conduct
+    Struktur Panel Filament
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+    Kontribusi
 
-## Security Vulnerabilities
+    Lisensi
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+1. Fitur Utama
 
-## License
+    Manajemen Pengguna Multi-Peran: Admin, Akademik, Pengajar, Santri.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+    Pendaftaran Santri Baru: Formulir pendaftaran online dengan proses aktivasi oleh admin/akademik.
+
+    Manajemen Akademik: Pengelolaan Kelas, Pertemuan, Materi, dan Tugas.
+
+    Absensi Harian: Fitur absensi mandiri untuk santri dan pengajar, serta rekap absensi.
+
+    Manajemen Konten Publik: Pengelolaan Pengumuman dan Galeri Kegiatan.
+
+    Manajemen Keuangan: Pencatatan dan penagihan SPP santri.
+
+    Notifikasi Email: Untuk pendaftaran, aktivasi akun, verifikasi email, dan tagihan SPP.
+
+    Panel Administrasi Berbasis Peran: Menggunakan Filament PHP untuk antarmuka admin yang intuitif.
+
+    Halaman Publik: Untuk menampilkan informasi TPQ, pengumuman, dan galeri.
+
+2. Peran Pengguna & Fungsinya
+Guest (Pengunjung/Wali Calon Santri)
+
+    Melihat Informasi Publik: Dapat mengakses halaman Beranda, Pengumuman, Galeri Kegiatan, Tentang Kami, dan Hubungi Kami.
+
+    Mendaftar Santri Baru: Mengisi dan mengirimkan formulir pendaftaran online untuk calon santri. Data akan masuk ke sistem dengan status "Pending" dan wali akan menerima email notifikasi awal.
+
+Admin
+
+    Akses Penuh: Memiliki hak akses tertinggi ke semua fitur dan konfigurasi sistem.
+
+    Dashboard: Melihat ringkasan statistik (jumlah pengajar, pendaftar baru, chart pendaftaran).
+
+    Manajemen Pengguna:
+
+        CRUD (Create, Read, Update, Delete) untuk semua peran pengguna (Admin lain, Akademik, Pengajar, Santri aktif).
+
+        Mengatur penugasan kelas untuk Pengajar dan Santri.
+
+    Manajemen Pendaftar Santri Baru:
+
+        Melihat dan memproses pendaftaran santri baru.
+
+        Mengubah status pendaftar (Pending, Diproses, Aktif, Ditolak).
+
+        Melakukan aktivasi santri: membuat akun User, SantriProfile, mengirim email verifikasi dan info akun ke wali, mengubah status pendaftar menjadi "AKTIF".
+
+    Manajemen Akademik (Umum):
+
+        CRUD Kelas.
+
+        CRUD Pertemuan, termasuk pengelolaan Materi dan Tugas di dalamnya.
+
+    Manajemen Konten Website:
+
+        CRUD Pengumuman (termasuk foto, status publikasi).
+
+        CRUD Kegiatan Galeri (termasuk foto sampul, deskripsi, status publikasi) dan mengelola foto-foto di dalamnya.
+
+    Manajemen Keuangan (SPP):
+
+        Membuat (generate) tagihan SPP bulanan untuk semua santri aktif.
+
+        Melihat status pembayaran SPP.
+
+        Mengirim email tagihan SPP ke wali.
+
+        Memperbarui status pembayaran SPP (misalnya, setelah konfirmasi manual).
+
+    Laporan:
+
+        Melihat riwayat absensi semua Pengajar.
+
+        Melihat riwayat absensi semua Santri.
+
+    Edit Profil: Mengubah informasi profil dan password akun Admin.
+
+Akademik (Staf Akademik)
+
+    Akses Terbatas: Memiliki hak akses untuk mengelola aspek akademik dan sebagian pengguna.
+
+    Dashboard: Melihat widget dan chart pendaftar baru.
+
+    Manajemen Pengguna:
+
+        CRUD Staf Pengajar (termasuk mengatur kelas yang diajar).
+
+        Mengelola Pendaftar Santri Baru (fungsi sama seperti Admin, termasuk aktivasi).
+
+    Manajemen Akademik:
+
+        CRUD Kelas.
+
+        CRUD Pertemuan (termasuk Materi dan Tugas).
+
+    Manajemen Konten Website:
+
+        CRUD Pengumuman.
+
+        CRUD Kegiatan Galeri & Fotonya.
+
+    Laporan:
+
+        Melihat riwayat absensi semua Santri.
+
+    Edit Profil: Mengubah informasi profil dan password akun Akademik.
+
+Pengajar (Ustadz/Ustadzah)
+
+    Akses Terbatas: Fokus pada kegiatan belajar mengajar dan manajemen kelasnya.
+
+    Dashboard:
+
+        Melakukan absensi harian pribadi.
+
+        Melihat widget kelas yang diajar.
+
+    Manajemen Pertemuan:
+
+        Mengakses daftar pertemuan untuk kelas yang diajar (terfilter).
+
+        CRUD Pertemuan untuk kelasnya.
+
+        Menambah, mengubah, menghapus Materi dan Tugas di dalam pertemuannya.
+
+    Absensi Santri:
+
+        Melakukan absensi harian untuk santri di kelasnya (terkait dengan sebuah pertemuan).
+
+    Laporan:
+
+        Melihat riwayat absensi santri dari kelas-kelas yang diajarnya (filter per tanggal).
+
+    Edit Profil: Mengubah informasi profil dan password akun Pengajar.
+
+Santri
+
+    Akses Terbatas: Fokus pada aktivitas pembelajaran pribadi.
+
+    Dashboard:
+
+        Melakukan absensi mandiri harian.
+
+        Melihat widget kelas yang diikuti.
+
+    Materi & Tugas Kelas:
+
+        Mengakses halaman "Materi & Tugas Kelas".
+
+        Memfilter konten berdasarkan Kelas dan Pertemuan/Topik.
+
+        Melihat daftar Materi dan Tugas untuk setiap pertemuan.
+
+        Mengakses detail pertemuan (Infolist) untuk melihat detail materi atau mengerjakan tugas.
+
+    Pengerjaan Tugas:
+
+        Melihat detail instruksi tugas.
+
+        Mengunggah file jawaban atau mengisi jawaban teks melalui modal.
+
+        Mengirimkan pengumpulan tugas.
+
+        Mengedit pengumpulan tugas (jika belum dinilai).
+
+    Daftar Tugas Pribadi:
+
+        Melihat semua tugas yang ditugaskan, beserta status pengerjaan dan nilai.
+
+        Memfilter tugas berdasarkan Kelas dan Status Pengumpulan.
+
+    Riwayat Absensi Pribadi:
+
+        Melihat rekap absensi hariannya sendiri (filter per bulan/tahun).
+
+    Edit Profil: Mengubah informasi profil (nama, email, password, avatar) dan melihat info kelasnya (read-only).
+
+3. Prasyarat Instalasi
+
+    PHP >= 8.1
+
+    Composer
+
+    Node.js & NPM (atau Yarn)
+
+    Database (MySQL direkomendasikan)
+
+    Web Server (Nginx atau Apache)
+
+    Ekstensi PHP yang diperlukan oleh Laravel (mbstring, xml, curl, gd, dll.)
+
+4. Langkah-Langkah Instalasi
+
+    Clone Repository (jika sudah ada):
+
+    git clone [URL_REPOSITORY_ANDA] lms-tpq
+    cd lms-tpq
+
+    Install Dependencies PHP:
+
+    composer install
+
+    Buat File .env:
+    Salin file .env.example menjadi .env:
+
+    cp .env.example .env
+
+    Generate Kunci Aplikasi:
+
+    php artisan key:generate
+
+    Konfigurasi Database di .env:
+    Sesuaikan variabel DB_DATABASE, DB_USERNAME, DB_PASSWORD, dll., di file .env Anda.
+
+    Jalankan Migrasi Database:
+
+    php artisan migrate
+
+    Install Dependencies JavaScript:
+
+    npm install
+
+    Compile Aset Frontend:
+
+    npm run dev 
+
+    (atau npm run build untuk produksi)
+
+    Buat Symbolic Link untuk Storage:
+    Agar file yang diunggah (seperti foto profil, materi, galeri) bisa diakses publik:
+
+    php artisan storage:link
+
+5. Konfigurasi Awal
+File .env
+
+Pastikan Anda telah mengatur variabel penting berikut di file .env:
+
+    `APP_NAME
