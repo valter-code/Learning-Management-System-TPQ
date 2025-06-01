@@ -56,6 +56,8 @@ Dokumen ini ditujukan bagi tim implementasi dan pengguna internal yang akan meng
 - Manajemen pengumuman & galeri
 - Tagihan SPP & laporan pembayaran
 - Riwayat absensi pengajar & santri
+- email: admin@tpq.com
+- password: password
 
 ### Akademik (Staf Akademik)
 
@@ -64,6 +66,8 @@ Dokumen ini ditujukan bagi tim implementasi dan pengguna internal yang akan meng
 - CRUD kelas, pertemuan, materi, tugas
 - Manajemen pengumuman & galeri
 - Riwayat absensi santri
+- email: akademik1@tpq.com
+- password: password
 
 ### Pengajar (Ustadz/Ustadzah)
 
@@ -71,6 +75,8 @@ Dokumen ini ditujukan bagi tim implementasi dan pengguna internal yang akan meng
 - Absensi pribadi & absensi santri
 - CRUD pertemuan, materi, tugas kelas sendiri
 - Riwayat absensi santri dari kelasnya
+- email: pengajar1@tpq.com, pengajar2@tpq.com
+- password: password
 
 ### Santri
 
@@ -80,6 +86,8 @@ Dokumen ini ditujukan bagi tim implementasi dan pengguna internal yang akan meng
 - Daftar tugas pribadi
 - Rekap absensi pribadi
 - Edit profil pribadi
+- email: santri1@tpq.com, santri2@tpq.com
+- password: password
 
 ---
 
@@ -112,6 +120,7 @@ php artisan key:generate
 
 # 5. Konfigurasi database di file .env
 # Ubah DB_DATABASE, DB_USERNAME, DB_PASSWORD, dll.
+& Ubah MAIL_MAILER, MAIL_SCHEME, MAIL_HOST, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD, MAIL_FROM_ADDRESS, MAIL_FROM_NAME sesuai kredensial email anda
 
 # 6. Jalankan migrasi
 php artisan migrate
@@ -125,3 +134,6 @@ npm run build # untuk produksi
 
 # 9. Buat symbolic link storage
 php artisan storage:link
+
+# 10. Isi database dengan beberapa table default 
+php artisan db:seed
