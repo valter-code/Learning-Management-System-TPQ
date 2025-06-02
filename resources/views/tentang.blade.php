@@ -111,23 +111,19 @@
                    <div>
                        <h3 class="text-xl font-bold text-teal-700 mb-2">Visi Kami</h3>
                        <p class="text-base text-gray-600">
-                           Menjadi lembaga pendidikan Al-Qur'an terdepan dalam mencetak generasi yang cinta Al-Qur'an, berakhlak mulia, cerdas, dan bermanfaat bagi umat.
+                       {{ $settings['web_vision'] ?? '-' }}
                        </p>
                    </div>
                    <div>
                        <h3 class="text-xl font-bold text-teal-700 mb-2">Misi Kami</h3>
                        <ul class="list-disc list-inside text-base text-gray-600 space-y-2">
-                           <li>Menyelenggarakan pembelajaran Al-Qur'an yang efektif, inovatif, dan menyenangkan.</li>
-                           <li>Membina santri agar memiliki pemahaman Al-Qur'an yang baik dan mampu mengamalkannya.</li>
-                           <li>Mengembangkan potensi santri dalam bidang akademik, non-akademik, dan keagamaan.</li>
-                           <li>Menanamkan nilai-nilai Islam dan akhlakul karimah dalam setiap aspek pendidikan.</li>
-                           <li>Membangun kerjasama yang erat dengan orang tua dan masyarakat.</li>
+                       {!! $settings['web_mission'] ?? '-' !!}
                        </ul>
                    </div>
                     <div>
                        <h3 class="text-xl font-bold text-teal-700 mb-2">Sejarah Singkat</h3>
                        <p class="text-base text-gray-600">
-                           Didirikan pada tahun [Tahun Berdiri], TPQ kami berawal dari keprihatinan akan pentingnya pendidikan Al-Qur'an sejak dini. Dengan semangat kebersamaan dan dedikasi, kami terus berkembang hingga saat ini, berkomitmen untuk memberikan pendidikan terbaik bagi para santri.
+                       {{ $settings['web_brief_history'] ?? '-' }}
                        </p>
                    </div>
                </div>
@@ -150,12 +146,10 @@
                     <img src="https://placehold.co/40x40/FFFFFF/0D9488?text=TPQ" class="h-8 me-3 rounded-md" alt="LMS TPQ Logo" /> 
                     <span class="self-center text-2xl font-semibold whitespace-nowrap">{{ config('app.name') }}</span>
                 </a>
-                 <p class="mt-4 text-sm text-white max-w-xs"> 
-                    Jl. Pendidikan Al-Qur'an No. 123<br>
-                    Kelurahan Mengaji, Kecamatan Iqra<br>
-                    Jakarta, 12345<br>
-                    <a href="tel:0211234567" class="hover:underline text-white hover:text-teal-50">Telp: (021) 123-4567</a><br>
-                    <a href="mailto:info@tpqanda.sch.id" class="hover:underline text-white hover:text-teal-50">Email: info@tpqanda.sch.id</a>
+                <p class="mt-4 text-sm text-white max-w-xs"> 
+                 <strong>Alamat: </strong>{{ $settings['contact_address'] ?? '-' }} <br>
+                    <a href="tel:{{ $settings['contact_phone'] ?? '-' }}" class="hover:underline text-white hover:text-teal-50"><strong>Telp: </strong>{{ $settings['contact_phone'] ?? '-' }}</a><br>
+                    <a href="mailto:{{ $settings['contact_email'] ?? '-' }}" class="hover:underline text-white hover:text-teal-50"><strong>Email:</strong> {{ $settings['contact_email'] ?? '-' }}</a>
                 </p>
             </div>
             <div class="grid grid-cols-2 gap-8 sm:gap-10 sm:grid-cols-3"> 

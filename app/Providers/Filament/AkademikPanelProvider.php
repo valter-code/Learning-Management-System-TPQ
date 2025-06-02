@@ -13,6 +13,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Filament\Http\Middleware\AuthenticateSession;
 use App\Filament\Admin\Resources\PengajarResource;
+use App\Filament\Pages\Shared\AturKontakDanAlamat;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use App\Filament\Admin\Resources\KegiatanGaleriResource;
@@ -48,6 +49,7 @@ class AkademikPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Akademik/Pages'), for: 'App\\Filament\\Akademik\\Pages')
             ->pages([
                 Pages\Dashboard::class,
+                // AturKontakDanAlamat::class, // Daftarkan di sini
             ])
             ->discoverWidgets(in: app_path('Filament/Akademik/Widgets'), for: 'App\\Filament\\Akademik\\Widgets')
             ->widgets([

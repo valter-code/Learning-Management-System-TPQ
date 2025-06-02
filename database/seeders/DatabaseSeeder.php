@@ -8,6 +8,7 @@ use App\Models\Foto;
 use App\Models\User;
 use App\Models\Kelas;
 use App\Enums\UserRole;
+use App\Models\Setting;
 use App\Enums\StatusSpp;
 use App\Models\Pertemuan;
 use App\Models\Pengumuman;
@@ -244,7 +245,14 @@ class DatabaseSeeder extends Seeder
             'email_wali' => 'wali.diproses@example.com',
             'status_pendaftaran' => StatusPendaftaranSantri::DIPROSES,
         ]);
-
+        Setting::updateOrCreate(['key' => 'contact_address'], ['value' => 'Jl. TPQ Al-Barokah No. 1']);
+        Setting::updateOrCreate(['key' => 'contact_phone'], ['value' => '081234567890']);
+        Setting::updateOrCreate(['key' => 'contact_email'], ['value' => 'info@tpq.com']);
+        Setting::updateOrCreate(['key' => 'contact_maps_iframe'], ['value' => '']);
+        
+        Setting::updateOrCreate(['key' => 'web_brief_history'], ['value' => " Menjadi lembaga pendidikan Al-Qur'an terdepan dalam mencetak generasi yang cinta Al-Qur'an, berakhlak mulia, cerdas, dan bermanfaat bagi umat."]);
+        Setting::updateOrCreate(['key' => 'web_mission'], ['value' => "1. Menyelenggarakan pembelajaran Al-Qur'an yang efektif, inovatif, dan menyenangkan.\n2. Membina santri agar memiliki pemahaman Al-Qur'an yang baik dan mampu mengamalkannya.\n3. Mengembangkan potensi santri dalam bidang akademik, non-akademik, dan keagamaan.\n4. Menanamkan nilai-nilai Islam dan akhlakul karimah dalam setiap aspek pendidikan.\n5. Membangun kerjasama yang erat dengan orang tua dan masyarakat."]);
+        Setting::updateOrCreate(['key' => 'web_vision'], ['value' => " Didirikan pada tahun [Tahun Berdiri], TPQ kami berawal dari keprihatinan akan pentingnya pendidikan Al-Qur'an sejak dini. Dengan semangat kebersamaan dan dedikasi, kami terus berkembang hingga saat ini, berkomitmen untuk memberikan pendidikan terbaik bagi para santri. "]);        
 
         // Model::reguard();
         $this->command->info('Database berhasil di-seed dengan data LMS TPQ!');

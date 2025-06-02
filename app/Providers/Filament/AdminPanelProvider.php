@@ -13,8 +13,9 @@ use Illuminate\Cookie\Middleware\EncryptCookies;
 use Filament\Http\Middleware\AuthenticateSession;
 use App\Filament\Akademik\Resources\KelasResource;
 use App\Filament\Akademik\Resources\SantriResource;
-use Illuminate\Routing\Middleware\SubstituteBindings;
+use App\Filament\Pages\Shared\AturKontakDanAlamat1;
 use App\Filament\Admin\Widgets\AccountOverviewWidget;
+use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -42,6 +43,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
             ->pages([
                 Pages\Dashboard::class,
+                // AturKontakDanAlamat1::class, // Daftarkan di sini
             ])
             ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\\Filament\\Admin\\Widgets')
             ->widgets([
