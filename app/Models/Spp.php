@@ -16,6 +16,7 @@ class Spp extends Model
     protected $fillable = [
         'santri_id',
         'bulan',
+        'biaya_bulanan', // Ditambahkan
         'tahun',
         'jumlah_bayar',
         'tanggal_bayar',
@@ -28,6 +29,8 @@ class Spp extends Model
         'tanggal_bayar' => 'date',
         'status_pembayaran' => StatusSpp::class,
         'jumlah_bayar' => 'decimal:2',
+        'biaya_bulanan' => 'decimal:2', // Ditambahkan cast ke decimal
+
     ];
 
     public function santri(): BelongsTo

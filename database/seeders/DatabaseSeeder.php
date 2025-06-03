@@ -219,7 +219,7 @@ class DatabaseSeeder extends Seeder
 
         // 9. Buat Data SPP (oleh Admin atau Akademik)
         if ($santri1) {
-            Spp::create(['santri_id' => $santri1->id, 'bulan' => Carbon::now()->subMonth()->month, 'tahun' => Carbon::now()->subMonth()->year, 'jumlah_bayar' => 150000, 'status_pembayaran' => StatusSpp::SUDAH_BAYAR, 'tanggal_bayar' => Carbon::now()->subMonth()->startOfMonth(), 'pencatat_id' => $admin->id]);
+            Spp::create(['santri_id' => $santri1->id, 'bulan' => Carbon::now()->subMonth()->month, 'tahun' => Carbon::now()->subMonth()->year, 'jumlah_bayar' => 150000, 'status_pembayaran' => StatusSpp::BELUM_BAYAR, 'pencatat_id' => $admin->id]);
             Spp::create(['santri_id' => $santri1->id, 'bulan' => Carbon::now()->month, 'tahun' => Carbon::now()->year, 'jumlah_bayar' => 150000, 'status_pembayaran' => StatusSpp::BELUM_BAYAR, 'pencatat_id' => $akademik1->id]);
         }
         if ($santri4) {

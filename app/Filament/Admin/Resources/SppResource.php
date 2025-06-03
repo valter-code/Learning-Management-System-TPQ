@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Admin\Resources\SppResource\Pages;
 use App\Mail\TagihanSppMail; // Pastikan Mailable ini ada dan benar
 use Illuminate\Database\Eloquent\Collection; // Untuk BulkAction
-
+use App\Models\Setting; // Import Setting model
 
 class SppResource extends Resource
 {
@@ -35,11 +35,13 @@ class SppResource extends Resource
 
     protected static ?string $modelLabel = 'Data SPP';
     protected static ?string $pluralModelLabel = 'Data SPP Santri';
-    // protected static ?string $slug = 'spp-santri'; // Dihapus agar menggunakan default Filament
     protected static ?string $navigationGroup = 'Keuangan';
 
     public static function form(Form $form): Form
     {
+        // Ambil nilai default SPP dari settings untuk form
+        $defaultSppAmount = (float)(Setting::where('key', 'sistem.jumlah_spp_default')->first()?->value ?? config('sistem.jumlah_spp_default', 150000));
+
         return $form
             ->schema([
                 Forms\Components\Select::make('santri_id')
@@ -47,14 +49,30 @@ class SppResource extends Resource
                     ->searchable()->preload()->required()->label('Nama Santri'),
                 Forms\Components\Select::make('bulan')
                     ->options(array_combine(range(1,12), array_map(fn($m) => Carbon::create()->month($m)->translatedFormat('F'), range(1,12))))
-                    ->required()->native(false),
+                    ->required()->native(false)->default(now()->month),
                 Forms\Components\TextInput::make('tahun')->numeric()->required()->minValue(2020)->maxValue(date('Y') + 5)->default(date('Y')),
-                Forms\Components\TextInput::make('jumlah_bayar')->numeric()->prefix('Rp')->required(),
+                
+                Forms\Components\TextInput::make('biaya_bulanan')
+                    ->label('Biaya SPP Seharusnya')
+                    ->numeric()
+                    ->prefix('Rp')
+                    ->required()
+                    ->default($defaultSppAmount) 
+                    ->helperText('Biaya SPP yang ditetapkan untuk bulan ini.'),
+                
+                Forms\Components\TextInput::make('jumlah_bayar')
+                    ->label('Jumlah Tagihan/Akan Dibayar (Bulan Ini)') // Label diperjelas
+                    ->numeric()
+                    ->prefix('Rp')
+                    ->required()
+                    ->default($defaultSppAmount) 
+                    ->helperText('Jumlah yang akan ditagihkan untuk SPP bulan ini. Biasanya sama dengan Biaya SPP Seharusnya.'), // Helper diperjelas
+                
                 Forms\Components\DatePicker::make('tanggal_bayar')->label('Tanggal Pembayaran Aktual')->native(false),
                 Forms\Components\Select::make('status_pembayaran')->options(StatusSpp::class)
                     ->required()->default(StatusSpp::BELUM_BAYAR->value)->native(false)->live(),
                 Forms\Components\Textarea::make('catatan')->columnSpanFull(),
-                // pencatat_id akan diisi otomatis melalui mutateFormDataUsing di CreateAction/EditAction atau di ListSpps
+                // pencatat_id akan diisi otomatis
             ]);
     }
 
@@ -65,14 +83,47 @@ class SppResource extends Resource
                 Tables\Columns\TextColumn::make('santri.name')->label('Nama Santri')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('nama_bulan')->label('Bulan SPP')->sortable(),
                 Tables\Columns\TextColumn::make('tahun')->sortable(),
-                Tables\Columns\TextColumn::make('jumlah_bayar')->money('IDR')->sortable(),
+
+                Tables\Columns\TextColumn::make('biaya_bulanan')
+                    ->money('IDR')
+                    ->label('Biaya bulanan')
+                    ->sortable(),
+
+                // --- PERUBAHAN DI SINI untuk Jml. Tagihan Kumulatif ---
+                Tables\Columns\TextColumn::make('jumlah_tunggakan_kumulatif') // Menggunakan nama baru untuk state, atau bisa tetap 'jumlah_bayar' jika tidak ada field 'jumlah_tunggakan_kumulatif' di model
+                    ->label('Jml. Tagihan Kumulatif')
+                    ->money('IDR')
+                    ->state(function (Spp $record): float {
+                        // Hitung total tunggakan untuk santri ini SAMPAI DENGAN bulan & tahun record saat ini
+                        $totalTunggakan = Spp::where('santri_id', $record->santri_id)
+                            ->whereIn('status_pembayaran', [StatusSpp::BELUM_BAYAR->value, StatusSpp::TERLAMBAT->value])
+                            ->where(function ($query) use ($record) {
+                                $query->where('tahun', '<', $record->tahun)
+                                      ->orWhere(function ($query) use ($record) {
+                                          $query->where('tahun', $record->tahun)
+                                                ->where('bulan', '<=', $record->bulan);
+                                      });
+                            })
+                            ->sum('biaya_bulanan'); // atau ->sum('jumlah_bayar') jika itu yang dimaksud sebagai nominal per bulan
+                        return (float) $totalTunggakan;
+                    })
+                    ->sortable(), // Sorting berdasarkan nilai kalkulasi ini mungkin berat
+                // --- AKHIR PERUBAHAN ---
+
+                // Jika Anda masih ingin menampilkan tagihan spesifik bulan itu saja, Anda bisa buat kolom lain:
+                // Tables\Columns\TextColumn::make('jumlah_bayar')
+                //     ->money('IDR')
+                //     ->label('Tagihan Bulan Ini') // Label lebih spesifik
+                //     ->sortable(),
+
                 Tables\Columns\TextColumn::make('status_pembayaran')->badge()
                     ->formatStateUsing(fn ($state) => $state instanceof StatusSpp ? $state->getLabel() : $state)
                     ->color(fn ($state) => $state instanceof StatusSpp ? $state->getColor() : 'gray')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('tanggal_bayar')->date('d M Y')->label('Tgl Bayar')->placeholder('Belum ada')->sortable(),
-                Tables\Columns\TextColumn::make('pencatat.name')->label('Dicatat Oleh')->placeholder('N/A')->sortable(), // Diubah ke pencatat.name
+                Tables\Columns\TextColumn::make('pencatat.name')->label('Dicatat Oleh')->placeholder('N/A')->sortable(),
             ])
+            // ... sisa filter, action, dll.
             ->filters([
                 Tables\Filters\SelectFilter::make('status_pembayaran')->options(StatusSpp::class)->native(false),
                 Tables\Filters\SelectFilter::make('santri_id')
@@ -85,13 +136,13 @@ class SppResource extends Resource
                     ->options(array_combine(range(date('Y') - 3, date('Y') + 1), range(date('Y') - 3, date('Y') + 1)))
                     ->default(date('Y'))->native(false),
             ])
-            // HeaderActions standar (CreateAction) dipindahkan ke ListSpps::getHeaderActions()
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make()
                      ->mutateFormDataUsing(function (array $data, Spp $record): array {
-                        $data['pencatat_id'] = Auth::id(); // Diubah ke pencatat_id
+                        $data['pencatat_id'] = Auth::id();
                         $newStatus = $data['status_pembayaran'] instanceof StatusSpp ? $data['status_pembayaran'] : StatusSpp::tryFrom((string)$data['status_pembayaran']);
+                        
                         if ($newStatus === StatusSpp::SUDAH_BAYAR && empty($data['tanggal_bayar'])) {
                             if ($record->status_pembayaran !== StatusSpp::SUDAH_BAYAR || is_null($record->tanggal_bayar)) {
                                 $data['tanggal_bayar'] = now();
@@ -99,21 +150,48 @@ class SppResource extends Resource
                                 $data['tanggal_bayar'] = $record->tanggal_bayar;
                             }
                         }
+                        elseif ($record->status_pembayaran === StatusSpp::SUDAH_BAYAR && $newStatus !== StatusSpp::SUDAH_BAYAR) {
+                            $data['tanggal_bayar'] = null;
+                        }
                         return $data;
                     }),
                 Tables\Actions\Action::make('tagihSpp')
+                    // ... (kode tagihSpp tidak diubah) ...
                     ->label('Tagih SPP')
                     ->icon('heroicon-o-envelope')->color('warning')->requiresConfirmation()
                     ->modalHeading('Kirim Tagihan SPP?')
                     ->modalDescription(function(Spp $record): HtmlString {
                         $emailWali = $record->santri?->santriProfile?->email_wali ?? $record->santri?->email ?? 'Tidak ditemukan';
+                        // Ambil total tunggakan untuk deskripsi modal
+                        $totalTunggakan = Spp::where('santri_id', $record->santri_id)
+                            ->whereIn('status_pembayaran', [StatusSpp::BELUM_BAYAR->value, StatusSpp::TERLAMBAT->value])
+                            ->where(function ($query) use ($record) { // Bisa disederhanakan jika hanya tagihan bulan ini
+                                $query->where('tahun', '<', $record->tahun)
+                                      ->orWhere(function ($query) use ($record) {
+                                          $query->where('tahun', $record->tahun)
+                                                ->where('bulan', '<=', $record->bulan);
+                                      });
+                            })
+                            ->sum('biaya_bulanan'); // atau jumlah_bayar
+                        
+                        $tunggakanFormatted = 'Rp ' . number_format($totalTunggakan, 0, ',', '.');
+                        if ($record->status_pembayaran === StatusSpp::BELUM_BAYAR || $record->status_pembayaran === StatusSpp::TERLAMBAT) {
+                             return new HtmlString(
+                                'Ini akan mengirim email tagihan SPP bulan ' . '<strong>' . $record->nama_bulan . ' ' . $record->tahun . '</strong>' .
+                                ' (Rp ' . number_format($record->biaya_bulanan,0,',','.') . ')' . // Tagihan bulan ini
+                                ' untuk santri ' . '<strong>' .  $record->santri->name . '</strong>' .
+                                '. Total tunggakan saat ini: <strong>' . $tunggakanFormatted . '</strong>' .
+                                ' ke email wali: <strong>' . $emailWali . '</strong>.'
+                            );
+                        }
+                        // Fallback jika status bukan belum bayar/terlambat (seharusnya tidak visible)
                         return new HtmlString(
-                            'Ini akan mengirim email tagihan SPP bulan ' . '<strong>' . $record->nama_bulan . ' ' . $record->tahun . '</strong>' .
-                            ' untuk santri ' . '<strong>' .  $record->santri->name . '</strong>' .
+                            'Tagihan SPP untuk santri ' . '<strong>' .  $record->santri->name . '</strong>' .
                             ' ke email wali: <strong>' . $emailWali . '</strong>.'
                         );
                     })
                     ->action(function (Spp $record) {
+                        // ... (logika action tidak berubah) ...
                         Log::info("Mencoba menagih SPP untuk record ID: {$record->id}, Santri: {$record->santri->name}");
                         $emailWali = $record->santri?->santriProfile?->email_wali ?? $record->santri?->email;
                         Log::info("Email wali yang ditemukan untuk tagihan: " . ($emailWali ?? 'TIDAK ADA'));
@@ -123,7 +201,10 @@ class SppResource extends Resource
                             return;
                         }
                         try {
-                            Mail::to($emailWali)->send(new TagihanSppMail($record));
+                            // Anda mungkin ingin mengirim total tunggakan juga di email
+                            // $totalTunggakan = Spp::where('santri_id', $record->santri_id) ... (kalkulasi seperti di atas)
+                            // Mail::to($emailWali)->send(new TagihanSppMail($record, $totalTunggakan)); // Jika TagihanSppMail diupdate
+                            Mail::to($emailWali)->send(new TagihanSppMail($record)); // Kirim record SPP saat ini
                             Notification::make()->success()->title('Tagihan Terkirim')->body('Email tagihan SPP berhasil dikirim ke ' . $emailWali)->send();
                             Log::info("Email tagihan SPP berhasil dikirim ke {$emailWali} untuk SPP ID: {$record->id}");
                         } catch (\Exception $e) {
@@ -134,7 +215,8 @@ class SppResource extends Resource
                     ->visible(fn (Spp $record): bool => $record->status_pembayaran === StatusSpp::BELUM_BAYAR || $record->status_pembayaran === StatusSpp::TERLAMBAT),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
+                // ... (bulkActions tidak diubah) ...
+                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\BulkAction::make('tagihSppMassal')
                         ->label('Tagih SPP Terpilih')
@@ -157,6 +239,7 @@ class SppResource extends Resource
                                         continue;
                                     }
                                     try {
+                                        // Jika TagihanSppMail diupdate untuk menerima total tunggakan, hitung di sini.
                                         Mail::to($emailWali)->send(new TagihanSppMail($record));
                                         $berhasilKirim++;
                                         Log::info("Tagihan SPP Massal: Email berhasil dikirim ke {$emailWali} untuk SPP ID: {$record->id}");
@@ -185,10 +268,10 @@ class SppResource extends Resource
                                     ->send();
                             }
                         })
-                        // Hanya aktifkan jika ada record yang dipilih
                         ->deselectRecordsAfterCompletion(),
                 ]),
-            ]);    }
+            ]);  
+        }
     
     public static function infolist(Infolist $infolist): Infolist
     {
@@ -197,28 +280,44 @@ class SppResource extends Resource
                 Infolists\Components\TextEntry::make('santri.name')->label('Nama Santri'),
                 Infolists\Components\TextEntry::make('nama_bulan')->label('Bulan SPP'),
                 Infolists\Components\TextEntry::make('tahun')->label('Tahun SPP'),
-                Infolists\Components\TextEntry::make('jumlah_bayar')->money('IDR'),
+                Infolists\Components\TextEntry::make('biaya_bulanan')
+                    ->money('IDR')
+                    ->label('Biaya SPP Seharusnya'),
+
+                // Untuk Infolist, Anda juga bisa menampilkan total tunggakan jika relevan
+                Infolists\Components\TextEntry::make('jumlah_bayar') // Ini adalah tagihan bulan ini
+                    ->money('IDR')
+                    ->label('Jumlah Tagihan (Bulan Ini)'), 
+                
+                Infolists\Components\TextEntry::make('total_tunggakan_santri')
+                    ->label('Total Tunggakan Santri Saat Ini')
+                    ->money('IDR')
+                    ->state(function (Spp $record): float {
+                        return (float) Spp::where('santri_id', $record->santri_id)
+                            ->whereIn('status_pembayaran', [StatusSpp::BELUM_BAYAR->value, StatusSpp::TERLAMBAT->value])
+                            ->sum('biaya_bulanan'); // atau jumlah_bayar
+                    }),
+
                 Infolists\Components\TextEntry::make('status_pembayaran')->badge()
                     ->formatStateUsing(fn ($state) => $state instanceof StatusSpp ? $state->getLabel() : $state)
                     ->color(fn ($state) => $state instanceof StatusSpp ? $state->getColor() : 'gray'),
                 Infolists\Components\TextEntry::make('tanggal_bayar')->date('d F Y')->label('Tanggal Bayar')->placeholder('Belum dibayar'),
-                Infolists\Components\TextEntry::make('pencatat.name')->label('Dicatat Oleh')->placeholder('N/A'), // Diubah ke pencatat.name
+                Infolists\Components\TextEntry::make('pencatat.name')->label('Dicatat Oleh')->placeholder('N/A'),
                 Infolists\Components\TextEntry::make('catatan')->placeholder('Tidak ada catatan.'),
             ]);
     }
-
+    // ... sisa kode resource ...
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListSpps::route('/'),
-            // 'create' => Pages\CreateSpp::route('/create'), // Dihapus karena CreateAction di ListSpps
             'view' => Pages\ViewSpp::route('/{record}'),
-            'edit' => Pages\EditSpp::route('/{record}/edit'),
+            // 'edit' => Pages\EditSpp::route('/{record}/edit'),
         ];
     }
 
     public static function canViewAny(): bool { $user = Auth::user(); return $user && ($user->role === UserRole::ADMIN || $user->role === UserRole::AKADEMIK); }
-    public static function canCreate(): bool { return false; } // Diubah ke false
+    public static function canCreate(): bool { return false; } 
     public static function canEdit(Model $record): bool { $user = Auth::user(); return $user && ($user->role === UserRole::ADMIN || $user->role === UserRole::AKADEMIK); }
     public static function canDelete(Model $record): bool { $user = Auth::user(); return $user && ($user->role === UserRole::ADMIN || $user->role === UserRole::AKADEMIK); }
 }

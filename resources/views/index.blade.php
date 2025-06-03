@@ -102,9 +102,9 @@
                 <p class="mb-12 text-lg text-center text-gray-600">Membangun Generasi Qur'ani Berakhlak Mulia</p>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center"> 
-                    <div class="md:order-1"> 
-                        <img src="https://placehold.co/600x400/A7F3D0/065F46?text=Ilustrasi+Belajar+Mengaji" alt="Ilustrasi Belajar Mengaji" class="mx-auto rounded-lg shadow-xl w-full max-w-md">
-                    </div>
+                <div class="md:order-1"> 
+    <img src="{{ asset('storage/avatars/vectorr.webp') }}" alt="Ilustrasi Belajar Mengaji" class="mx-auto rounded-lg shadow-xl w-full max-w-[300px]">
+</div>
                     <div class="md:order-2 space-y-8"> 
                         <div class="p-6 bg-teal-50 rounded-lg border border-teal-200 shadow-lg flex flex-col"> 
                              <div class="flex items-center mb-3">
@@ -113,7 +113,8 @@
                                 </span>
                                 <h3 class="text-xl font-semibold text-teal-700">Visi</h3>
                              </div>
-                            <p class="text-gray-700 flex-grow">Menjadi pusat pendidikan Al-Qur'an yang terpercaya dalam mencetak generasi yang fasih membaca, memahami kandungan, serta mengamalkan ajaran Al-Qur'an dalam kehidupan sehari-hari.</p>
+                            <p class="text-gray-700 flex-grow">{!! $settings['web_vision'] ?? '-' !!}
+                            </p>
                         </div>
                          <div class="p-6 bg-emerald-50 rounded-lg border border-emerald-200 shadow-lg flex flex-col">  
                              <div class="flex items-center mb-3">
@@ -123,10 +124,7 @@
                                 <h3 class="text-xl font-semibold text-emerald-700">Misi</h3>
                              </div>
                             <ul class="list-disc list-inside text-gray-700 space-y-1 flex-grow">
-                                <li>Menyediakan kurikulum Tahsin & Tahfidz yang terstruktur.</li>
-                                <li>Menerapkan metode pembelajaran yang interaktif dan efektif.</li>
-                                <li>Membina akhlak dan adab Islami para santri.</li>
-                                <li>Menjalin komunikasi aktif dengan wali santri.</li>
+                            {!! $settings['web_mission'] ?? '-' !!}
                             </ul>
                         </div>
                     </div>
