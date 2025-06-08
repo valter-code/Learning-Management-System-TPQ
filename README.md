@@ -108,6 +108,7 @@ cd lms-tpq
 
 # 2. Install dependency PHP
 composer install
+composer require filament/filament:"^3.3" -W
 
 # 3. Salin .env.example menjadi .env
 cp .env.example .env
