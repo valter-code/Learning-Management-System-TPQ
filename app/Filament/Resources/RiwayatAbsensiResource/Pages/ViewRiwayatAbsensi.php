@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Pengajar\Resources\RiwayatAbsensiResource\Pages;
+namespace App\Filament\Resources\RiwayatAbsensiResource\Pages;
 
 use App\Filament\Pengajar\Resources\RiwayatAbsensiResource;
 use Filament\Actions;

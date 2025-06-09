@@ -2,7 +2,7 @@
 
 namespace App\Filament\Pengajar\Resources;
 
-use App\Filament\Resources\RiwayatAbsensiResource\Pages;
+use App\Filament\Pengajar\Resources\RiwayatAbsensiResource\Pages;
 use App\Models\AbsensiSantri;
 use App\Models\User; // Untuk relasi santri & pengajar, dan untuk mengambil santri dari kelas
 use App\Enums\StatusAbsensi;
@@ -48,7 +48,7 @@ class RiwayatAbsensiResource extends Resource
                     ->pluck('users.id') // Ambil ID santri
                     ->all();
 
-                Log::info('[RiwayatAbsensiResource] Pengajar (ID: '.$user->id.') akan melihat absensi dari santri dengan IDs:', $santriIds);
+                Log::info("[RiwayatAbsensiResource] Pengajar (ID: {$user->id}) akan melihat absensi dari santri dengan IDs:", $santriIds);
                 
                 if (!empty($santriIds)) {
                     // Filter record absensi_santri berdasarkan santri_id
