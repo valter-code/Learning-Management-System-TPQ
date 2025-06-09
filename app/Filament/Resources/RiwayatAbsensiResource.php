@@ -2,7 +2,7 @@
 
 namespace App\Filament\Pengajar\Resources;
 
-use App\Filament\Pengajar\Resources\RiwayatAbsensiResource\Pages;
+use App\Filament\Resources\RiwayatAbsensiResource\Pages;
 use App\Models\AbsensiSantri;
 use App\Models\User; // Untuk relasi santri & pengajar, dan untuk mengambil santri dari kelas
 use App\Enums\StatusAbsensi;
