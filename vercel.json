@@ -2,7 +2,7 @@
     "version": 2,
     "framework": null,
     "functions": {
-        "api/index.php": { "runtime": "vercel-php@0.6.0" }
+        "api/index.php": { "runtime": "vercel-php@0.5.1" }
     },
     "routes": [
         { "src": "/build/(.*)", "dest": "/public/build/" },
@@ -26,9 +26,9 @@
         "LOG_CHANNEL": "stderr",
         "SESSION_DRIVER": "cookie",
         "DB_CONNECTION": "mysql",
-        "DB_HOST": "4gg.h.filess.io",
-        "DB_PORT": "3306",
-        "DB_DATABASE": "db2024_stormtorn",
-        "DB_USERNAME": "db2024_stormtorn"
+        "DB_HOST": "2d9t4.h.filess.io",
+        "DB_PORT": "61002",
+        "DB_DATABASE": "db2024_visitorgas",
+        "DB_USERNAME": "da93b0f519e59a40668199a8d9f1a8e092efdc3e"
     }
 }
